@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Tulisno">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+  <title>Tulisno | Web Auto Nulis Tugas</title>
+
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-lava.css">
+  <link rel="stylesheet" href="assets/css/owl-carousel.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="header-area header-sticky background-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="index.html" class="logo">Tulisno</a>
+            <ul class="nav">
+              <li class="scroll-to-section"><a href="#welcome" class="menu-item">Home</a></li>
+              <li class="scroll-to-section"><a href="#Tulisno" class="menu-item active">Tulisno</a></li>
+              <li class="scroll-to-section"><a href="#contact-us" class="menu-item">Contact Us</a></li>
+            </ul>
+            <a class="menu-trigger"><span>Menu</span></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="welcome-area" id="welcome">
+    <div class="header-text">
+      <div class="container">
+        <div class="row">
+          <div class="left-text col-lg-6 col-md-12 col-sm-12 col-xs-12">
+            <h1>Tulisno <em>.</em></h1>
+            <p>Mager mau nulis offline? Mending pakai tulisno. Website nulis otomatis paling praktis!</p>
+            <a href="#Tulisno" class="main-button-slider">Start Writing</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" id="Tulisno">
+    <div class="container-fluid" style="padding: 0 40px;">
+      <div class="row">
+        
+        <div class="col-lg-4 col-md-12 mb-4">
+          <div class="card-tulisno">
+            <h5 class="mb-4"><i class="fa fa-cog"></i> 1. Pengaturan</h5>
+            <div class="form-group">
+              <label>Pilih Jenis Font:</label>
+              <select class="form-control" id="font" onchange="updateFont(this.value)"></select>
+            </div>
+            <div class="form-group">
+              <label>Pilih Jenis Buku:</label>
+              <select class="form-control" id="book" onchange="updateBook(this.value)"></select>
+            </div>
+          </div>
+        </div>
+
+        <div id="editor-card" class="col-lg-4 col-md-12 mb-4">
+          <div class="card-tulisno" style="border: 2px solid #f4813f;">
+            <h5 class="mb-4"><i class="fa fa-edit"></i> 2. Editor Teks</h5>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Hari/Tanggal</label>
+                <input type="text" class="form-control" id="date" placeholder="Senin, ..." oninput="txtDate = this.value">
+              </div>
+              <div class="form-group col-md-6">
+                <label>Nama</label>
+                <input type="text" class="form-control" id="name" placeholder="Nama Anda" oninput="txtName = this.value">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Isi Tulisan</label>
+              <textarea class="form-control" id="content" rows="12" placeholder="Tulis tugasmu di sini..." oninput="txtContent = this.value"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12 mb-4">
+          <div class="card-tulisno text-center">
+            <h5 class="mb-4"><i class="fa fa-eye"></i> 3. Preview</h5>
+            <div id="canvas-holder">
+              <main class="paper-container"></main>
+            </div>
+            <button class="main-button w-100" id="btn-download">
+              <i class="fa fa-download"></i> Simpan Gambar
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+  
+  <script src="script.js"></script>
+
+  <script src="assets/js/jquery-2.1.0.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/custom.js"></script>
+</body>
+</html>
