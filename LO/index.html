@@ -1,49 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WJSPORT - LEMBAR PRODUKSI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="ibody">
 
-  <head>
-    <title>LEMBAR ORDER</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index,follow" />
-    <meta name="generator" content="GrapesJS Studio" />
-    <!-- PENTING: Baris ini untuk memanggil file CSS terpisah di atas -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
-
-  <body id="ibody" class="gjs-t-body">
-    <div id="inavcnt" class="gjs-container">
-      <div data-type-role="flex-row" class="gjs-plg-flex-row" id="iqp27l"><!-- KOLOM KIRI: LEMBAR ORDER (63% -> Refleksi Kertas F4) -->
+<div class="gjs-container">
+    <div data-type-role="flex-row" class="gjs-plg-flex-row" id="iqp27l">
+        
         <div data-type-role="flex-column" class="gjs-plg-flex-column" id="i6wpcl">
-          <h2 id="inw9ij">LEMBAR ORDER PRODUKSI</h2>
-          <hr id="iz20pg" />
-          <div id="output-pilihan"><!-- Nanti pilihan yang dicentang di kanan akan muncul di sini -->
-            <p id="ivnz6l">*Menunggu item dipilih dari panel kanan...</p>
-          </div>
-        </div><!-- KOLOM KANAN: PANEL INPUT MULTI PILIHAN (SISANYA) -->
-        <div data-type-role="flex-column" class="gjs-plg-flex-column" id="i6uw2x">
-          <h3 id="ixvuf9">Panel Kontrol &amp; Opsi</h3>
-          <p id="iiayt8">Silakan centang opsi di bawah (bisa pilih banyak):</p>
-          <div class="pilihan-group" id="imlr7g">
-            <label class="pilihan-item" id="i2a7uc">
-              <input type="checkbox" value="Pos 1: Pemotongan Bahan Baku" id="iwka6w" /> Pos 1: Pemotongan Bahan
-            </label>
-            <label class="pilihan-item" id="i53njg">
-              <input type="checkbox" value="Pos 2: Perakitan Komponen" id="idw01k" /> Pos 2: Perakitan
-            </label>
-            <label class="pilihan-item" id="iutld9">
-              <input type="checkbox" value="Pos 3: Pengecekan Kualitas (QC)" id="iw1uik" /> Pos 3: QC / Finishing
-            </label>
-            <label class="pilihan-item" id="i3kjna">
-              <input type="checkbox" value="Prioritas: Jalur Cepat (Urgent)" id="iqvksq" /> Prioritas Tinggi (Urgent)
-            </label>
-            <label class="pilihan-item" id="icuvs7">
-              <input type="checkbox" value="Tambahan: Packing Palet Kayu" id="iwj75e" /> Packing Palet Kayu
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+            <div id="capture-area">
+                <div class="main-container">
+                    
+                    <div class="logo-header-space">
+                        <img src="logo-header.png" alt="HEADER LEMBAR ORDER WJSPORT" class="header-png-img">
+                    </div>
+                    
+                    <div class="header-section">
+                        <div class="payment-status">
+                            <div class="box-stempel">
+                                <div class="top-label">DP</div>
+                                <div class="space-stempel"></div>
+                            </div>
+                            <div class="box-stempel">
+                                <div class="top-label">LUNAS</div>
+                                <div class="space-stempel"></div>
+                            </div>
+                        </div>
 
+                        <div class="qr-container">
+                            <div id="qrcode"></div>
+                        </div>
+
+                        <div class="identity-group">
+                            <div class="identity-grid">
+                                <div class="id-row"><span class="id-tag">NAMA</span><input type="text" id="nama" placeholder="..."></div>
+                                <div class="id-row"><span class="id-tag">ORDERAN</span><input type="text" id="orderan" placeholder="..."></div>
+                                <div class="id-row"><span class="id-tag">TGL MASUK</span><input type="date" id="tgl_masuk"></div>
+                                <div class="id-row"><span class="id-tag">DEADLINE/DT</span><input type="date" id="deadline"></div>
+                            </div>
+                            <div class="identity-grid">
+                                <div class="id-row"><span class="id-tag">NO LO.</span><input type="text" id="nolo" placeholder="..."></div>
+                                <div class="id-row">
+                                    <span class="id-tag">MODEL</span>
+                                    <select id="model_global" onchange="updateDynamicMenu()">
+                                        <option value="">-- PILIH --</option>
+                                        <option value="KAOS">KAOS</option>
+                                        <option value="ROMPI">ROMPI</option>
+                                        <option value="JAKET">JAKET</option>
+                                        <option value="JAS ALMAMATER">JAS ALMAMATER</option>
+                                        <option value="TRAINING">TRAINING</option>
+                                        <option value="KEMEJA">KEMEJA</option>
+                                        <option value="WEARPACK">WEARPACK</option>
+                                        <option value="SETELAN BAJU">SETELAN BAJU</option>
+                                        <option value="SETELAN OR">SETELAN OR</option>
+                                        <option value="ATRIBUT">ATRIBUT</option>
+                                    </select>
+                                </div>
+                                <div class="id-row"><span class="id-tag">BAHAN</span><input type="text" id="bahan" placeholder="..."></div>
+                                <div class="id-row"><span class="id-tag">KODE</span><input type="text" id="kode" placeholder="..."></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-grid" id="menu-area"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div data-type-role="flex-column" class="gjs-plg-flex-column" id="i6uw2x">
+            <div class="control-panel-header">
+                <h3>PANEL OPERASI</h3>
+                <p>Silakan isi identitas di lembar kiri, lalu pilih kriteria spesifik di bawah ini:</p>
+            </div>
+            
+            <div id="pilihan-opsi-dinamis">
+                <p class="notif-pilih">← Pilih Jenis <strong>MODEL</strong> terlebih dahulu pada lembar order untuk memunculkan daftar opsi kerja.</p>
+            </div>
+            
+            <div class="footer-tools">
+                <button onclick="updateQR()" class="btn-tool">REFRESH QR</button>
+                <button id="btnExport" class="btn-main">EXPORT PNG ▲</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
 </html>
