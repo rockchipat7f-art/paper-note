@@ -1,0 +1,80 @@
+.gjs-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#iqp27l {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  undefined: undefined;
+  width: 100%;
+}
+
+#i6wpcl {
+  flex: 0 0 63%;
+  undefined: undefined;
+  width: 63vw;
+  height: 96.7vw;
+  box-sizing: border-box;
+  border: 2px solid #059669;
+  border-radius: 8px;
+  padding: 30px;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+#i6uw2x {
+  flex: 1;
+  undefined: undefined;
+  box-sizing: border-box;
+  border: 2px dashed #94a3b8;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  height: max-content;
+}
+
+.pilihan-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.pilihan-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #f8fafc;
+  undefined: undefined;
+}
+
+.pilihan-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+#ibody {
+  background-color: #0f172a;
+  font-family: sans-serif;
+}
+
+#ivnz6l {
+  color: #94a3b8;
+}
+
+#ixvuf9 {
+  color: #f8fafc;
+  margin-top: 0;
+}
+
+#iiayt8 {
+  color: #94a3b8;
+}
