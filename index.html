@@ -1,83 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="Tulisno">
-  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
-  <title>Tulisno | Web Auto Nulis Tugas</title>
-
-  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
-  <link rel="stylesheet" href="assets/css/templatemo-lava.css">
-  <link rel="stylesheet" href="assets/css/owl-carousel.css">
-  
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WJSPORT - LEMBAR PRODUKSI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <section class="section" id="Tulisno">
-    <div class="container-fluid" style="padding: 0 40px;">
-      <div class="row">
-        
-        <div class="col-lg-4 col-md-12 mb-4">
-          <div class="card-tulisno">
-            <h5 class="mb-4"><i class="fa fa-cog"></i> 1. Pengaturan</h5>
-            <div class="form-group">
-              <label>Pilih Jenis Font:</label>
-              <select class="form-control" id="font" onchange="updateFont(this.value)"></select>
+
+<div id="capture-area">
+    <div class="main-container">
+        <div class="header-section">
+            <div class="payment-status">
+                <div class="box-stempel">
+                    <div class="top-label">DP</div>
+                    <div class="space-stempel"></div>
+                </div>
+                <div class="box-stempel">
+                    <div class="top-label">LUNAS</div>
+                    <div class="space-stempel"></div>
+                </div>
             </div>
-            <div class="form-group">
-              <label>Pilih Jenis Buku:</label>
-              <select class="form-control" id="book" onchange="updateBook(this.value)"></select>
+
+            <div class="qr-container">
+                <div id="qrcode"></div>
             </div>
-          </div>
+
+            <div class="identity-group">
+                <div class="identity-grid">
+                    <div class="id-row"><span class="id-tag">NAMA</span><input type="text" id="nama" placeholder="..."></div>
+                    <div class="id-row"><span class="id-tag">ORDERAN</span><input type="text" id="orderan" placeholder="..."></div>
+                    <div class="id-row"><span class="id-tag">TGL MASUK</span><input type="date" id="tgl_masuk"></div>
+                    <div class="id-row"><span class="id-tag">DEADLINE/DT</span><input type="date" id="deadline"></div>
+                </div>
+                <div class="identity-grid">
+                    <div class="id-row"><span class="id-tag">NO LO.</span><input type="text" id="nolo" placeholder="..."></div>
+                    <div class="id-row">
+                        <span class="id-tag">MODEL</span>
+                        <select id="model_global" onchange="updateDynamicMenu()">
+                            <option value="">-- PILIH --</option>
+                            <option value="KAOS">KAOS</option>
+                            <option value="ROMPI">ROMPI</option>
+                            <option value="JAKET">JAKET</option>
+                            <option value="JAS ALMAMATER">JAS ALMAMATER</option>
+                            <option value="TRAINING">TRAINING</option>
+                            <option value="KEMEJA">KEMEJA</option>
+                            <option value="WEARPACK">WEARPACK</option>
+                            <option value="SETELAN BAJU">SETELAN BAJU</option>
+                            <option value="SETELAN OR">SETELAN OR</option>
+                            <option value="ATRIBUT">ATRIBUT</option>
+                        </select>
+                    </div>
+                    <div class="id-row"><span class="id-tag">BAHAN</span><input type="text" id="bahan" placeholder="..."></div>
+                    <div class="id-row"><span class="id-tag">KODE</span><input type="text" id="kode" placeholder="..."></div>
+                </div>
+            </div>
         </div>
 
-        <div id="editor-card" class="col-lg-4 col-md-12 mb-4">
-          <div class="card-tulisno" style="border: 2px solid #f4813f;">
-            <h5 class="mb-4"><i class="fa fa-edit"></i> 2. Editor Teks</h5>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label>Hari/Tanggal</label>
-                <input type="text" class="form-control" id="date" placeholder="Senin, ..." oninput="txtDate = this.value">
-              </div>
-              <div class="form-group col-md-6">
-                <label>Nama</label>
-                <input type="text" class="form-control" id="name" placeholder="Nama Anda" oninput="txtName = this.value">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Isi Tulisan</label>
-              <textarea class="form-control" id="content" rows="12" placeholder="Tulis tugasmu di sini..." oninput="txtContent = this.value"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-12 mb-4">
-          <div class="card-tulisno text-center">
-            <h5 class="mb-4"><i class="fa fa-eye"></i> 3. Preview</h5>
-            <div id="canvas-holder">
-              <main class="paper-container"></main>
-            </div>
-            <button class="main-button w-100" id="btn-download">
-              <i class="fa fa-download"></i> Simpan Gambar
-            </button>
-          </div>
-        </div>
-
-      </div>
+        <div class="menu-grid" id="menu-area"></div>
     </div>
-  </section>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
-  
-  <script src="script.js"></script>
+<div class="footer-tools">
+    <button onclick="updateQR()" class="btn-tool">REFRESH QR</button>
+    <button id="btnExport" class="btn-main">EXPORT PNG â²</button>
+</div>
 
-  <script src="assets/js/jquery-2.1.0.min.js"></script>
-  <script src="assets/js/bootstrap.min.js"></script>
-  <script src="assets/js/custom.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
