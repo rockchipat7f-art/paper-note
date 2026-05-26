@@ -1,80 +1,160 @@
+/* --- LAYOUT UTAMA & SISTEM GRID KAPITAL --- */
+body { 
+    font-family: 'Arial Black', sans-serif; 
+    background: #1e293b; 
+    margin: 0;
+    padding: 20px; 
+}
+
 .gjs-container {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
-  box-sizing: border-box;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 #iqp27l {
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-  undefined: undefined;
-  width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
 }
 
+/* Kolom Kiri Kunci Rasio Lembar F4 (Lebar 63%, Tinggi Menyesuaikan Proporsional) */
 #i6wpcl {
-  flex: 0 0 63%;
-  undefined: undefined;
-  width: 63vw;
-  height: 96.7vw;
-  box-sizing: border-box;
-  border: 2px solid #059669;
-  border-radius: 8px;
-  padding: 30px;
-  background-color: #ffffff;
-  color: #0f172a;
+    flex: 0 0 63%;
+    width: 63vw;
+    height: 96.7vw; /* Rasio tinggi kertas 33cm dibanding lebar 21.5cm */
+    background: #fff;
+    border: 2px solid #000;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
+#capture-area { 
+    background: #fff; 
+    height: 100%;
+    padding: 10px; 
+    box-sizing: border-box;
+}
+
+.main-container { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+    height: 100%;
+}
+
+/* Slot Spesial untuk Gambar PNG Header Setinggi 1.6cm */
+.logo-header-space {
+    width: 100%;
+    height: 1.6cm;
+    border: 1px dashed #ccc; /* Penanda area gambar */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.header-png-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Memastikan logo PNG tidak melar kaku */
+}
+
+.header-section { display: flex; gap: 10px; align-items: flex-start; }
+
+/* Stempel Komponen */
+.payment-status { display: flex; gap: 6px; }
+.box-stempel {
+    width: 95px; height: 135px; border: 2px solid #000; border-radius: 12px;
+    background: #fff; display: flex; flex-direction: column; overflow: hidden;
+}
+.top-label {
+    background: #FFFF00; color: #000; text-align: center;
+    font-weight: 900; font-size: 18px; padding: 5px 0;
+    border-bottom: 2px solid #000;
+}
+.space-stempel { flex: 1; }
+
+/* QR Section */
+.qr-container {
+    width: 135px; height: 135px; border: 1px solid #ccc;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+#qrcode img { width: 128px; height: 128px; }
+
+/* Identity Grid */
+.identity-group { flex: 1; display: flex; gap: 8px; }
+.identity-grid { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.id-row { display: flex; border: 1px solid #000; border-radius: 12px; overflow: hidden; height: 31px; background: #fff; }
+.id-tag { background: #000000; color: #fff; width: 110px; font-size: 11px; padding: 8px 3px; text-align: center; box-sizing: border-box; }
+
+.id-row input, .id-row select { 
+    border: none; flex: 1; padding-left: 10px; font-weight: 900; 
+    font-size: 14px; outline: none; text-transform: uppercase;
+    font-family: 'Arial Black', sans-serif;
+}
+
+/* Menu Grid Tampilan Lembar Order (Kiri) */
+.menu-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; margin-top: 5px; }
+.menu-item { border: 1px solid #ccc; display: flex; flex-direction: column; background: #fff; }
+.menu-header { background: #E91E63; color: #fff; text-align: center; font-size: 12px; padding: 6px; font-weight: bold; }
+
+/* ================= CSS SEBELAH KANAN: PANEL KONTROL INPUT ================= */
 #i6uw2x {
-  flex: 1;
-  undefined: undefined;
-  box-sizing: border-box;
-  border: 2px dashed #94a3b8;
-  border-radius: 8px;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.05);
-  height: max-content;
+    flex: 1;
+    background: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+    color: #f8fafc;
+    height: max-content;
 }
 
-.pilihan-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 15px;
+.control-panel-header h3 { margin: 0 0 5px 0; color: #34d399; }
+.control-panel-header p { margin: 0 0 20px 0; font-size: 13px; color: #94a3b8; font-family: sans-serif; font-weight: normal; }
+.notif-pilih { font-family: sans-serif; font-weight: normal; color: #f59e0b; font-size: 14px; line-height: 1.5; }
+
+/* Kotak Container Checkbox Khusus di Sebelah Kanan */
+.checkbox-container-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background: #1e293b;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #334155;
 }
 
-.pilihan-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  color: #f8fafc;
-  undefined: undefined;
+.section-title-right {
+    font-size: 14px;
+    color: #f1f5f9;
+    margin-bottom: 5px;
+    border-left: 4px solid #E91E63;
+    padding-left: 8px;
 }
 
-.pilihan-item input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+.check-item-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #cbd5e1;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: background 0.2s;
 }
+.check-item-right:hover { background: #334155; }
+.check-item-right input { width: 18px; height: 18px; cursor: pointer; }
 
-#ibody {
-  background-color: #0f172a;
-  font-family: sans-serif;
-}
-
-#ivnz6l {
-  color: #94a3b8;
-}
-
-#ixvuf9 {
-  color: #f8fafc;
-  margin-top: 0;
-}
-
-#iiayt8 {
-  color: #94a3b8;
-}
+/* Footer Tools */
+.footer-tools { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #334155; }
+.btn-main { background: #34d399; color: #000; border: none; padding: 12px 35px; font-weight: 900; cursor: pointer; border-radius: 6px; font-size: 14px; }
+.btn-main:hover { background: #059669; color: white; }
+.btn-tool { background: #000000; color: #fff900; border: 2px solid #fff900; padding: 12px 20px; font-weight: 900; margin-right: 10px; cursor: pointer; border-radius: 6px; font-size: 14px; }
