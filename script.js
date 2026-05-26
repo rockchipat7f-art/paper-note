@@ -1,86 +1,234 @@
-let bg, font, margin, gap, fontsize = 16;
-let txtDate = '', txtName = '', txtContent = '';
-
-let fonts = [
-  {'index': 0, 'name': 'HandwritingCR 2', 'file': 'HandwritingCR-2.ttf'},
-  {'index': 1, 'name': 'Gloria Hallelujah', 'file': 'GloriaHallelujah-Regular.ttf'},
-  {'index': 2, 'name': 'Heart Warming', 'file': 'Heart Warming Font by Situjuh.otf'},
-  {'index': 3, 'name': 'Shadows Into Light', 'file': 'ShadowsIntoLight-Regular.ttf'}
-];
-
-const getFontIndex = () => {
-  let fontIndex = localStorage.getItem('fontIndex');
-  return fontIndex ? fonts[fontIndex] : fonts[0];
-}
-
-// Fungsi bantu untuk onchange di HTML
-function updateFont(val) {
-    localStorage.setItem('fontIndex', val);
-    setup(); // Re-run p5 setup
-}
-
-function updateBook(val) {
-    localStorage.setItem('bookIndex', val);
-    setup();
-}
-
-function setup() {
-  let cnv = createCanvas(600, 894);
-  cnv.parent('canvas-holder');
-  bg = loadImage('/img/folio.jpg');
-  font = loadFont('/fonts/' + getFontIndex().file);
-  textFont(font);
-  textSize(fontsize);
-}
-
-function draw() {
-  background(bg);
-  margin = 20;
-  fill(0, 0, 0, 200);
-  translate(margin - 8, margin * 4);
-  text(txtName, 0, 0);
-  text(txtDate, 450, 0);
-  translate(0, margin + 7);
-  text(txtContent, 0, 0, 580);
-}
-
-// Logika Inisialisasi
-window.onload = function() {
-  // 1. Auto Scroll di HP
-  if (window.innerWidth < 992) {
-    const editorCard = document.getElementById('editor-card');
-    if(editorCard) editorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-  
-  // 2. Load Select Options
-  let fontSelectEl = document.getElementById('font');
-  if(fontSelectEl) {
-    let _temp = '';
-    fonts.forEach((f, idx) => {
-      let selected = (idx == getFontIndex().index) ? 'selected' : '';
-      _temp += `<option value="${idx}" ${selected}>${f.name}</option>`;
-    });
-    fontSelectEl.innerHTML = _temp;
-  }
-
-  // 3. Event Listener Download
-  const btnDownload = document.getElementById('btn-download');
-  if(btnDownload) {
-    btnDownload.addEventListener('click', function() {
-        downloadCanvas(document.getElementById('defaultCanvas0'), 'hasil-tulisno.png');
-    });
-  }
+const databaseKriteria = {
+    "KAOS": [
+        { label: "MODE KAOS", isi: ["KERUNG", "RAGLAN", "SINGLET", "TUNIK", "STANDART"] },
+        { label: "BENTUK KRAH", isi: ["OBLONG O", "OBLONG V", "SANGHAI", "KRAH PASPOL DLM", "KRAH PASPOL LUAR", "KRAH SAKU", "KRAH TANPA SAKU"] },
+        { label: "UJUNG LENGAN", isi: ["PLONG", "MANSET", "SAMBUNG KAIN", "MELET", "RIB"] },
+        { label: "MODEL BADAN", isi: ["REGULER", "MBANGKEK", "POLA A"] },
+        { label: "CUTTING BAWAH", isi: ["REGULER", "DROPCUT", "BELAH SAMPING"] },
+        { label: "KANTONG", isi: ["PASPOL SEWARNA", "PASPOL BEDA WARNA", "TEMPEL REGULER", "TEMPEL SEGITIGA", "TEMPEL MEMBULAT"] },
+        { label: "SAKU SAMPING", isi: ["TUNIK PASPOL", "TUNIK BELAHAN"] },
+        { label: "PATCH", isi: ["SABLON", "DTF", "BORDIR"] },
+        { label: "DESAIN DEPAN", isi: ["DEPAN TENGAH", "DADA KANAN", "DADA KIRI", "DPN SMPING KANAN", "DPN SMPING KIRI", "DPN BWH KANAN", "DPN BWH TENGAH", "DPN BWH KIRI"] },
+        { label: "DESAIN BELAKANG", isi: ["BLKNG LEHER", "BLKNG TENGAH", "BLKNG ATAS KANAN", "BLKNG ATAS KIRI", "BLKNG BWH KANAN", "BLKNG BWH TNGAH", "BLKNG BWH KIRI", "BLKNG SMPING KANAN", "BLKNG SMPING KIRI"] },
+        { label: "DESAIN LENGAN", isi: ["PATCH KIRI", "PATCH KANAN", "SABLON", "DTF", "BORDIR"] },
+        { label: "LABEL", isi: ["WJ SPORT", "JERSEY", "POLOS", "CUSTOM"] }
+    ],
+    "ROMPI": [
+        { label: "MODEL ROMPI", isi: ["LAPANGAN", "PARKIR", "DINAS"] },
+        { label: "KANTONG", isi: ["KOTAK", "BOX", "GEMBOS", "KANTONG DALAM"] },
+        { label: "LABEL", isi: ["WJ SPORT", "JERSEY", "POLOS", "CUSTOM"] },
+        { label: "BAHAN", isi: ["DRILL", "TASLAN", "JARING"] }
+    ],
+    "JAKET": [
+        { label: "MODE", isi: ["JAKET", "HOODIE", "KERUNG", "RAGLAN"] },
+        { label: "FURING", isi: ["PAKAI FURING", "TANPA FURING"] },
+        { label: "UJUNG LENGAN", isi: ["PLONG", "RIP", "VELCRO", "ELASTIS"] },
+        { label: "MODEL KRAH", isi: ["TANPA TUDUNG", "TUDUNG", "BOMBER"] },
+        { label: "MODE RESLETING", isi: ["RESLETING 1/2", "RESLETING FULL", "TANPA RESLETING"] },
+        { label: "CUTTING BAWAH", isi: ["PLONG", "RIP", "ELASTIS PRUSIK+STOPPER"] },
+        { label: "SAKU UTAMA", isi: ["KANGURU", "SAKU MIRING", "SAKU RESLETING", "SAKU TEMPEL"] },
+        { label: "SAKU TAMBAHAN", isi: ["SAKU PASPOL", "SAKU DALAM", "SAKU GEMBOS", "SAKU BLKNG RESLETING", "SAKU BLKNG TUTUP(TEMPEL)", "SAKU BLKNG TEMPEL"] },
+        { label: "PATCH", isi: ["BORDIR", "DTF", "SABLON"] }
+    ],
+    "JAS ALMAMATER": [
+        { label: "MODE", isi: ["KERUNG", "LAIN-LAIN", " "] },
+        { label: "LAPEL", isi: ["POLOS", "LIS"] },
+        { label: "UJUNG LENGAN", isi: ["POLOS TNPA KANCINGA", "KANCING 1", "KANCING 2"] },
+        { label: "MODEL KANCING DPN", isi: ["TNPA KANCING", "KANCING 1", "KANCING 2", "KANCING 3"] },
+        { label: "LAJUR SAKU", isi: ["DATAR TNPA TUTUP", "DATAR TUTUP", "MIRING (TDK BISA TUTUP)"] },
+        { label: "TIPE SAKU", isi: ["SAKU DALAM (KIRI)", "SAKU LUAR DADA PASPOL", "SAKU LUAR BAWAH", "DENGAN TUTUP", "BWH TANPA TUTUP", "TUTUP + LIS"] },
+        { label: "CUTINGAN BAWAH", isi: ["REGULER", "DROPCUT"] },
+        { label: "PATCH", isi: ["BORDIR", "SABLON", "DTF"] }
+    ],
+    "TRAINING": [
+        { label: "MODE", isi: ["STANDAR", "JOGER"] },
+        { label: "UJUNG CELANA", isi: ["PLONG", "RIP", "KARET"] },
+        { label: "SAKU", isi: ["TEMPEL 1", "TEMPEL 2", "GANDUL 1", "GANDUL 2", "GEMBOS", "TEMPEL BLKNG"] },
+        { label: "TUTUP SAKU", isi: ["TANPA RESLETING", "RESLETING"] },
+        { label: "PATCH", isi: ["BORDIR", "SABLON", "DTF"] }
+    ],
+    "KEMEJA": [
+        { label: "MODE", isi: ["KERUNG", "RAGLAN", "STANDAR", "TUNIK"] },
+        { label: "KRAH", isi: ["REGULER", "SANGHAI", "CASUAL"] },
+        { label: "UJUNG LENGAN", isi: ["PLONG", "MANSET", "SAMBUNGAN", "MELET"] },
+        { label: "PATCH", isi: ["BORDIR", "DTF"] },
+        { label: "CUTTING BAWAH", isi: ["REGULER", "BELAH SAMPING", "DROPCUT"] },
+        { label: "TMPAT KNCING/PLAKET", isi: ["REGULER", "TUTUP KNCING/SEMBUNYI", "STIK DOBEL", "TTUP KNCING LIS"] },
+        { label: "ASESORIS TAMBAHAN", isi: ["DEK PUNDAK", "TALI SKODER", "TEMPAT PULPEN"] },
+        { label: "VENTILASI BLKNG", isi: ["VENTILASI VERTIKAL", "VENTILASI HORIZONTAL"] },
+        { label: "SAKU", isi: ["TEMPEL", "PASPOL", "SAMPING", "GEMBOS", "RESLETING"] },
+        { label: "BENTUK SAKU", isi: ["TANPA TUTUP", "DENGAN TUTUP", "REGULAR", "KOTAK", "TACTICAL", "BULAT", "SEGITIGA", "SAFARI", "BOX"] }
+    ],
+    "WEARPACK": [
+        { label: "MODE", isi: ["KERUNG", "RAGLAN", "COVER ALL"] },
+        { label: "KRAH", isi: ["REGULER"] },
+        { label: "UJUNG LENGAN", isi: ["PLONG", "MANSET", "SAMBUNGAN"] },
+        { label: "PATCH", isi: ["BORDIR", "DTF", "SABLON"] },
+        { label: "CUTTING BAWAH", isi: ["REGULER", "BELAH SAMPING", "DROPCUT"] },
+        { label: "TMPAT KNCING/PLAKET", isi: ["RESLETING", "REGULER", "TUTUP KNCING/SEMBUNYI", "STIK DOBEL", "TTUP KNCING LIS"] },
+        { label: "ASESORIS TAMBAHAN", isi: ["DEK PUNDAK", "TALI SKODER", "TEMPAT PULPEN"] },
+        { label: "VENTILASI BLKNG", isi: ["VENTILASI VERTIKAL", "VENTILASI HORIZONTAL"] },
+        { label: "SAKU", isi: ["TEMPEL", "PASPOL", "SAMPING", "GEMBOS", "RESLETING"] },
+        { label: "BENTUK SAKU", isi: ["TANPA TUTUP", "DENGAN TUTUP", "REGULAR", "KOTAK", "TACTICAL", "BULAT", "SEGITIGA", "SAFARI", "BOX"] },
+        { label: "SAKU CELANA", isi: ["DALAM", "TEMPEL"] }
+    ],
+    "SETELAN BAJU": [
+        { label: "ATASAN", isi: ["BAJU PANJANG", "BAJU PENDEK"] },
+        { label: "BAWAHAN", isi: ["CELANA PANJANG", "CELANA PENDEK", "ROK"] },
+        { label: "MODEL KRAH", isi: ["REGULER", "SANGHAI"] },
+        { label: "UJUNG LENGAN", isi: ["PLONG", "MANSET"] },
+        { label: "PATCH", isi: ["SABLON", "DTF", "BORDIR"] },
+        { label: "KANTONG", isi: ["BOX", "SAFARI"] }
+    ],
+    "SETELAN OR": [
+        { label: "PAKET", isi: ["STELAN LENGKAP", "KAOS", "KAOS SAJA", "PANJANG", "PENDEK", "CELANA", "CELANA SAJA", "PANJANG", "PENDEK"] },
+        { label: "PATCH", isi: ["SABLON", "DTF", "BORDIR"] },
+        { label: "KRAH KAOS", isi: ["OBLONG", "MIZUNO", "V-SIMETRIS", "KRAH PASPOL", "KRAH-V"] },
+        { label: "UJUNG LENGAN", isi: ["PLONG", "RIB", "MELET", "SAMBUNG KAIN"] },
+        { label: "CELANA", isi: ["ADIDAS", "LIS", "BLOK"] },
+        { label: "KANTONG CELANA", isi: ["TEMPEL", "GEMBOS", "GANDUL"] },
+        { label: "UJUNG CELANA", isi: ["PLONG", "RIB"] },
+        { label: "LABEL", isi: ["WJ SPORT", "JERSEY", "POLOS", "CUSTOM"] }
+    ],
+    "ATRIBUT": [
+        { label: "TOPI DASI", isi: ["TOPI", "DASI", "IKAT PINGGANG"] },
+        { label: "BADGE/BET 1", isi: ["LOGO SEKOLAH", "NAMA", "LOKASI", "PANGKAT"] },
+        { label: "BADGE/BET 2", isi: ["OSIS SMP", "OSIS SMA", "BENDERA", "PMI", "PMR"] },
+        { label: "BET PRAMUKA", isi: ["TUNAS PA", "TUNAS PI", "PANDU PA", "PANDU PI", "LOKASI KABUPATEN", "LOGO KAB"] },
+        { label: "PANDU DUNIA & GUDEP", isi: ["PANDU PA", "PANDU PI", "GUDEP ã¤ã¤ã¤ã¤ã¤ã¤ã¤ã¤"] }
+    ]
 };
 
-function downloadCanvas(c, filename) {
-  var lnk = document.createElement('a'), e;
-  lnk.download = filename;
-  lnk.href = c.toDataURL();
-  if (document.createEvent) {
-    e = document.createEvent("MouseEvents");
-    e.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    lnk.dispatchEvent(e);
-  } else {
-    lnk.click();
-  }
+function updateDynamicMenu() {
+    const model = document.getElementById('model_global').value;
+    const container = document.getElementById('menu-area');
+    container.innerHTML = "";
+
+    if (model && databaseKriteria[model]) {
+        databaseKriteria[model].forEach((item, idx) => {
+            const box = document.createElement('div');
+            box.className = 'menu-item';
+            
+            const optionsHTML = item.isi.map((opt, i) => `
+                <input type="checkbox" id="opt-${idx}-${i}" class="check-item" value="${opt}">
+                <label for="opt-${idx}-${i}" class="check-label">${opt}</label>
+            `).join('');
+
+            box.innerHTML = `
+                <div class="menu-header">${item.label}</div>
+                <div class="checkbox-container">${optionsHTML}</div>
+            `;
+            container.appendChild(box);
+        });
+    } else {
+        container.innerHTML = "<p style='grid-column: span 6; text-align: center; color: #999; padding: 20px;'>PILIH MODEL TERLEBIH DAHULU</p>";
+    }
 }
+
+function updateQR() {
+    const qrcodeDiv = document.getElementById("qrcode");
+    qrcodeDiv.innerHTML = ""; 
+    // Ambil semua data & langsung paksa KAPITAL (.toUpperCase)
+    const nolo = (document.getElementById("nolo").value || "000").toUpperCase();
+    const nama = (document.getElementById("nama").value || "NONAME").toUpperCase();
+    const orderan = (document.getElementById("orderan").value || "-").toUpperCase();
+    const model = (document.getElementById("model_global").value || "-").toUpperCase();
+    
+    // Format: No.LO [Tab] Nama [Tab] Orderan [Tab] Model
+    const qrContent = `${nolo}\t${nama}\t${orderan}\t${model}`;
+    
+    new QRCode(qrcodeDiv, {
+        text: qrContent, 
+        width: 128, 
+        height: 128, 
+        correctLevel: QRCode.CorrectLevel.H
+    });
+}
+
+function formatTanggalIndo(dateStr) {
+    if(!dateStr) return "-";
+    const bulanIndo = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+    const d = new Date(dateStr);
+    return `${d.getDate()} ${bulanIndo[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+document.getElementById('btnExport').addEventListener('click', function() {
+    const target = document.getElementById('capture-area');
+    const btn = this;
+    btn.innerText = "GENERATING PREVIEW...";
+    btn.disabled = true;
+
+    html2canvas(target, { 
+        scale: 3,
+        useCORS: true,
+        onclone: (cloned) => {
+            // 0. KUNCI RASIO CANVAS
+            const cloneCapture = cloned.getElementById('capture-area');
+            cloneCapture.style.height = '355px'; 
+            cloneCapture.style.overflow = 'hidden';
+            cloneCapture.style.display = 'flex';
+            cloneCapture.style.flexDirection = 'column';
+        
+            // 1. PROSES MENU ITEM (Checkbox)
+            cloned.querySelectorAll('.menu-item').forEach(item => {
+                const checked = Array.from(item.querySelectorAll('.check-item:checked')).map(c => c.value);
+                const val = checked.length > 0 ? checked.join(", ") : "-";
+                const v = cloned.createElement('div');
+                v.innerText = val.toUpperCase();
+                v.style.cssText = "padding:5px 2px; text-align:center; font-weight:900; font-size:12px; color:#000; display:flex; align-items:center; justify-content:center; line-height:1.1; height:50px; background:#fff; border-top:1px solid #000;";
+                
+                const container = item.querySelector('.checkbox-container');
+                if(container) container.style.display = "none";
+                item.appendChild(v);
+            });
+        
+            // 2. PROSES IDENTITAS (Nama, Orderan, Nolo, dll)
+            // Gunakan class .id-row agar tidak tabrakan dengan elemen lain
+            const styleId = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
+            
+            // Kita targetkan HANYA input teks dan date di dalam id-row
+            cloned.querySelectorAll('.id-row input').forEach(i => {
+                let text = i.value.toUpperCase();
+                if(i.type === 'date') text = formatTanggalIndo(i.value);
+                
+                const v = cloned.createElement('div');
+                v.innerText = text || "-";
+                v.style.cssText = styleId;
+                
+                i.style.display = "none";
+                i.parentElement.appendChild(v);
+            });
+        
+            // 3. PROSES MODEL GLOBAL (Hanya satu kali di sini)
+            const s = cloned.getElementById('model_global');
+            if(s) {
+                const sv = cloned.createElement('div');
+                // Ambil teks dari pilihan yang dipilih
+                sv.innerText = s.value || "-"; 
+                sv.style.cssText = styleId;
+                
+                s.style.display = "none";
+                // Pastikan tidak ada div "bekas" proses lain di parent-nya
+                s.parentElement.appendChild(sv);
+            }
+        }
+    }).then(canvas => {
+        canvas.toBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+            btn.innerText = "EXPORT PNG â²";
+            btn.disabled = false;
+            setTimeout(() => URL.revokeObjectURL(url), 60000);
+        }, 'image/png');
+    });
+});
+
+// Tambahkan ini di bagian bawah script.js bersama listener lainnya
+document.getElementById('nolo').addEventListener('input', updateQR);
+document.getElementById('nama').addEventListener('input', updateQR);
+document.getElementById('orderan').addEventListener('input', updateQR);
+document.getElementById('model_global').addEventListener('change', updateQR);
+
+// Inisialisasi awal saat halaman dibuka
+updateDynamicMenu();
+updateQR();
