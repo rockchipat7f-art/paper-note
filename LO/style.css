@@ -246,3 +246,80 @@ body {
   align-items: stretch;
   flex-wrap: nowrap;
 }
+
+/* Menu Grid Tampilan Lembar Order (Kiri) */
+.menu-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; margin-top: 5px; }
+.menu-item { border: 1px solid #ccc; display: flex; flex-direction: column; background: #fff; }
+.menu-header { background: #E91E63; color: #fff; text-align: center; font-size: 12px; padding: 6px; font-weight: bold; }
+
+/* ================= CSS SEBELAH KANAN: PANEL KONTROL INPUT ================= */
+#i6uw2x {
+    flex: 1;
+    background: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+    color: #f8fafc;
+    height: max-content;
+}
+
+.control-panel-header h3 { margin: 0 0 5px 0; color: #34d399; }
+.control-panel-header p { margin: 0 0 20px 0; font-size: 13px; color: #94a3b8; font-family: sans-serif; font-weight: normal; }
+.notif-pilih { font-family: sans-serif; font-weight: normal; color: #f59e0b; font-size: 14px; line-height: 1.5; }
+
+/* ================= REVISI PANEL KANAN AGAR TIDAK MORAT-MARIT ================= */
+
+.checkbox-container-right {
+    display: flex;
+    flex-direction: row;       /* Biarkan mengalir ke samping dulu */
+    flex-wrap: wrap;           /* KUNCI: Kalau gak muat, otomatis pindah baris ke bawah */
+    gap: 10px 14px;            /* Jarak atas-bawah 10px, kiri-kanan 14px */
+    padding: 12px;
+    background: #1e293b;
+    border-radius: 8px;
+    margin-bottom: 20px;       /* Jarak antar blok judul */
+    border: 1px solid #334155;
+}
+
+.section-title-right {
+    font-size: 15px;
+    color: #34d399;            /* Warna judul kriteria hijau terang */
+    margin-bottom: 10px;       
+    border-left: 4px solid #E91E63;
+    padding-left: 8px;
+    width: 100%;               /* Kunci judul memakan satu baris penuh di atas */
+}
+
+.check-item-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;                  
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #cbd5e1;
+    cursor: pointer;
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.03); 
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s;
+}
+
+.check-item-right:hover { 
+    background: #334155; 
+    color: #fff;
+}
+
+.check-item-right input[type="checkbox"] { 
+    width: 16px; 
+    height: 16px; 
+    margin: 0;
+    cursor: pointer; 
+}
+
+/* Footer Tools */
+.footer-tools { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #334155; }
+.btn-main { background: #34d399; color: #000; border: none; padding: 12px 35px; font-weight: 900; cursor: pointer; border-radius: 6px; font-size: 14px; }
+.btn-main:hover { background: #059669; color: white; }
+.btn-tool { background: #000000; color: #fff900; border: 2px solid #fff900; padding: 12px 20px; font-weight: 900; margin-right: 10px; cursor: pointer; border-radius: 6px; font-size: 14px; }
