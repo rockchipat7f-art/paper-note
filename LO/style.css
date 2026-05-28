@@ -48,13 +48,31 @@ body {
 /* CSS KOLOM KANAN: PANEL KONTROL INPUT                      */
 /* ========================================================= */
 #i6uw2x {
-    flex: 1; /* Otomatis ngisi sisa layar di sebelah kanan */
+    flex: 1; 
     background: #0f172a;
     border: 2px solid #334155;
     border-radius: 12px;
     padding: 20px;
     color: #f8fafc;
-    height: max-content;
+    
+    /* --- INI JURUS SCROLL DAN STICKY-NYA WAK --- */
+    max-height: calc(100vh - 40px); /* Tingginya dikunci maksimal setinggi layar monitor */
+    overflow-y: auto;               /* Kalau isinya panjang, scrollbar otomatis muncul di sini */
+    position: sticky;               /* Bikin kotak ini nempel dan nggak ikut lari pas layar digulir */
+    top: 20px;                      /* Jarak aman kotak dari atap monitor saat nempel */
+}
+
+/* --- (Opsional) Bikin Scrollbar Kanannya Cantik dan Nyaman Dilihat --- */
+#i6uw2x::-webkit-scrollbar {
+    width: 8px;
+}
+#i6uw2x::-webkit-scrollbar-track {
+    background: #1e293b;
+    border-radius: 8px;
+}
+#i6uw2x::-webkit-scrollbar-thumb {
+    background: #34d399; /* Warna hijau senada sama warna judul */
+    border-radius: 8px;
 }
 
 /* REVISI PANEL KANAN AGAR TIDAK MORAT-MARIT */
