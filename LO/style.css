@@ -247,11 +247,6 @@ body {
   flex-wrap: nowrap;
 }
 
-/* Menu Grid Tampilan Lembar Order (Kiri) */
-.menu-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; margin-top: 5px; }
-.menu-item { border: 1px solid #ccc; display: flex; flex-direction: column; background: #fff; }
-.menu-header { background: #E91E63; color: #fff; text-align: center; font-size: 12px; padding: 6px; font-weight: bold; }
-
 /* ================= CSS SEBELAH KANAN: PANEL KONTROL INPUT ================= */
 #i6uw2x {
     flex: 1;
