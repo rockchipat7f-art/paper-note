@@ -190,6 +190,34 @@ document.querySelectorAll('.img-upload-input').forEach(input => {
     });
 });
 
+function updateStatusStempel() {
+    // Ambil status radio button yang terpilih
+    const status = document.querySelector('input[name="status_bayar"]:checked').value;
+    // Ambil isi teks nominal dari panel kanan
+    const nominal = document.getElementById('input_nominal_stempel').value.toUpperCase();
+
+    // Elemen Gambar dan Teks di lembar kiri
+    const imgDp = document.getElementById('img-stempel-dp');
+    const textDp = document.getElementById('text-stempel-dp');
+    const imgLunas = document.getElementById('img-stempel-lunas');
+    const textLunas = document.getElementById('text-stempel-lunas');
+
+    // Sembunyikan semua dulu secara default
+    imgDp.style.display = 'none';
+    textDp.innerText = '';
+    imgLunas.style.display = 'none';
+    textLunas.innerText = '';
+
+    // Tampilkan berdasarkan pilihan admin
+    if (status === 'DP') {
+        imgDp.style.display = 'block';
+        textDp.innerText = nominal;
+    } else if (status === 'LUNAS') {
+        imgLunas.style.display = 'block';
+        textLunas.innerText = nominal;
+    }
+}
+
 // EXPORT PNG (Konversi semua input jadi text agar print bersih)
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
