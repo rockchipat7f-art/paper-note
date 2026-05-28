@@ -1,3 +1,6 @@
+// ==========================================================================
+// 1. DATABASE DATA KRITERIA DINAMIS (WJSPORT)
+// ==========================================================================
 const databaseKriteria = {
     "KAOS": [
         { label: "MODE KAOS", isi: ["KERUNG", "RAGLAN", "SINGLET", "TUNIK", "STANDART"] },
@@ -99,6 +102,9 @@ const databaseKriteria = {
     ]
 };
 
+// ==========================================================================
+// 2. SISTEM GENERATE OPSI MENU KANAN DAN TABEL KIRI
+// ==========================================================================
 function updateDynamicMenu() {
     const model = document.getElementById('model_global').value;
     const kananContainer = document.getElementById('pilihan-opsi-dinamis');
@@ -107,6 +113,7 @@ function updateDynamicMenu() {
 
     if (model && databaseKriteria[model]) {
         databaseKriteria[model].forEach((item, idx) => {
+            // Buat Pilihan Checkbox di Panel Kanan
             const rightBox = document.createElement('div');
             rightBox.className = 'checkbox-container-right';
             const rightTitle = document.createElement('div');
@@ -128,6 +135,7 @@ function updateDynamicMenu() {
             });
             kananContainer.appendChild(rightBox);
 
+            // Buat Preview Kolom Hasil di Lembar Cetak Kiri
             const leftBox = document.createElement('div');
             leftBox.className = 'menu-item';
             leftBox.id = `left-block-${idx}`;
@@ -156,6 +164,9 @@ function hitungUlangPilihanKiri() {
     });
 }
 
+// ==========================================================================
+// 3. FITUR UTILS (QR CODE & FORMAT TANGGAL)
+// ==========================================================================
 function updateQR() {
     const qrcodeDiv = document.getElementById("qrcode"); qrcodeDiv.innerHTML = ""; 
     const nolo = (document.getElementById("nolo").value || "000").toUpperCase();
@@ -171,7 +182,9 @@ function formatTanggalIndo(dateStr) {
     const d = new Date(dateStr); return `${d.getDate()} ${bulanIndo[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-// SISTEM UPLOAD GAMBAR OTOMATIS (Mendukung semua kotak)
+// ==========================================================================
+// 4. SISTEM UPLOAD GAMBAR MULTI KOTAK (UTAMA + 7 DETAIL)
+// ==========================================================================
 document.querySelectorAll('.img-upload-input').forEach(input => {
     input.addEventListener('change', function(event) {
         const file = event.target.files[0];
@@ -181,44 +194,49 @@ document.querySelectorAll('.img-upload-input').forEach(input => {
                 const wrapper = event.target.closest('.img-upload-wrapper');
                 const imgElement = wrapper.querySelector('.img-preview');
                 const labelElement = wrapper.querySelector('.img-label');
-                imgElement.src = e.target.result;
-                imgElement.style.display = 'block';
-                labelElement.style.display = 'none';
+                if (imgElement && labelElement) {
+                    imgElement.src = e.target.result;
+                    imgElement.style.display = 'block';
+                    labelElement.style.display = 'none';
+                }
             }
             reader.readAsDataURL(file);
         }
     });
 });
 
+// ==========================================================================
+// 5. SOLUSI PERMAK 1: SISTEM STEMPEL REALTIME & AMAN
+// ==========================================================================
 function updateStatusStempel() {
-    // Ambil status radio button yang terpilih
-    const status = document.querySelector('input[name="status_bayar"]:checked').value;
-    // Ambil isi teks nominal dari panel kanan
-    const nominal = document.getElementById('input_nominal_stempel').value.toUpperCase();
+    const statusTerpilih = document.querySelector('input[name="status_bayar"]:checked');
+    const status = statusTerpilih ? statusTerpilih.value : 'BELUM';
+    
+    const inputNominal = document.getElementById('input_nominal_stempel');
+    const nominal = inputNominal ? inputNominal.value.toUpperCase() : '';
 
-    // Elemen Gambar dan Teks di lembar kiri
     const imgDp = document.getElementById('img-stempel-dp');
     const textDp = document.getElementById('text-stempel-dp');
     const imgLunas = document.getElementById('img-stempel-lunas');
     const textLunas = document.getElementById('text-stempel-lunas');
 
-    // Sembunyikan semua dulu secara default
-    imgDp.style.display = 'none';
-    textDp.innerText = '';
-    imgLunas.style.display = 'none';
-    textLunas.innerText = '';
+    if (imgDp && textDp && imgLunas && textLunas) {
+        imgDp.style.display = 'none'; textDp.innerText = '';
+        imgLunas.style.display = 'none'; textLunas.innerText = '';
 
-    // Tampilkan berdasarkan pilihan admin
-    if (status === 'DP') {
-        imgDp.style.display = 'block';
-        textDp.innerText = nominal;
-    } else if (status === 'LUNAS') {
-        imgLunas.style.display = 'block';
-        textLunas.innerText = nominal;
+        if (status === 'DP') {
+            imgDp.style.display = 'block';
+            textDp.innerText = nominal;
+        } else if (status === 'LUNAS') {
+            imgLunas.style.display = 'block';
+            textLunas.innerText = nominal;
+        }
     }
 }
 
-// EXPORT PNG (Konversi semua input jadi text agar print bersih)
+// ==========================================================================
+// 6. ENGINE EXPORT PNG (MENGUBAH SEMUA INPUT FORM JADI TEXT MATI SAAT DI-PRINT)
+// ==========================================================================
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
     const btn = this; btn.innerText = "GENERATING PREVIEW..."; btn.disabled = true;
@@ -229,26 +247,26 @@ document.getElementById('btnExport').addEventListener('click', function() {
             const cloneCapture = cloned.getElementById('capture-area');
             cloneCapture.style.height = '100%'; cloneCapture.style.overflow = 'hidden';
             
-            // Konversi Input Teks & Tabel & Textarea jadi Div statis
-            cloned.querySelectorAll('input.export-input, textarea.export-input, .id-row input').forEach(i => {
+            // Konversi Input Teks, Tabel Sizing, & Textarea Keterangan jadi Div statis tebal
+            cloned.querySelectorAll('input.export-input, textarea.export-input, .id-row input, .sizing-section input, .bottom-color-grid input, .detail-text-box textarea, .notes-box textarea').forEach(i => {
                 let text = i.value.toUpperCase();
                 if(i.type === 'date') text = formatTanggalIndo(i.value);
                 const v = cloned.createElement('div');
                 v.innerText = text || "";
                 
                 if (i.tagName === 'TEXTAREA') {
-                    v.style.cssText = "padding:5px; font-weight:bold; font-size:12px; white-space:pre-wrap; text-align:left; font-family:sans-serif;";
+                    v.style.cssText = "padding:5px; font-weight:bold; font-size:12px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;";
                 } else if (i.closest('.id-row')) {
                     v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
                 } else {
-                    v.style.cssText = "text-align:center; font-weight:bold; font-size:12px; display:flex; align-items:center; justify-content:center; width:100%; height:100%;";
+                    v.style.cssText = "text-align:center; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;";
                 }
                 
                 i.style.display = "none";
                 i.parentElement.appendChild(v);
             });
         
-            // Konversi Select Model
+            // Konversi Select Model Global
             const s = cloned.getElementById('model_global');
             if(s) {
                 const sv = cloned.createElement('div');
@@ -258,7 +276,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 s.parentElement.appendChild(sv);
             }
 
-            // Sembunyikan tulisan 'GAMBAR DESAIN' kosong biar ga ikut ke-print
+            // Bersihkan semua sisa teks label 'GAMBAR DESAIN' kosong yang belum diisi agar bersih pas difoto
             cloned.querySelectorAll('.img-label').forEach(label => {
                 if(label.style.display !== 'none') label.style.display = 'none';
             });
@@ -272,9 +290,15 @@ document.getElementById('btnExport').addEventListener('click', function() {
     });
 });
 
+// ==========================================================================
+// 7. LISTENERS & INSTANT ENGINE RUNNER
+// ==========================================================================
 document.getElementById('nolo').addEventListener('input', updateQR);
 document.getElementById('nama').addEventListener('input', updateQR);
 document.getElementById('orderan').addEventListener('input', updateQR);
 document.getElementById('model_global').addEventListener('change', updateQR);
 
-updateDynamicMenu(); updateQR();
+// Eksekusi Pemicu Awal Sistem
+updateDynamicMenu(); 
+updateQR();
+updateStatusStempel();
