@@ -1,209 +1,79 @@
-/* --- LAYOUT UTAMA & SISTEM GRID --- */
-body {
-    font-family: 'Arial Black', sans-serif;
-    background: #1e293b;
-    margin: 0;
-    padding: 20px;
-}
+/* --- LAYOUT UTAMA --- */
+body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; padding: 20px; }
+.gjs-container { width: 100%; max-width: 1500px; margin: 0 auto; box-sizing: border-box; }
+#iqp27l { display: flex; flex-direction: row; gap: 20px; width: 100%; }
 
-.gjs-container {
-    width: 100%;
-    max-width: 1500px;
-    margin: 0 auto;
-    box-sizing: border-box;
-}
+/* --- KIRI: KERTAS F4 --- */
+#i6wpcl { flex: 0 0 63%; width: 63vw; min-height: 96.7vw; background: #fff; border: 2px solid #000; box-sizing: border-box; }
+#capture-area { background: #fff; height: 100%; padding: 10px; box-sizing: border-box; }
+.main-container { display: flex; flex-direction: column; gap: 5px; height: 100%; }
 
-.gjs-plg-flex-row {
-    display: flex;
-    align-items: stretch;
-    flex-wrap: nowrap;
-}
-
-.gjs-plg-flex-column {
-    flex-grow: 1;
-}
-
-#iqp27l {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    width: 100%;
-}
-
-/* ========================================================= */
-/* KONTROL UKURAN KOLOM KIRI (LEMBAR KERTAS)                 */
-/* ========================================================= */
-#i6wpcl {
-    flex: 0 0 63%;   /* <--- UBAH LEBAR DI SINI (Misal mau dilebarin jadi 70%) */
-    width: 63vw;     /* <--- UBAH JUGA DI SINI BIAR SAMA (Misal jadi 70vw) */
-    height: 96.7vw;  /* <--- UBAH TINGGI KERTAS DI SINI (Besarkan/Kecilkan angkanya) */
-    
-    background: #fff;
-    border: 2px solid #000;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-/* ========================================================= */
-/* CSS KOLOM KANAN: PANEL KONTROL INPUT                      */
-/* ========================================================= */
-#i6uw2x {
-    flex: 1; 
-    background: #0f172a;
-    border: 2px solid #334155;
-    border-radius: 12px;
-    padding: 20px;
-    color: #f8fafc;
-    
-    /* --- INI JURUS SCROLL DAN STICKY-NYA WAK --- */
-    max-height: calc(100vh - 40px); /* Tingginya dikunci maksimal setinggi layar monitor */
-    overflow-y: auto;               /* Kalau isinya panjang, scrollbar otomatis muncul di sini */
-    position: sticky;               /* Bikin kotak ini nempel dan nggak ikut lari pas layar digulir */
-    top: 20px;                      /* Jarak aman kotak dari atap monitor saat nempel */
-}
-
-/* --- (Opsional) Bikin Scrollbar Kanannya Cantik dan Nyaman Dilihat --- */
-#i6uw2x::-webkit-scrollbar {
-    width: 8px;
-}
-#i6uw2x::-webkit-scrollbar-track {
-    background: #1e293b;
-    border-radius: 8px;
-}
-#i6uw2x::-webkit-scrollbar-thumb {
-    background: #34d399; /* Warna hijau senada sama warna judul */
-    border-radius: 8px;
-}
-
-/* REVISI PANEL KANAN AGAR TIDAK MORAT-MARIT */
-.checkbox-container-right {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap; /* Kunci biar teks gak tabrakan */
-    gap: 10px 14px;
-    padding: 12px;
-    background: #1e293b;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #334155;
-}
-
-.section-title-right {
-    font-size: 15px;
-    color: #34d399;
-    margin-bottom: 10px;
-    border-left: 4px solid #E91E63;
-    padding-left: 8px;
-    width: 100%;
-}
-
-.check-item-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 13px;
-    color: #cbd5e1;
-    cursor: pointer;
-    padding: 6px 10px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.2s;
-}
-
-.check-item-right:hover {
-    background: #334155;
-    color: #fff;
-}
-
-.check-item-right input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    cursor: pointer;
-}
-
-.control-panel-header h3 { margin: 0 0 5px 0; color: #34d399; }
-.control-panel-header p { margin: 0 0 20px 0; font-size: 13px; color: #94a3b8; font-family: sans-serif; font-weight: normal; }
-.notif-pilih { font-family: sans-serif; font-weight: normal; color: #f59e0b; font-size: 14px; line-height: 1.5; }
-
-/* ========================================================= */
-/* CSS AREA DALAM LEMBAR KERTAS (KIRI)                       */
-/* ========================================================= */
-#capture-area {
-    background: #fff;
-    height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.main-container {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    height: 100%;
-}
-
-.logo-header-space {
-    width: 100%;
-    height: 1.6cm;
-    border: 1px dashed #ccc;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.header-png-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
+/* --- IDENTITAS & HEADER --- */
+.logo-header-space { width: 100%; height: 1.6cm; border: 1px dashed #ccc; box-sizing: border-box; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.header-png-img { width: 100%; height: 100%; object-fit: contain; }
 .header-section { display: flex; gap: 3px; align-items: flex-start; }
-
 .payment-status { display: flex; gap: 3px; }
-.box-stempel {
-    width: 95px; height: 125px; border: 2px solid #000; border-radius: 12px;
-    background: #fff; display: flex; flex-direction: column; overflow: hidden;
-}
-.top-label {
-    background: #FFFF00; color: #000; text-align: center; font-weight: 900;
-    font-size: 18px; padding: 2px 0; border-bottom: 2px solid #000;
-}
+.box-stempel { width: 95px; height: 125px; border: 2px solid #000; border-radius: 12px; background: #fff; display: flex; flex-direction: column; overflow: hidden; }
+.top-label { background: #FFFF00; color: #000; text-align: center; font-weight: 900; font-size: 18px; padding: 2px 0; border-bottom: 2px solid #000; }
 .space-stempel { flex: 1; }
-
-.qr-container {
-    width: 125px; height: 125px; border: 1px solid #ccc;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-}
+.qr-container { width: 125px; height: 125px; border: 1px solid #ccc; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 #qrcode img { width: 120px; height: 120px; }
-
 .identity-group { flex: 1; display: flex; gap: 3px; }
 .identity-grid { flex: 1; display: flex; flex-direction: column; gap: 1px; }
 .id-row { display: flex; border: 1px solid #000; border-radius: 10px; overflow: hidden; height: 30px; background: #fff; }
 .id-tag { background: #000000; color: #fff; width: 110px; font-size: 11px; padding: 8px 3px; text-align: center; box-sizing: border-box; font-weight: 800; }
+.id-row input, .id-row select { border: none; flex: 1; padding-left: 10px; font-weight: 900; font-size: 14px; outline: none; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
 
-.id-row input, .id-row select {
-    border: none; flex: 1; padding-left: 10px; font-weight: 900;
-    font-size: 14px; outline: none; text-transform: uppercase;
-    font-family: 'Arial Black', sans-serif;
-}
+/* --- MENU GRID --- */
+.menu-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; margin-top: 5px; }
+.menu-item { border: 1px solid #E91E63; display: flex; flex-direction: column; background: #fff; }
+.menu-header { background: #E91E63; color: #fff; text-align: center; font-size: 11px; padding: 4px; font-weight: bold; }
 
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 2px;
-    margin-top: 5px;
-}
-.menu-item { border: 1px solid #ccc; display: flex; flex-direction: column; background: #fff; }
-.menu-header { background: #E91E63; color: #fff; text-align: center; font-size: 12px; padding: 6px; font-weight: bold; }
+/* ================= DESAIN BARU BAWAH (GAMBAR & SIZING) ================= */
+.main-design-section { width: 100%; height: 280px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; }
+.img-label { font-size: 24px; color: #000; font-weight: 900; cursor: pointer; text-align: center; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.img-preview { width: 100%; height: 100%; object-fit: contain; }
 
-/* Footer Tools */
+.detail-section { display: grid; grid-template-columns: repeat(8, 1fr); border: 1px solid #ff0000; border-top: none; }
+.detail-box { border-right: 1px solid #ff0000; height: 80px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; text-align: center; }
+.detail-text-box { height: 80px; display: flex; flex-direction: column; }
+.detail-header-red { font-size: 8px; text-align: center; color: #ff0000; font-weight: 900; padding: 2px; line-height: 1.1; }
+.detail-text-box textarea { flex: 1; border: none; resize: none; font-size: 10px; font-weight: bold; padding: 4px; outline: none; }
+
+.sizing-section { display: flex; border: 1px solid #000; border-top: none; }
+.notes-box { flex: 1; border-right: 1px solid #000; display: flex; }
+.notes-box textarea { flex: 1; border: none; resize: none; font-family: 'Arial', sans-serif; font-size: 12px; padding: 10px; outline: none; }
+.size-table-wrapper { width: 350px; }
+.size-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 11px; }
+.size-table th, .size-table td { border: 1px solid #ff0000; padding: 3px; color: #ff0000; }
+.size-table th { font-weight: 900; font-size: 10px; }
+.size-table td { color: #000; height: 20px; }
+.size-table input { width: 100%; height: 100%; border: none; text-align: center; font-weight: bold; font-size: 12px; outline: none; color: #000; background: transparent; }
+
+.bottom-color-grid { width: 100%; margin-top: 5px; }
+.color-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.color-table td { border: 1px solid #000; height: 25px; padding: 0; }
+.color-table input { width: 100%; height: 100%; border: none; text-align: center; font-weight: bold; font-size: 12px; outline: none; background: transparent; }
+.row-grey { background-color: #a6a6a6; }
+.row-white { background-color: #ffffff; }
+.row-yellow { background-color: #ffff00; }
+
+/* ================= KANAN: PANEL SCROLL (SUDAH FIX RAPI) ================= */
+#i6uw2x { flex: 1; background: #0f172a; border: 2px solid #334155; border-radius: 12px; padding: 20px; color: #f8fafc; max-height: calc(100vh - 40px); overflow-y: auto; position: sticky; top: 20px; }
+#i6uw2x::-webkit-scrollbar { width: 8px; }
+#i6uw2x::-webkit-scrollbar-track { background: #1e293b; border-radius: 8px; }
+#i6uw2x::-webkit-scrollbar-thumb { background: #34d399; border-radius: 8px; }
+.control-panel-header h3 { margin: 0 0 5px 0; color: #34d399; }
+.control-panel-header p { margin: 0 0 20px 0; font-size: 13px; color: #94a3b8; font-weight: normal; }
+.notif-pilih { font-weight: normal; color: #f59e0b; font-size: 14px; }
+
+/* INI OBAT BIAR TEKS GAK BALAPAN / MORAT-MARIT */
+.checkbox-container-right { display: flex; flex-wrap: wrap; gap: 8px 12px; padding: 12px; background: #1e293b; border-radius: 8px; margin-bottom: 20px; border: 1px solid #334155; }
+.section-title-right { font-size: 14px; color: #34d399; margin-bottom: 8px; border-left: 4px solid #E91E63; padding-left: 8px; width: 100%; }
+.check-item-right { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 12px; color: #cbd5e1; cursor: pointer; padding: 6px 10px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; transition: all 0.2s; }
+.check-item-right:hover { background: #334155; color: #fff; }
+.check-item-right input { width: 16px; height: 16px; cursor: pointer; margin: 0; }
+
 .footer-tools { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #334155; }
 .btn-main { background: #34d399; color: #000; border: none; padding: 12px 35px; font-weight: 900; cursor: pointer; border-radius: 6px; font-size: 14px; }
-.btn-main:hover { background: #059669; color: white; }
-.btn-tool { background: #000000; color: #fff900; border: 2px solid #fff900; padding: 12px 20px; font-weight: 900; margin-right: 10px; cursor: pointer; border-radius: 6px; font-size: 14px; }
+.btn-tool { background: #000; color: #fff900; border: 2px solid #fff900; padding: 12px 20px; font-weight: 900; margin-right: 10px; cursor: pointer; border-radius: 6px; }
