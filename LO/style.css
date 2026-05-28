@@ -77,3 +77,26 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 .footer-tools { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #334155; }
 .btn-main { background: #34d399; color: #000; border: none; padding: 12px 35px; font-weight: 900; cursor: pointer; border-radius: 6px; font-size: 14px; }
 .btn-tool { background: #000; color: #fff900; border: 2px solid #fff900; padding: 12px 20px; font-weight: 900; margin-right: 10px; cursor: pointer; border-radius: 6px; }
+
+/* Style untuk ruang stempel dan teks nominal di bawahnya */
+.space-stempel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+.keterangan-stempel {
+    font-size: 9px;
+    font-weight: 900;
+    color: #000;
+    text-align: center;
+    width: 100%;
+    word-break: break-all;
+    line-height: 1.1;
+    margin-top: 2px;
+    font-family: 'Arial', sans-serif; /* Menggunakan Arial biasa agar lebih ramping saat teks panjang */
+}
