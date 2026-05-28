@@ -23,20 +23,10 @@
                     
                     <div class="header-section">
                         <div class="payment-status">
-                            <div class="box-stempel">
-                                <div class="top-label">DP</div>
-                                <div class="space-stempel"></div>
-                            </div>
-                            <div class="box-stempel">
-                                <div class="top-label">LUNAS</div>
-                                <div class="space-stempel"></div>
-                            </div>
+                            <div class="box-stempel"><div class="top-label">DP</div><div class="space-stempel"></div></div>
+                            <div class="box-stempel"><div class="top-label">LUNAS</div><div class="space-stempel"></div></div>
                         </div>
-
-                        <div class="qr-container">
-                            <div id="qrcode"></div>
-                        </div>
-
+                        <div class="qr-container"><div id="qrcode"></div></div>
                         <div class="identity-group">
                             <div class="identity-grid">
                                 <div class="id-row"><span class="id-tag">NAMA</span><input type="text" id="nama" placeholder="..."></div>
@@ -69,6 +59,82 @@
                     </div>
 
                     <div class="menu-grid" id="menu-area"></div>
+
+                    <div class="main-design-section img-upload-wrapper">
+                        <input type="file" id="main-design" class="img-upload-input" accept="image/*" style="display: none;">
+                        <label for="main-design" class="img-label">GAMBAR DESAIN</label>
+                        <img class="img-preview" src="" style="display: none;">
+                    </div>
+
+                    <div class="detail-section">
+                        <script>
+                            for(let i=1; i<=7; i++) {
+                                document.write(`
+                                <div class="detail-box img-upload-wrapper">
+                                    <input type="file" id="detail-img-${i}" class="img-upload-input" accept="image/*" style="display: none;">
+                                    <label for="detail-img-${i}" class="img-label" style="font-size:10px;">GAMBAR<br>DETAIL</label>
+                                    <img class="img-preview" src="" style="display: none;">
+                                </div>`);
+                            }
+                        </script>
+                        <div class="detail-text-box">
+                            <div class="detail-header-red">DAFTAR KETERANGAN<br>DETAIL TEXT</div>
+                            <textarea class="export-input" placeholder="Tulis keterangan..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="sizing-section">
+                        <div class="notes-box">
+                            <textarea class="export-input" placeholder="Tulis catatan tambahan di sini..."></textarea>
+                        </div>
+                        <div class="size-table-wrapper">
+                            <table class="size-table">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">SIZE</th>
+                                        <th colspan="2">DEWASA</th>
+                                        <th colspan="2">ANAK</th>
+                                    </tr>
+                                    <tr>
+                                        <th>PNDK</th><th>PNJNG</th><th>PNDK</th><th>PNJNG</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <script>
+                                        const sizes = ['S','M','L','XL','XXL','XXXL','4XL','5XL','6XL','TOTAL'];
+                                        sizes.forEach(s => {
+                                            document.write(`
+                                            <tr>
+                                                <td style="font-weight:bold;">${s}</td>
+                                                <td><input type="text" class="export-input"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                            </tr>`);
+                                        });
+                                    </script>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bottom-color-grid">
+                        <table class="color-table">
+                            <tr class="row-grey">
+                                <script>for(let i=0;i<8;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
+                            </tr>
+                            <tr class="row-white">
+                                <script>for(let i=0;i<8;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
+                            </tr>
+                            <tr class="row-yellow">
+                                <script>for(let i=0;i<8;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
+                            </tr>
+                            <tr class="row-white">
+                                <script>for(let i=0;i<8;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
+                            </tr>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -78,11 +144,9 @@
                 <h3>PANEL OPERASI</h3>
                 <p>Silakan isi identitas di lembar kiri, lalu pilih kriteria spesifik di bawah ini:</p>
             </div>
-            
             <div id="pilihan-opsi-dinamis">
                 <p class="notif-pilih">← Pilih Jenis <strong>MODEL</strong> terlebih dahulu pada lembar order untuk memunculkan daftar opsi kerja.</p>
             </div>
-            
             <div class="footer-tools">
                 <button onclick="updateQR()" class="btn-tool">REFRESH QR</button>
                 <button id="btnExport" class="btn-main">EXPORT PNG ▲</button>
