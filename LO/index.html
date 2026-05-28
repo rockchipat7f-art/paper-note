@@ -159,6 +159,26 @@
             <div id="pilihan-opsi-dinamis">
                 <p class="notif-pilih">← Pilih Jenis <strong>MODEL</strong> terlebih dahulu pada lembar order untuk memunculkan daftar opsi kerja.</p>
             </div>
+            <div class="checkbox-container-right" style="margin-top: 15px;">
+                <div class="section-title-right">STATUS PEMBAYARAN</div>
+    
+                <div style="display: flex; gap: 15px; margin-bottom: 10px; width: 100%;">
+                    <label class="check-item-right">
+                        <input type="radio" name="status_bayar" value="BELUM" checked onchange="updateStatusStempel()"> BELUM BAYAR
+                    </label>
+                    <label class="check-item-right">
+                        <input type="radio" name="status_bayar" value="DP" onchange="updateStatusStempel()"> DP
+                    </label>
+                    <label class="check-item-right">
+                        <input type="radio" name="status_bayar" value="LUNAS" onchange="updateStatusStempel()"> LUNAS
+                    </label>
+                </div>
+                
+                <div style="width: 100%;">
+                    <span style="font-size: 11px; color: #94a3b8; display: block; margin-bottom: 5px;">NOMINAL / KETERANGAN:</span>
+                    <input type="text" id="input_nominal_stempel" placeholder="Contoh: Rp 500.000 atau lunas" oninput="updateStatusStempel()" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; font-family: sans-serif; font-size: 13px;">
+                </div>
+            </div>
             <div class="footer-tools">
                 <button onclick="updateQR()" class="btn-tool">REFRESH QR</button>
                 <button id="btnExport" class="btn-main">EXPORT PNG ▲</button>
