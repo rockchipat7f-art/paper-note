@@ -127,22 +127,22 @@ body {
 .identity-group {
   flex: 1;
   display: flex;
-  gap: 5px;
+  gap: 3px;
 }
 
 .identity-grid {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 1px;
 }
 
 .id-row {
   display: flex;
   border: 1px solid #000;
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
-  height: 31px;
+  height: 30px;
   background: #fff;
 }
 
