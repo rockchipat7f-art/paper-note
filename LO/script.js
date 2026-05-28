@@ -99,161 +99,154 @@ const databaseKriteria = {
     ]
 };
 
-// REVISI TOTAL: Membuat menu checkbox berada di Kolom Kanan, sedangkan hasil cetak nangkring di Kiri
 function updateDynamicMenu() {
     const model = document.getElementById('model_global').value;
     const kananContainer = document.getElementById('pilihan-opsi-dinamis');
     const kiriContainer = document.getElementById('menu-area');
-    
-    kananContainer.innerHTML = "";
-    kiriContainer.innerHTML = "";
+    kananContainer.innerHTML = ""; kiriContainer.innerHTML = "";
 
     if (model && databaseKriteria[model]) {
         databaseKriteria[model].forEach((item, idx) => {
-            // 1. BUAT ELEMEN INPUT DI SEBELAH KANAN
             const rightBox = document.createElement('div');
             rightBox.className = 'checkbox-container-right';
-            
             const rightTitle = document.createElement('div');
             rightTitle.className = 'section-title-right';
             rightTitle.innerText = item.label;
             rightBox.appendChild(rightTitle);
 
-            // Buat checkbox list ke bawah agar muat banyak dan gampang dipilih
             item.isi.forEach((opt, i) => {
                 const labelObj = document.createElement('label');
                 labelObj.className = 'check-item-right';
-                
                 const chk = document.createElement('input');
                 chk.type = 'checkbox';
                 chk.id = `opt-${idx}-${i}`;
                 chk.value = opt;
-                
-                // Event saat dicentang: Langsung sinkronisasikan dan update lembar sebelah kiri
                 chk.addEventListener('change', hitungUlangPilihanKiri);
-
                 labelObj.appendChild(chk);
                 labelObj.appendChild(document.createTextNode(" " + opt));
                 rightBox.appendChild(labelObj);
             });
             kananContainer.appendChild(rightBox);
 
-            // 2. BUAT STRUKTUR TABEL KOSONG DI SEBELAH KIRI
             const leftBox = document.createElement('div');
             leftBox.className = 'menu-item';
             leftBox.id = `left-block-${idx}`;
             leftBox.innerHTML = `
                 <div class="menu-header">${item.label}</div>
-                <div id="left-val-${idx}" style="padding:10px 5px; text-align:center; font-weight:900; font-size:12px; color:#000; min-height:40px; display:flex; align-items:center; justify-content:center; line-height:1.2;">-</div>
+                <div id="left-val-${idx}" style="padding:4px 2px; text-align:center; font-weight:900; font-size:10px; color:#000; min-height:25px; display:flex; align-items:center; justify-content:center; line-height:1.2;">-</div>
             `;
             kiriContainer.appendChild(leftBox);
         });
     } else {
         kananContainer.innerHTML = "<p class='notif-pilih'>← PILIH JENIS MODEL TERLEBIH DAHULU UNTUK MEMUNCULKAN DAFTAR OPSIONAL.</p>";
-        kiriContainer.innerHTML = "<p style='grid-column: span 6; text-align: center; color: #999; padding: 20px; font-size:12px;'>MENUNNGU MODEL DIISI...</p>";
+        kiriContainer.innerHTML = "<p style='grid-column: span 6; text-align: center; color: #999; padding: 20px; font-size:12px;'>MENUNGGU MODEL DIISI...</p>";
     }
 }
 
-// Fungsi Otomatis: Menyalin teks dari opsi kanan yang dicentang langsung ke dalam tabel kiri secara realtime
 function hitungUlangPilihanKiri() {
     const model = document.getElementById('model_global').value;
     if (!model || !databaseKriteria[model]) return;
-
     databaseKriteria[model].forEach((item, idx) => {
         const blockKanan = document.getElementsByClassName('checkbox-container-right')[idx];
         if(blockKanan) {
             const checkedBoxes = Array.from(blockKanan.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
             const targetTeksKiri = document.getElementById(`left-val-${idx}`);
-            if(targetTeksKiri) {
-                targetTeksKiri.innerText = checkedBoxes.length > 0 ? checkedBoxes.join(", ").toUpperCase() : "-";
-            }
+            if(targetTeksKiri) { targetTeksKiri.innerText = checkedBoxes.length > 0 ? checkedBoxes.join(", ").toUpperCase() : "-"; }
         }
     });
 }
 
 function updateQR() {
-    const qrcodeDiv = document.getElementById("qrcode");
-    qrcodeDiv.innerHTML = ""; 
-    
+    const qrcodeDiv = document.getElementById("qrcode"); qrcodeDiv.innerHTML = ""; 
     const nolo = (document.getElementById("nolo").value || "000").toUpperCase();
     const nama = (document.getElementById("nama").value || "NONAME").toUpperCase();
     const orderan = (document.getElementById("orderan").value || "-").toUpperCase();
     const model = (document.getElementById("model_global").value || "-").toUpperCase();
-    
-    const qrContent = `${nolo}\t${nama}\t${orderan}\t${model}`;
-    
-    new QRCode(qrcodeDiv, {
-        text: qrContent, 
-        width: 128, 
-        height: 128, 
-        correctLevel: QRCode.CorrectLevel.H
-    });
+    new QRCode(qrcodeDiv, { text: `${nolo}\t${nama}\t${orderan}\t${model}`, width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
 }
 
 function formatTanggalIndo(dateStr) {
     if(!dateStr) return "-";
     const bulanIndo = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
-    const d = new Date(dateStr);
-    return `${d.getDate()} ${bulanIndo[d.getMonth()]} ${d.getFullYear()}`;
+    const d = new Date(dateStr); return `${d.getDate()} ${bulanIndo[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-// PROSES EXPORT PNG (Kunci Tinggi & Sembunyikan Input Inputan)
+// SISTEM UPLOAD GAMBAR OTOMATIS (Mendukung semua kotak)
+document.querySelectorAll('.img-upload-input').forEach(input => {
+    input.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const wrapper = event.target.closest('.img-upload-wrapper');
+                const imgElement = wrapper.querySelector('.img-preview');
+                const labelElement = wrapper.querySelector('.img-label');
+                imgElement.src = e.target.result;
+                imgElement.style.display = 'block';
+                labelElement.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+});
+
+// EXPORT PNG (Konversi semua input jadi text agar print bersih)
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
-    const btn = this;
-    btn.innerText = "GENERATING PREVIEW...";
-    btn.disabled = true;
+    const btn = this; btn.innerText = "GENERATING PREVIEW..."; btn.disabled = true;
 
     html2canvas(target, { 
-        scale: 3,
-        useCORS: true,
+        scale: 3, useCORS: true,
         onclone: (cloned) => {
             const cloneCapture = cloned.getElementById('capture-area');
-            // Kunci tinggi area cetak menyerupai kertas real 
-            cloneCapture.style.height = '100%'; 
-            cloneCapture.style.overflow = 'hidden';
+            cloneCapture.style.height = '100%'; cloneCapture.style.overflow = 'hidden';
             
-            // Konversi elemen Input Form menjadi teks biasa yang kokoh pas difoto canvas
-            const styleId = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
-            
-            cloned.querySelectorAll('.id-row input').forEach(i => {
+            // Konversi Input Teks & Tabel & Textarea jadi Div statis
+            cloned.querySelectorAll('input.export-input, textarea.export-input, .id-row input').forEach(i => {
                 let text = i.value.toUpperCase();
                 if(i.type === 'date') text = formatTanggalIndo(i.value);
-                
                 const v = cloned.createElement('div');
-                v.innerText = text || "-";
-                v.style.cssText = styleId;
+                v.innerText = text || "";
+                
+                if (i.tagName === 'TEXTAREA') {
+                    v.style.cssText = "padding:5px; font-weight:bold; font-size:12px; white-space:pre-wrap; text-align:left; font-family:sans-serif;";
+                } else if (i.closest('.id-row')) {
+                    v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
+                } else {
+                    v.style.cssText = "text-align:center; font-weight:bold; font-size:12px; display:flex; align-items:center; justify-content:center; width:100%; height:100%;";
+                }
                 
                 i.style.display = "none";
                 i.parentElement.appendChild(v);
             });
         
+            // Konversi Select Model
             const s = cloned.getElementById('model_global');
             if(s) {
                 const sv = cloned.createElement('div');
                 sv.innerText = s.value || "-"; 
-                sv.style.cssText = styleId;
+                sv.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
                 s.style.display = "none";
                 s.parentElement.appendChild(sv);
             }
+
+            // Sembunyikan tulisan 'GAMBAR DESAIN' kosong biar ga ikut ke-print
+            cloned.querySelectorAll('.img-label').forEach(label => {
+                if(label.style.display !== 'none') label.style.display = 'none';
+            });
         }
     }).then(canvas => {
         canvas.toBlob(blob => {
             const url = URL.createObjectURL(blob);
             window.open(url, '_blank');
-            btn.innerText = "EXPORT PNG ▲";
-            btn.disabled = false;
-            setTimeout(() => URL.revokeObjectURL(url), 60000);
+            btn.innerText = "EXPORT PNG ▲"; btn.disabled = false;
         }, 'image/png');
     });
 });
 
-// Listener Input otomatis sinkronisasi ke QR
 document.getElementById('nolo').addEventListener('input', updateQR);
 document.getElementById('nama').addEventListener('input', updateQR);
 document.getElementById('orderan').addEventListener('input', updateQR);
 document.getElementById('model_global').addEventListener('change', updateQR);
 
-// Run Pertama Kali saat Sistem Siap
-updateDynamicMenu();
-updateQR();
+updateDynamicMenu(); updateQR();
