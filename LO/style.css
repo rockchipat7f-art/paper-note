@@ -34,23 +34,35 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 .img-label { font-size: 24px; color: #000; font-weight: 900; cursor: pointer; text-align: center; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .img-preview { width: 100%; height: 100%; object-fit: contain; }
 
-./* ================= REVISI: GARIS 3PX MUTLAK & TEKS 2 ROW ================= */
-.detail-section { display: grid; grid-template-columns: repeat(7, 1fr); border: 3px solid #ff0000; /* KUNCI: Menghapus border-top: none agar garis atas muncul tebal 3px */ }
-.detail-box { border-right: 1px solid #ff0000; height: 80px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; text-align: center; }
+/* ================= REVISI: DETAIL TEXT BOX 2 ROW BEDA UKURAN ================= */
 
-/* KUNCI BARU: Membuat kotak ke-7 membagi dirinya menjadi 2 baris (atas & bawah) */
-.detail-text-box { height: 80px; display: grid; grid-template-rows: repeat(2, 1fr); /* Membagi 2 baris sama rata tinggi */ }
+/* KUNCI BARU: Membagi 2 baris dengan ukuran BERBEDA */
+.detail-text-box { 
+    height: 80px; 
+    display: grid; 
+    /* Baris atas dikunci ceper (25px), baris bawah otomatis menghabiskan sisa ruangnya (55px) */
+    grid-template-rows: 25px 1fr; 
+}
 
-/* Baris Atas Kotak Keterangan */
-.detail-row-atas { display: flex; flex-direction: column; border-bottom: 1px solid #ff0000; /* Garis pembatas horizontal di tengah */ }
+/* Baris Atas Kotak Keterangan (Ceper untuk penanda) */
+.detail-row-atas { 
+    display: flex; 
+    flex-direction: column; 
+    border-bottom: 1px solid #ff0000; /* Garis pembatas horizontal di tengah */
+}
 
-/* Baris Bawah Kotak Keterangan */
-.detail-row-bawah { display: flex; flex-direction: column; }
+/* Baris Bawah Kotak Keterangan (Luas untuk isi utama) */
+.detail-row-bawah { 
+    display: flex; 
+    flex-direction: column; 
+}
 
-.detail-header-red { font-size: 8px; text-align: center; color: #ff0000; font-weight: 900; padding: 1px; line-height: 1; background: #fff; }
-
-/* Aturan ketikan textarea biar pas di dalam 2 row */
-.detail-text-box textarea { flex: 1; border: none; resize: none; font-size: 9px; font-weight: bold; padding: 2px; outline: none; }
+/* Sedikit penyesuaian teks textarea biar pas di baris atas yang ceper */
+.detail-row-atas textarea {
+    font-size: 8px !important;
+    line-height: 1.1;
+    padding: 1px 4px !important;
+}
 
 .sizing-section { display: flex; border: 1px solid #000; border-top: none; }
 .notes-box { flex: 1; border-right: 1px solid #000; display: flex; }
