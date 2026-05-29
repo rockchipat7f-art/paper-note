@@ -288,7 +288,7 @@ function updateStatusStempel() {
 }
 
 // ==========================================================================
-// 6. ENGINE EXPORT PNG PREVIEW (ANTI BUG HILANG DATA STRUKTUR BARU)
+// 6. ENGINE EXPORT PNG PREVIEW (ANTI GEPENG / STRETCH DENGAN FIX OBJECT-FIT)
 // ==========================================================================
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
@@ -300,8 +300,18 @@ document.getElementById('btnExport').addEventListener('click', function() {
             const cloneCapture = cloned.getElementById('capture-area');
             cloneCapture.style.height = '100%'; cloneCapture.style.overflow = 'hidden';
             
-            // Perbaikan Seleksi Khusus Form Isian Utama (Judul tidak akan tersenggol lagi)
-            cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach(i => {
+            // --- AMAN: PERBAIKAN BUG GAMBAR STRETCH / GEPENG ---
+            // Kita paksa kloningan gambar mengikuti kalkulasi rasio kotak aslinya
+            cloned.querySelectorAll('.img-preview').forEach(img => {
+                if (img.style.display !== 'none' && img.src) {
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'contain';
+                }
+            });
+
+            // Konversi Input Teks, Tabel Sizing, & Textarea Keterangan jadi Div statis tebal
+            cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-row-bawah textarea, .detail-box-input-row input').forEach(i => {
                 let text = i.value.toUpperCase();
                 if(i.type === 'date') text = formatTanggalIndo(i.value);
                 const v = cloned.createElement('div');
@@ -319,7 +329,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 i.parentElement.appendChild(v);
             });
         
-            // Konversi Elemen Pilihan Dropdown Global Model
+            // Konversi Select Model Global
             const s = cloned.getElementById('model_global');
             if(s) {
                 const sv = cloned.createElement('div');
