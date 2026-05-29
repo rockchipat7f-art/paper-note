@@ -181,24 +181,82 @@ function formatTanggalIndo(dateStr) {
 }
 
 // ==========================================================================
-// 4. SISTEM UPLOAD GAMBAR MULTI KOTAK (UTAMA + 6 DETAIL PRESISI)
+// 4. SISTEM UPLOAD GAMBAR SUPER PRO (KLIK + PASTE CTRL+V + DRAG-DROP)
 // ==========================================================================
-document.querySelectorAll('.img-upload-input').forEach(input => {
-    input.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
+document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
+    const input = wrapper.querySelector('.img-upload-input');
+    const imgElement = wrapper.querySelector('.img-preview');
+    const labelElement = wrapper.querySelector('.img-label');
+
+    // --- FUNGSI UTAMA: MENAMPILKAN GAMBAR KE LAYAR ---
+    function tampilkanGambar(file) {
+        if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const wrapper = event.target.closest('.img-upload-wrapper');
-                const imgElement = wrapper.querySelector('.img-preview');
-                const labelElement = wrapper.querySelector('.img-label');
-                if (imgElement && labelElement) {
-                    imgElement.src = e.target.result;
-                    imgElement.style.display = 'block';
-                    labelElement.style.display = 'none';
-                }
+                imgElement.src = e.target.result;
+                imgElement.style.display = 'block';
+                labelElement.style.display = 'none';
             }
             reader.readAsDataURL(file);
+        }
+    }
+
+    // --- CARA 1: KLIK BIASA (INPUT FILE) ---
+    if (input) {
+        input.addEventListener('change', function(e) {
+            tampilkanGambar(e.target.files[0]);
+        });
+    }
+
+    // --- CARA 2: FITUR AJAIB CORELDRAW (PASTE CTRL+V) ---
+    // Efek visual saat kotak diklik/fokus agar sistem tahu gambar mau ditempel di mana
+    wrapper.setAttribute('tabindex', '0'); // Membuat div bisa difokuskan
+    wrapper.addEventListener('click', () => { wrapper.focus(); });
+    
+    wrapper.addEventListener('paste', function(e) {
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image') !== -1) {
+                const blob = items[i].getAsFile();
+                tampilkanGambar(blob);
+                
+                // Masukkan file ke input HTML aslinya agar sistem cetak PNG tidak eror
+                if (input) {
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(blob);
+                    input.files = dataTransfer.files;
+                }
+                e.preventDefault();
+                break;
+            }
+        }
+    });
+
+    // --- CARA 3: SERET GAMBAR (DRAG & DROP) ---
+    wrapper.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        wrapper.style.borderColor = '#34d399'; // Berubah warna hijau saat gambar menggantung di atasnya
+        wrapper.style.backgroundColor = 'rgba(52, 211, 153, 0.05)';
+    });
+
+    wrapper.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        wrapper.style.borderColor = wrapper.classList.contains('detail-box-img-row') ? 'transparent' : '#000';
+        wrapper.style.backgroundColor = '#fff';
+    });
+
+    wrapper.addEventListener('drop', function(e) {
+        e.preventDefault();
+        wrapper.style.borderColor = wrapper.classList.contains('detail-box-img-row') ? 'transparent' : '#000';
+        wrapper.style.backgroundColor = '#fff';
+        
+        const file = e.dataTransfer.files[0];
+        tampilkanGambar(file);
+        
+        if (input && file) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            input.files = dataTransfer.files;
         }
     });
 });
