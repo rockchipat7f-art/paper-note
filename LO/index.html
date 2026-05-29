@@ -80,27 +80,27 @@
 
                     <div class="detail-section">
                         <script>
-                            // Looping otomatis menghasilkan 6 kotak gambar detail yang presisi
+                            // Looping otomatis menghasilkan 6 kotak gambar yang punya baris teks di atasnya
                             for(let i=1; i<=6; i++) {
                                 document.write(`
-                                <div class="detail-box img-upload-wrapper">
-                                    <input type="file" id="detail-img-${i}" class="img-upload-input" accept="image/*" style="display: none;">
-                                    <label for="detail-img-${i}" class="img-label" style="font-size:10px;">GAMBAR<br>DETAIL</label>
-                                    <img class="img-preview" src="" style="display: none;">
+                                <div class="detail-box-container">
+                                    <div class="detail-box-input-row">
+                                        <input type="text" class="export-input" placeholder="...">
+                                    </div>
+                                    <div class="detail-box-img-row img-upload-wrapper">
+                                        <input type="file" id="detail-img-${i}" class="img-upload-input" accept="image/*" style="display: none;">
+                                        <label for="detail-img-${i}" class="img-label" style="font-size:10px; font-weight:bold;">GAMBAR<br>DETAIL</label>
+                                        <img class="img-preview" src="" style="display: none;">
+                                    </div>
                                 </div>`);
                             }
                         </script>
+    
                         <div class="detail-text-box">
-                            <div class="detail-row-atas">
-                                <div class="detail-header-red">DAFTAR KETERANGAN</div>
-                            </div>
-                            <div class="detail-row-bawah">
-                                <div class="detail-header-red" style="border-bottom: 1px dashed #ff0000; padding: 2px 0;">DETAIL TEXT</div>
-                                <textarea class="export-input" placeholder="Tulis keterangan detail text produksi di sini..."></textarea>
-                            </div>
+                            <div class="detail-header-red">DAFTAR KETERANGAN<br>DETAIL TEXT</div>
+                            <textarea class="export-input" placeholder="Tulis keterangan detail text produksi di sini..."></textarea>
                         </div>
                     </div>
-
                     <div class="sizing-section">
                         <div class="notes-box">
                             <textarea class="export-input" placeholder="Tulis catatan tambahan di sini..."></textarea>
