@@ -113,7 +113,6 @@ function updateDynamicMenu() {
 
     if (model && databaseKriteria[model]) {
         databaseKriteria[model].forEach((item, idx) => {
-            // Buat Pilihan Checkbox di Panel Kanan
             const rightBox = document.createElement('div');
             rightBox.className = 'checkbox-container-right';
             const rightTitle = document.createElement('div');
@@ -135,7 +134,6 @@ function updateDynamicMenu() {
             });
             kananContainer.appendChild(rightBox);
 
-            // Buat Preview Kolom Hasil di Lembar Cetak Kiri
             const leftBox = document.createElement('div');
             leftBox.className = 'menu-item';
             leftBox.id = `left-block-${idx}`;
@@ -146,7 +144,7 @@ function updateDynamicMenu() {
             kiriContainer.appendChild(leftBox);
         });
     } else {
-        kananContainer.innerHTML = "<p class='notif-pilih'>← PILIH JENIS MODEL TERLEBIH DAHULU UNTUK MEMUNCULKAN DAFTAR OPSIONAL.</p>";
+        kananContainer.innerHTML = "<p class='notif-pilih'>← Pilih Jenis <strong>MODEL</strong> terlebih dahulu pada lembar order untuk memunculkan daftar opsi kerja.</p>";
         kiriContainer.innerHTML = "<p style='grid-column: span 6; text-align: center; color: #999; padding: 20px; font-size:12px;'>MENUNGGU MODEL DIISI...</p>";
     }
 }
@@ -183,7 +181,7 @@ function formatTanggalIndo(dateStr) {
 }
 
 // ==========================================================================
-// 4. SISTEM UPLOAD GAMBAR MULTI KOTAK (UTAMA + 7 DETAIL)
+// 4. SISTEM UPLOAD GAMBAR MULTI KOTAK (UTAMA + 6 DETAIL PRESISI)
 // ==========================================================================
 document.querySelectorAll('.img-upload-input').forEach(input => {
     input.addEventListener('change', function(event) {
@@ -206,12 +204,11 @@ document.querySelectorAll('.img-upload-input').forEach(input => {
 });
 
 // ==========================================================================
-// 5. SOLUSI PERMAK 1: SISTEM STEMPEL REALTIME & AMAN
+// 5. SISTEM STEMPEL REALTIME DP / LUNAS AUTOMATION
 // ==========================================================================
 function updateStatusStempel() {
     const statusTerpilih = document.querySelector('input[name="status_bayar"]:checked');
     const status = statusTerpilih ? statusTerpilih.value : 'BELUM';
-    
     const inputNominal = document.getElementById('input_nominal_stempel');
     const nominal = inputNominal ? inputNominal.value.toUpperCase() : '';
 
@@ -225,17 +222,15 @@ function updateStatusStempel() {
         imgLunas.style.display = 'none'; textLunas.innerText = '';
 
         if (status === 'DP') {
-            imgDp.style.display = 'block';
-            textDp.innerText = nominal;
+            imgDp.style.display = 'block'; textDp.innerText = nominal;
         } else if (status === 'LUNAS') {
-            imgLunas.style.display = 'block';
-            textLunas.innerText = nominal;
+            imgLunas.style.display = 'block'; textLunas.innerText = nominal;
         }
     }
 }
 
 // ==========================================================================
-// 6. ENGINE EXPORT PNG (MENGUBAH SEMUA INPUT FORM JADI TEXT MATI SAAT DI-PRINT)
+// 6. ENGINE EXPORT PNG PREVIEW (ANTI BUG HILANG DATA STRUKTUR BARU)
 // ==========================================================================
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
@@ -247,15 +242,15 @@ document.getElementById('btnExport').addEventListener('click', function() {
             const cloneCapture = cloned.getElementById('capture-area');
             cloneCapture.style.height = '100%'; cloneCapture.style.overflow = 'hidden';
             
-            // Konversi Input Teks, Tabel Sizing, & Textarea Keterangan jadi Div statis tebal
-            cloned.querySelectorAll('input.export-input, textarea.export-input, .id-row input, .sizing-section input, .bottom-color-grid input, .detail-text-box textarea, .notes-box textarea').forEach(i => {
+            // Perbaikan Seleksi Khusus Form Isian Utama (Judul tidak akan tersenggol lagi)
+            cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-row-bawah textarea').forEach(i => {
                 let text = i.value.toUpperCase();
                 if(i.type === 'date') text = formatTanggalIndo(i.value);
                 const v = cloned.createElement('div');
                 v.innerText = text || "";
                 
                 if (i.tagName === 'TEXTAREA') {
-                    v.style.cssText = "padding:5px; font-weight:bold; font-size:12px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;";
+                    v.style.cssText = "padding:5px; font-weight:bold; font-size:10px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;";
                 } else if (i.closest('.id-row')) {
                     v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
                 } else {
@@ -266,7 +261,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 i.parentElement.appendChild(v);
             });
         
-            // Konversi Select Model Global
+            // Konversi Elemen Pilihan Dropdown Global Model
             const s = cloned.getElementById('model_global');
             if(s) {
                 const sv = cloned.createElement('div');
@@ -276,7 +271,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 s.parentElement.appendChild(sv);
             }
 
-            // Bersihkan semua sisa teks label 'GAMBAR DESAIN' kosong yang belum diisi agar bersih pas difoto
+            // Bersihkan sisa instruksi teks "+ Klik..." agar hasil print bersih tanpa noda teks bawaan
             cloned.querySelectorAll('.img-label').forEach(label => {
                 if(label.style.display !== 'none') label.style.display = 'none';
             });
@@ -291,14 +286,13 @@ document.getElementById('btnExport').addEventListener('click', function() {
 });
 
 // ==========================================================================
-// 7. LISTENERS & INSTANT ENGINE RUNNER
+// 7. LISTENERS RUNNER INTEGRASI UTAMA
 // ==========================================================================
 document.getElementById('nolo').addEventListener('input', updateQR);
 document.getElementById('nama').addEventListener('input', updateQR);
 document.getElementById('orderan').addEventListener('input', updateQR);
 document.getElementById('model_global').addEventListener('change', updateQR);
 
-// Eksekusi Pemicu Awal Sistem
 updateDynamicMenu(); 
 updateQR();
 updateStatusStempel();
