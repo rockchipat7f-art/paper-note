@@ -60,9 +60,9 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 /* KODE CARA MENENTUKAN TINGGI SETIAP ROW (BARIS)            */
 /* ========================================================= */
 
-.row-grey { background-color: #a6a6a6; height: 35px; /* <--- Silakan ganti angka ini untuk tinggi baris ABU-ABU */ }
-.row-white { background-color: #ffffff; height: 25px; /* <--- Silakan ganti angka ini untuk tinggi baris PUTIH */ }
-.row-yellow { background-color: #ffff00; height: 45px; /* <--- Silakan ganti angka ini untuk tinggi baris KUNING */ }
+.row-grey { background-color: #a6a6a6; height: 18px; /* <--- Silakan ganti angka ini untuk tinggi baris ABU-ABU */ }
+.row-white { background-color: #ffffff; height: 35px; /* <--- Silakan ganti angka ini untuk tinggi baris PUTIH */ }
+.row-yellow { background-color: #ffff00; height: 35px; /* <--- Silakan ganti angka ini untuk tinggi baris KUNING */ }
 .row-white { background-color: #ffffff; height: 15px; /* <--- Silakan ganti angka ini untuk tinggi baris PUTIH */ }
 
 /* ================= KANAN: PANEL SCROLL (SUDAH FIX RAPI) ================= */
