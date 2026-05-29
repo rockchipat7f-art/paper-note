@@ -34,7 +34,7 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 .img-label { font-size: 24px; color: #000; font-weight: 900; cursor: pointer; text-align: center; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .img-preview { width: 100%; height: 100%; object-fit: contain; }
 
-.detail-section { display: grid; grid-template-columns: repeat(8, 1fr); border: 1px solid #ff0000; border-top: none; }
+.detail-section { display: grid; grid-template-columns: repeat(7, 1fr); border: 3px solid #ff0000; border-top: none; }
 .detail-box { border-right: 1px solid #ff0000; height: 80px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; text-align: center; }
 .detail-text-box { height: 80px; display: flex; flex-direction: column; }
 .detail-header-red { font-size: 8px; text-align: center; color: #ff0000; font-weight: 900; padding: 2px; line-height: 1.1; }
