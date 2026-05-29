@@ -243,7 +243,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
             cloneCapture.style.height = '100%'; cloneCapture.style.overflow = 'hidden';
             
             // Perbaikan Seleksi Khusus Form Isian Utama (Judul tidak akan tersenggol lagi)
-            cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-row-bawah textarea').forEach(i => {
+            cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach(i => {
                 let text = i.value.toUpperCase();
                 if(i.type === 'date') text = formatTanggalIndo(i.value);
                 const v = cloned.createElement('div');
