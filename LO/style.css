@@ -35,14 +35,14 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 .img-label { font-size: 24px; color: #000; font-weight: 900; cursor: pointer; text-align: center; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .img-preview { width: 100%; height: 100%; object-fit: contain; }
 
-/* --- AREA 6 DETAIL GAMBAR + 1 KOTAK TEKS (REVISI AMAN) --- */
-.detail-section { display: grid; grid-template-columns: repeat(7, 1fr); border: 3px solid #ff0000; box-sizing: border-box; }
-.detail-box { border-right: 1px solid #ff0000; height: 80px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; text-align: center; background: #fff; box-sizing: border-box; }
-.detail-text-box { height: 80px; display: grid; grid-template-rows: 22px 1fr; background: #fff; box-sizing: border-box; }
-.detail-row-atas { display: flex; align-items: center; justify-content: center; background-color: #ffffff; border-bottom: 1px solid #ff0000; width: 100%; box-sizing: border-box; height: 100%; }
-.detail-row-bawah { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; }
-.detail-header-red { font-size: 8px; text-align: center; color: #ff0000; font-weight: 900; font-family: 'Arial Black', sans-serif; line-height: 1; text-transform: uppercase; width: 100%; }
-.detail-text-box textarea { width: 100%; flex: 1; border: none; resize: none; font-size: 9px; font-weight: bold; padding: 3px; outline: none; box-sizing: border-box; font-family: Arial, sans-serif; }
+.detail-section { display: grid; grid-template-columns: repeat(7, 1fr); border: 3px solid #ff0000; box-sizing: border-box; background: #fff; }
+.detail-box-container { display: grid; grid-template-rows: 25px 1fr; height: 80px; border-right: 1px solid #ff0000; box-sizing: border-box; }
+.detail-box-input-row { display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #ff0000; background: #fff; box-sizing: border-box; height: 25px; }
+.detail-box-input-row input { width: 100%; height: 100%; border: none; text-align: center; font-weight: 900; font-size: 10px; color: #ff0000; outline: none; background: transparent; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
+.detail-box-img-row { display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; text-align: center; background: #fff; height: 55px; box-sizing: border-box; }
+.detail-text-box { height: 80px; display: flex; flex-direction: column; background: #fff; box-sizing: border-box; }
+.detail-header-red { font-size: 8px; text-align: center; color: #ff0000; font-weight: 900; padding: 2px; line-height: 1.1; font-family: 'Arial Black', sans-serif; border-bottom: 1px solid #ff0000; }
+.detail-text-box textarea { width: 100%; flex: 1; border: none; resize: none; font-size: 10px; font-weight: bold; padding: 4px; outline: none; box-sizing: border-box; font-family: Arial, sans-serif; }
 
 /* --- AREA CATATAN & TABEL SIZING --- */
 .sizing-section { display: flex; border: 1px solid #000; border-top: none; }
