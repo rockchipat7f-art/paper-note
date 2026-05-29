@@ -288,7 +288,7 @@ function updateStatusStempel() {
 }
 
 // ==========================================================================
-// 6. ENGINE EXPORT PNG PREVIEW (ANTI GEPENG / STRETCH DENGAN FIX OBJECT-FIT)
+// 6. ENGINE EXPORT PNG PREVIEW (FIX MUTLAK ANTI STRETCH / GEPENG)
 // ==========================================================================
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
@@ -300,13 +300,30 @@ document.getElementById('btnExport').addEventListener('click', function() {
             const cloneCapture = cloned.getElementById('capture-area');
             cloneCapture.style.height = '100%'; cloneCapture.style.overflow = 'hidden';
             
-            // --- AMAN: PERBAIKAN BUG GAMBAR STRETCH / GEPENG ---
-            // Kita paksa kloningan gambar mengikuti kalkulasi rasio kotak aslinya
+            // --- OBAT PATEN ANTI GEPENG / STRETCH ---
+            // Kita hitung perbandingan ukuran asli gambar, lalu kita jinakkan rasionya
             cloned.querySelectorAll('.img-preview').forEach(img => {
-                if (img.style.display !== 'none' && img.src) {
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.objectFit = 'contain';
+                if (img.style.display !== 'none' && img.src && img.complete) {
+                    const rasioGambar = img.naturalWidth / img.naturalHeight;
+                    const wadah = img.parentElement;
+                    const rasioWadah = wadah.clientWidth / wadah.clientHeight;
+
+                    // Matikan fungsi bawaan browser, kita set manual berdasarkan matematika gambar
+                    img.style.objectFit = 'none'; 
+                    
+                    if (rasioGambar > rasioWadah) {
+                        // Jika gambar terlalu lebar, kunci lebarnya, tingginya auto proporsional
+                        img.style.width = '100%';
+                        img.style.height = 'auto';
+                    } else {
+                        // Jika gambar terlalu tegak/tinggi, kunci tingginya, lebarnya mengikuti
+                        img.style.height = '100%';
+                        img.style.width = 'auto';
+                    }
+                    
+                    // Posisikan gambar pas di tengah kotak biar simetris
+                    img.style.margin = 'auto';
+                    img.style.display = 'block';
                 }
             });
 
@@ -339,7 +356,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 s.parentElement.appendChild(sv);
             }
 
-            // Bersihkan sisa instruksi teks "+ Klik..." agar hasil print bersih tanpa noda teks bawaan
+            // Bersihkan teks "+ Klik..." pembantu biar ga ngotorin kertas cetak
             cloned.querySelectorAll('.img-label').forEach(label => {
                 if(label.style.display !== 'none') label.style.display = 'none';
             });
