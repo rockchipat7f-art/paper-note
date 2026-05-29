@@ -49,14 +49,21 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 .size-table th { font-weight: 900; font-size: 10px; }
 .size-table td { color: #000; height: 20px; }
 .size-table input { width: 100%; height: 100%; border: none; text-align: center; font-weight: bold; font-size: 12px; outline: none; color: #000; background: transparent; }
-
 .bottom-color-grid { width: 100%; margin-top: 5px; }
 .color-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.color-table td { border: 1px solid #000; height: 25px; padding: 0; }
+
+/* REVISI: Hapus "height: 25px;" dari td agar tingginya diatur oleh baris (tr) */
+.color-table td { border: 1px solid #000; padding: 0; }
 .color-table input { width: 100%; height: 100%; border: none; text-align: center; font-weight: bold; font-size: 12px; outline: none; background: transparent; }
-.row-grey { background-color: #a6a6a6; }
-.row-white { background-color: #ffffff; }
-.row-yellow { background-color: #ffff00; }
+
+/* ========================================================= */
+/* KODE CARA MENENTUKAN TINGGI SETIAP ROW (BARIS)            */
+/* ========================================================= */
+
+.row-grey { background-color: #a6a6a6; height: 35px; /* <--- Silakan ganti angka ini untuk tinggi baris ABU-ABU */ }
+.row-white { background-color: #ffffff; height: 25px; /* <--- Silakan ganti angka ini untuk tinggi baris PUTIH */ }
+.row-yellow { background-color: #ffff00; height: 45px; /* <--- Silakan ganti angka ini untuk tinggi baris KUNING */ }
+.row-white { background-color: #ffffff; height: 15px; /* <--- Silakan ganti angka ini untuk tinggi baris PUTIH */ }
 
 /* ================= KANAN: PANEL SCROLL (SUDAH FIX RAPI) ================= */
 #i6uw2x { flex: 1; background: #0f172a; border: 2px solid #334155; border-radius: 12px; padding: 20px; color: #f8fafc; max-height: calc(100vh - 40px); overflow-y: auto; position: sticky; top: 20px; }
