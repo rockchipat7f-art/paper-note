@@ -41,13 +41,13 @@
                         <div class="qr-container"><div id="qrcode"></div></div>
                         <div class="identity-group">
                             <div class="identity-grid">
-                                <div class="id-row"><span class="id-tag">NAMA</span><input type="text" id="nama" placeholder="..."></div>
-                                <div class="id-row"><span class="id-tag">ORDERAN</span><input type="text" id="orderan" placeholder="..."></div>
+                                <div class="id-row"><span class="id-tag">NAMA</span><input type="text" id="nama" placeholder=" "></div>
+                                <div class="id-row"><span class="id-tag">ORDERAN</span><input type="text" id="orderan" placeholder=" "></div>
                                 <div class="id-row"><span class="id-tag">TGL MASUK</span><input type="date" id="tgl_masuk"></div>
                                 <div class="id-row"><span class="id-tag">DEADLINE/DT</span><input type="date" id="deadline"></div>
                             </div>
                             <div class="identity-grid">
-                                <div class="id-row"><span class="id-tag">NO LO.</span><input type="text" id="nolo" placeholder="..."></div>
+                                <div class="id-row"><span class="id-tag">NO LO.</span><input type="text" id="nolo" placeholder=" "></div>
                                 <div class="id-row">
                                     <span class="id-tag">MODEL</span>
                                     <select id="model_global" onchange="updateDynamicMenu()">
@@ -64,8 +64,8 @@
                                         <option value="ATRIBUT">ATRIBUT</option>
                                     </select>
                                 </div>
-                                <div class="id-row"><span class="id-tag">BAHAN</span><input type="text" id="bahan" placeholder="..."></div>
-                                <div class="id-row"><span class="id-tag">KODE</span><input type="text" id="kode" placeholder="..."></div>
+                                <div class="id-row"><span class="id-tag">BAHAN</span><input type="text" id="bahan" placeholder=" "></div>
+                                <div class="id-row"><span class="id-tag">KODE</span><input type="text" id="kode" placeholder=" "></div>
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                                 document.write(`
                                 <div class="detail-box-container">
                                     <div class="detail-box-input-row">
-                                        <input type="text" class="export-input" placeholder="...">
+                                        <input type="text" class="export-input" placeholder=" ">
                                     </div>
                                     <div class="detail-box-img-row img-upload-wrapper">
                                         <input type="file" id="detail-img-${i}" class="img-upload-input" accept="image/*" style="display: none;">
@@ -141,7 +141,7 @@
                         <table class="color-table">
                             <tr class="row-grey">
                                 <script>
-                                    const komponenAbu = ["ADMIN", "DESAIN", "KONFIRMASI", "CUTTING", "SABLON", "BRODIR", "JAHIT", "LBNG KCNG", "QC ADMIN", "PACKING", "PENGIRIMAN"];
+                                    const komponenAbu = ["ADMIN", "DESAIN", "KONFIRMASI", "CUTTING", "SABLON", "BORDIR", "JAHIT", "LBNG KCNG", "QC ADMIN", "PACKING", "PENGIRIMAN"];
                                     komponenAbu.forEach(teks => {
                                         document.write(`<td><input type="text" class="export-input" value="${teks}" style="font-weight: bold; background: #e2e8f0; color: #000;"></td>`);
                                     });
@@ -149,7 +149,7 @@
                             </tr>
                             <tr class="row-white-atas"> 
                                 <script>
-                                    const komponenPutih1 = ["YEN", "GOR", "...", "...", "...", "...", "...", "...", "...", "...", "..."];
+                                    const komponenPutih1 = ["YEN", "GOR", " ", " ", " ", " ", " ", " ", " ", " ", " "];
                                     komponenPutih1.forEach(teks => {
                                         document.write(`<td><input type="text" class="export-input" value="${teks}"></td>`);
                                     });
@@ -157,7 +157,7 @@
                             </tr>
                             <tr class="row-yellow">
                                 <script>
-                                    const komponenKuning = ["...", "...", "...", "...", "...", "...", "...", "...", "...", "...", "..."];
+                                    const komponenKuning = [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "];
                                     komponenKuning.forEach(teks => {
                                         document.write(`<td><input type="text" class="export-input" value="${teks}" style="font-weight: bold; background: #fef08a; color: #000;"></td>`);
                                     });
@@ -166,7 +166,7 @@
                             <tr class="row-white-bawah"> 
                                 <script>
                                     for(let i=0; i<11; i++) {
-                                        document.write('<td><input type="text" class="export-input" value="..."></td>');
+                                        document.write('<td><input type="text" class="export-input" value=" "></td>');
                                     }
                                 </script>
                             </tr>
