@@ -95,12 +95,13 @@
                                 </div>`);
                             }
                         </script>
-    
+        
                         <div class="detail-text-box">
                             <div class="detail-header-red">DAFTAR KETERANGAN<br>DETAIL TEXT</div>
                             <textarea class="export-input" placeholder="Tulis keterangan detail text produksi di sini..."></textarea>
                         </div>
                     </div>
+
                     <div class="sizing-section">
                         <div class="notes-box">
                             <textarea class="export-input" placeholder="Tulis catatan tambahan di sini..."></textarea>
@@ -136,17 +137,20 @@
                         </div>
                     </div>
 
+                    <!-- FIX REVISI UTUH: SEKARANG TERPANGGIL 11 KOLOM INPUT KE SAMPING -->
                     <div class="bottom-color-grid">
                         <table class="color-table">
                             <tr class="row-grey">
-                                <script>for(let i=0;i<8;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
+                                <script>for(let i=0;i<11;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
                             </tr>
-                            <tr class="row-white-atas"> <script>for(let i=0;i<8;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
+                            <tr class="row-white-atas"> 
+                                <script>for(let i=0;i<11;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
                             </tr>
                             <tr class="row-yellow">
-                                <script>for(let i=0;i<8;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
+                                <script>for(let i=0;i<11;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
                             </tr>
-                            <tr class="row-white-bawah"> <script>for(let i=0;i<8;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
+                            <tr class="row-white-bawah"> 
+                                <script>for(let i=0;i<11;i++) document.write('<td><input type="text" class="export-input"></td>');</script>
                             </tr>
                         </table>
                     </div>
