@@ -288,7 +288,7 @@ function updateStatusStempel() {
 }
 
 // ==========================================================================
-// 6. ENGINE EXPORT PNG PREVIEW (FIX MUTLAK ANTI STRETCH / GEPENG)
+// 6. ENGINE EXPORT PNG PREVIEW (FIX MUTLAK ANTI STRETCH & KUNCI WARNA)
 // ==========================================================================
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
@@ -301,33 +301,28 @@ document.getElementById('btnExport').addEventListener('click', function() {
             cloneCapture.style.height = '100%'; cloneCapture.style.overflow = 'hidden';
             
             // --- OBAT PATEN ANTI GEPENG / STRETCH ---
-            // Kita hitung perbandingan ukuran asli gambar, lalu kita jinakkan rasionya
             cloned.querySelectorAll('.img-preview').forEach(img => {
                 if (img.style.display !== 'none' && img.src && img.complete) {
                     const rasioGambar = img.naturalWidth / img.naturalHeight;
                     const wadah = img.parentElement;
                     const rasioWadah = wadah.clientWidth / wadah.clientHeight;
 
-                    // Matikan fungsi bawaan browser, kita set manual berdasarkan matematika gambar
                     img.style.objectFit = 'none'; 
                     
                     if (rasioGambar > rasioWadah) {
-                        // Jika gambar terlalu lebar, kunci lebarnya, tingginya auto proporsional
                         img.style.width = '100%';
                         img.style.height = 'auto';
                     } else {
-                        // Jika gambar terlalu tegak/tinggi, kunci tingginya, lebarnya mengikuti
                         img.style.height = '100%';
                         img.style.width = 'auto';
                     }
                     
-                    // Posisikan gambar pas di tengah kotak biar simetris
                     img.style.margin = 'auto';
                     img.style.display = 'block';
                 }
             });
 
-            // Konversi Input Teks, Tabel Sizing, & Textarea Keterangan jadi Div statis tebal
+            // --- KONVERSI FORM KE TEKS MATI ---
             cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-row-bawah textarea, .detail-box-input-row input').forEach(i => {
                 let text = i.value.toUpperCase();
                 if(i.type === 'date') text = formatTanggalIndo(i.value);
@@ -338,6 +333,10 @@ document.getElementById('btnExport').addEventListener('click', function() {
                     v.style.cssText = "padding:5px; font-weight:bold; font-size:10px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;";
                 } else if (i.closest('.id-row')) {
                     v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
+                } else if (i.closest('.color-table')) {
+                    // INI YANG KEMARIN KETINGGALAN WAK! Kunci warna inline dari HTML
+                    const bgInline = i.style.backgroundColor || i.style.background || "transparent";
+                    v.style.cssText = `text-align:center; font-weight:bold; font-size:10px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgInline};`;
                 } else {
                     v.style.cssText = "text-align:center; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;";
                 }
@@ -356,7 +355,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 s.parentElement.appendChild(sv);
             }
 
-            // Bersihkan teks "+ Klik..." pembantu biar ga ngotorin kertas cetak
+            // Bersihkan teks label gambar
             cloned.querySelectorAll('.img-label').forEach(label => {
                 if(label.style.display !== 'none') label.style.display = 'none';
             });
