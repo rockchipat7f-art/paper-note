@@ -122,11 +122,12 @@
                                 </thead>
                                 <tbody>
                                     <script>
-                                        const sizes = ['S','M','L','XL','XXL','XXXL','4XL','5XL','6XL','TOTAL'];
+                                        // Looping khusus S sampai 6XL dengan input agar bisa di-custom sendiri
+                                        const sizes = ['S','M','L','XL','XXL','XXXL','4XL','5XL','6XL'];
                                         sizes.forEach(s => {
                                             document.write(`
                                             <tr>
-                                                <td style="font-weight:bold;">${s}</td>
+                                                <td><input type="text" class="export-input" value="${s}" style="font-weight:bold;"></td>
                                                 <td><input type="text" class="export-input"></td>
                                                 <td><input type="text" class="export-input"></td>
                                                 <td><input type="text" class="export-input"></td>
@@ -134,6 +135,12 @@
                                             </tr>`);
                                         });
                                     </script>
+                                    
+                                    <tr>
+                                        <td><input type="text" class="export-input" value="TOTAL" style="font-weight:bold; color:#ff0000;"></td>
+                                        <td colspan="2"><input type="text" class="export-input" placeholder="TOTAL DEWASA" style="font-weight:bold;"></td>
+                                        <td colspan="2"><input type="text" class="export-input" placeholder="TOTAL ANAK" style="font-weight:bold;"></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
