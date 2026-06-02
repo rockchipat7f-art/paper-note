@@ -80,25 +80,27 @@
 
                     <div class="detail-section">
                         <script>
-                            // Looping otomatis menghasilkan 6 kotak gambar yang punya baris teks di atasnya
-                            for(let i=1; i<=6; i++) {
+                            // Looping presisi 6 kotak gambar agar tidak melar (TOTAL 7 KOLOM)
+                            const judulDetail = ["DADA KANAN", "DADA KIRI", "DEPAN", "PUNGGUNG", "LNGN KANAN", "LNGN KIRI"];
+                            judulDetail.forEach((judul, i) => {
                                 document.write(`
                                 <div class="detail-box-container">
                                     <div class="detail-box-input-row">
-                                        <input type="text" class="export-input" placeholder=" ">
+                                        <input type="text" class="export-input" value="${judul}">
                                     </div>
                                     <div class="detail-box-img-row img-upload-wrapper">
-                                        <input type="file" id="detail-img-${i}" class="img-upload-input" accept="image/*" style="display: none;">
-                                        <label for="detail-img-${i}" class="img-label" style="font-size:10px; font-weight:bold;">GAMBAR<br>DETAIL</label>
+                                        <input type="file" id="detail-img-${i+1}" class="img-upload-input" accept="image/*" style="display: none;">
+                                        <label for="detail-img-${i+1}" class="img-label" style="font-size:10px; font-weight:bold;">GAMBAR<br>DETAIL</label>
                                         <img class="img-preview" src="" style="display: none;">
                                     </div>
                                 </div>`);
-                            }
+                            });
                         </script>
-        
+
+                        <!-- Kotak ke-7: Keterangan Teks (WARNA) Paling Kanan -->
                         <div class="detail-text-box">
-                            <div class="detail-header-red">DAFTAR KETERANGAN<br>DETAIL TEXT</div>
-                            <textarea class="export-input" placeholder="Tulis keterangan detail text produksi di sini..."></textarea>
+                            <div class="detail-header-red">WARNA</div>
+                            <textarea class="export-input" placeholder="Keterangan text..."></textarea>
                         </div>
                     </div>
 
