@@ -188,7 +188,6 @@ document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
     const imgElement = wrapper.querySelector('.img-preview');
     const labelElement = wrapper.querySelector('.img-label');
 
-    // --- FUNGSI UTAMA: MENAMPILKAN GAMBAR KE LAYAR ---
     function tampilkanGambar(file) {
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
@@ -201,16 +200,13 @@ document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
         }
     }
 
-    // --- CARA 1: KLIK BIASA (INPUT FILE) ---
     if (input) {
         input.addEventListener('change', function(e) {
             tampilkanGambar(e.target.files[0]);
         });
     }
 
-    // --- CARA 2: FITUR AJAIB CORELDRAW (PASTE CTRL+V) ---
-    // Efek visual saat kotak diklik/fokus agar sistem tahu gambar mau ditempel di mana
-    wrapper.setAttribute('tabindex', '0'); // Membuat div bisa difokuskan
+    wrapper.setAttribute('tabindex', '0');
     wrapper.addEventListener('click', () => { wrapper.focus(); });
     
     wrapper.addEventListener('paste', function(e) {
@@ -220,7 +216,6 @@ document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
                 const blob = items[i].getAsFile();
                 tampilkanGambar(blob);
                 
-                // Masukkan file ke input HTML aslinya agar sistem cetak PNG tidak eror
                 if (input) {
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(blob);
@@ -232,10 +227,9 @@ document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
         }
     });
 
-    // --- CARA 3: SERET GAMBAR (DRAG & DROP) ---
     wrapper.addEventListener('dragover', function(e) {
         e.preventDefault();
-        wrapper.style.borderColor = '#34d399'; // Berubah warna hijau saat gambar menggantung di atasnya
+        wrapper.style.borderColor = '#34d399';
         wrapper.style.backgroundColor = 'rgba(52, 211, 153, 0.05)';
     });
 
@@ -300,7 +294,6 @@ document.getElementById('btnExport').addEventListener('click', function() {
             const cloneCapture = cloned.getElementById('capture-area');
             cloneCapture.style.height = '100%'; cloneCapture.style.overflow = 'hidden';
             
-            // --- OBAT PATEN ANTI GEPENG / STRETCH ---
             cloned.querySelectorAll('.img-preview').forEach(img => {
                 if (img.style.display !== 'none' && img.src && img.complete) {
                     const rasioGambar = img.naturalWidth / img.naturalHeight;
@@ -322,8 +315,8 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 }
             });
 
-            // --- KONVERSI FORM KE TEKS MATI ---
-            cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-row-bawah textarea, .detail-box-input-row input').forEach(i => {
+            // --- REVISI FIX SINKRONISASI SELECTOR & KUNCI WARNA COMPUTED WAK ---
+            cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach(i => {
                 let text = i.value.toUpperCase();
                 if(i.type === 'date') text = formatTanggalIndo(i.value);
                 const v = cloned.createElement('div');
@@ -334,9 +327,11 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 } else if (i.closest('.id-row')) {
                     v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
                 } else if (i.closest('.color-table')) {
-                    // INI YANG KEMARIN KETINGGALAN WAK! Kunci warna inline dari HTML
-                    const bgInline = i.style.backgroundColor || i.style.background || "transparent";
-                    v.style.cssText = `text-align:center; font-weight:bold; font-size:10px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgInline};`;
+                    // Pakai computed style elemen asli agar html2canvas gak kebingungan nyari warna bg inline
+                    const originalEl = document.getElementById(i.id) || i;
+                    const computedStyle = window.getComputedStyle(originalEl);
+                    const bgComputed = computedStyle.backgroundColor || "transparent";
+                    v.style.cssText = `text-align:center; font-weight:bold; font-size:10px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgComputed};`;
                 } else {
                     v.style.cssText = "text-align:center; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;";
                 }
@@ -345,7 +340,6 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 i.parentElement.appendChild(v);
             });
         
-            // Konversi Select Model Global
             const s = cloned.getElementById('model_global');
             if(s) {
                 const sv = cloned.createElement('div');
@@ -355,7 +349,6 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 s.parentElement.appendChild(sv);
             }
 
-            // Bersihkan teks label gambar
             cloned.querySelectorAll('.img-label').forEach(label => {
                 if(label.style.display !== 'none') label.style.display = 'none';
             });
