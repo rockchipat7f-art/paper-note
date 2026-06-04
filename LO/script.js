@@ -282,83 +282,112 @@ function updateStatusStempel() {
 }
 
 // ==========================================================================
-// 6. ENGINE EXPORT PNG PREVIEW (FIX MUTLAK ANTI STRETCH & KUNCI WARNA)
+// 6. ENGINE EXPORT PNG PREVIEW (FIX MUTLAK ANTI STRETCH, KUNCI WARNA & BEBAS BLANK)
 // ==========================================================================
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
-    const btn = this; btn.innerText = "GENERATING PREVIEW..."; btn.disabled = true;
+    const btn = this; 
+    btn.innerText = "WAIT, LOADING IMAGES..."; 
+    btn.disabled = true;
 
-    html2canvas(target, { 
-        scale: 3, useCORS: true,
-        onclone: (cloned) => {
-            const cloneCapture = cloned.getElementById('capture-area');
-            cloneCapture.style.height = '100%'; cloneCapture.style.overflow = 'hidden';
-            
-            cloned.querySelectorAll('.img-preview').forEach(img => {
-                if (img.style.display !== 'none' && img.src && img.complete) {
-                    const rasioGambar = img.naturalWidth / img.naturalHeight;
-                    const wadah = img.parentElement;
-                    const rasioWadah = wadah.clientWidth / wadah.clientHeight;
-
-                    img.style.objectFit = 'none'; 
-                    
-                    if (rasioGambar > rasioWadah) {
-                        img.style.width = '100%';
-                        img.style.height = 'auto';
-                    } else {
-                        img.style.height = '100%';
-                        img.style.width = 'auto';
-                    }
-                    
-                    img.style.margin = 'auto';
-                    img.style.display = 'block';
-                }
-            });
-
-            // --- REVISI FIX SINKRONISASI SELECTOR & KUNCI WARNA COMPUTED WAK ---
-            cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach(i => {
-                let text = i.value.toUpperCase();
-                if(i.type === 'date') text = formatTanggalIndo(i.value);
-                const v = cloned.createElement('div');
-                v.innerText = text || "";
-                
-                if (i.tagName === 'TEXTAREA') {
-                    v.style.cssText = "padding:5px; font-weight:bold; font-size:10px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;";
-                } else if (i.closest('.id-row')) {
-                    v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
-                } else if (i.closest('.color-table')) {
-                    // Pakai computed style elemen asli agar html2canvas gak kebingungan nyari warna bg inline
-                    const originalEl = document.getElementById(i.id) || i;
-                    const computedStyle = window.getComputedStyle(originalEl);
-                    const bgComputed = computedStyle.backgroundColor || "transparent";
-                    v.style.cssText = `text-align:center; font-weight:bold; font-size:10px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgComputed};`;
-                } else {
-                    v.style.cssText = "text-align:center; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;";
-                }
-                
-                i.style.display = "none";
-                i.parentElement.appendChild(v);
-            });
-        
-            const s = cloned.getElementById('model_global');
-            if(s) {
-                const sv = cloned.createElement('div');
-                sv.innerText = s.value || "-"; 
-                sv.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
-                s.style.display = "none";
-                s.parentElement.appendChild(sv);
-            }
-
-            cloned.querySelectorAll('.img-label').forEach(label => {
-                if(label.style.display !== 'none') label.style.display = 'none';
+    // --- TAKTIK JITU: PASTIKAN SEMUA GAMBAR ORIGINAL SUDAH SELESAI DIMUAT ---
+    const allOriginalImages = Array.from(target.querySelectorAll('.img-preview'));
+    const imagePromises = allOriginalImages.map(img => {
+        if (img.style.display !== 'none' && img.src) {
+            if (img.complete) return Promise.resolve();
+            return new Promise(resolve => {
+                img.onload = resolve;
+                img.onerror = resolve; // Tetap jalan meskipun ada yang gagal load
             });
         }
-    }).then(canvas => {
-        canvas.toBlob(blob => {
-            const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
-            btn.innerText = "EXPORT PNG ▲"; btn.disabled = false;
-        }, 'image/png');
+        return Promise.resolve();
+    });
+
+    // Tunggu semua gambar aman, baru jalankan html2canvas
+    Promise.all(imagePromises).then(() => {
+        btn.innerText = "GENERATING PREVIEW...";
+
+        html2canvas(target, { 
+            scale: 3, 
+            useCORS: true,
+            allowTaint: true, // Mengizinkan render gambar lokal/blob hasil paste
+            logging: false,
+            onclone: (cloned) => {
+                const cloneCapture = cloned.getElementById('capture-area');
+                cloneCapture.style.height = '100%'; 
+                cloneCapture.style.overflow = 'hidden';
+                
+                // --- OBAT PATEN ANTI GEPENG / STRETCH ---
+                cloned.querySelectorAll('.img-preview').forEach(img => {
+                    if (img.style.display !== 'none' && img.src) {
+                        const rasioGambar = img.naturalWidth / img.naturalHeight;
+                        const wadah = img.parentElement;
+                        const rasioWadah = wadah.clientWidth / wadah.clientHeight;
+
+                        img.style.objectFit = 'none'; 
+                        
+                        if (rasioGambar > rasioWadah) {
+                            img.style.width = '100%';
+                            img.style.height = 'auto';
+                        } else {
+                            img.style.height = '100%';
+                            img.style.width = 'auto';
+                        }
+                        
+                        img.style.margin = 'auto';
+                        img.style.display = 'block';
+                    }
+                });
+
+                // --- KONVERSI FORM KE TEKS MATI ---
+                cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach(i => {
+                    let text = i.value.toUpperCase();
+                    if(i.type === 'date') text = formatTanggalIndo(i.value);
+                    const v = cloned.createElement('div');
+                    v.innerText = text || "";
+                    
+                    if (i.tagName === 'TEXTAREA') {
+                        v.style.cssText = "padding:5px; font-weight:bold; font-size:10px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;";
+                    } else if (i.closest('.id-row')) {
+                        v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
+                    } else if (i.closest('.color-table')) {
+                        const originalEl = document.getElementById(i.id) || i;
+                        const computedStyle = window.getComputedStyle(originalEl);
+                        const bgComputed = computedStyle.backgroundColor || "transparent";
+                        v.style.cssText = `text-align:center; font-weight:bold; font-size:10px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgComputed};`;
+                    } else {
+                        v.style.cssText = "text-align:center; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;";
+                    }
+                    
+                    i.style.display = "none";
+                    i.parentElement.appendChild(v);
+                });
+            
+                const s = cloned.getElementById('model_global');
+                if(s) {
+                    const sv = cloned.createElement('div');
+                    sv.innerText = s.value || "-"; 
+                    sv.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
+                    s.style.display = "none";
+                    s.parentElement.appendChild(sv);
+                }
+
+                cloned.querySelectorAll('.img-label').forEach(label => {
+                    if(label.style.display !== 'none') label.style.display = 'none';
+                });
+            }
+        }).then(canvas => {
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                window.open(url, '_blank');
+                btn.innerText = "EXPORT PNG ▲"; 
+                btn.disabled = false;
+            }, 'image/png');
+        }).catch(err => {
+            console.error("Gagal export gambar:", err);
+            btn.innerText = "EXPORT PNG ▲"; 
+            btn.disabled = false;
+        });
     });
 });
 
