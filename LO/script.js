@@ -282,7 +282,7 @@ function updateStatusStempel() {
 }
 
 // ==========================================================================
-// 6. ENGINE EXPORT PNG PREVIEW (FIX MUTLAK ANTI STRETCH, KUNCI WARNA & BEBAS BLANK)
+// 6. ENGINE EXPORT PNG PREVIEW (PERBAIKAN TOTAL: FIX BLANK, ANTI GEPENG & ZERO-DIMENSION)
 // ==========================================================================
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
@@ -290,47 +290,63 @@ document.getElementById('btnExport').addEventListener('click', function() {
     btn.innerText = "WAIT, LOADING IMAGES..."; 
     btn.disabled = true;
 
-    // --- TAKTIK JITU: PASTIKAN SEMUA GAMBAR ORIGINAL SUDAH SELESAI DIMUAT ---
+    // 1. Kumpulkan semua preview gambar yang aktif di layar
     const allOriginalImages = Array.from(target.querySelectorAll('.img-preview'));
     const imagePromises = allOriginalImages.map(img => {
         if (img.style.display !== 'none' && img.src) {
             if (img.complete) return Promise.resolve();
             return new Promise(resolve => {
                 img.onload = resolve;
-                img.onerror = resolve; // Tetap jalan meskipun ada yang gagal load
+                img.onerror = resolve;
             });
         }
         return Promise.resolve();
     });
 
-    // Tunggu semua gambar aman, baru jalankan html2canvas
+    // 2. Setelah semua gambar asli siap, jalankan engine rendering
     Promise.all(imagePromises).then(() => {
         btn.innerText = "GENERATING PREVIEW...";
 
         html2canvas(target, { 
             scale: 3, 
             useCORS: true,
-            allowTaint: true, // Mengizinkan render gambar lokal/blob hasil paste
+            allowTaint: true,
             logging: false,
+            // Trik jitu: Set dimensi render berdasarkan ukuran asli F4 di layar saat ini
+            width: target.offsetWidth,
+            height: target.offsetHeight,
             onclone: (cloned) => {
                 const cloneCapture = cloned.getElementById('capture-area');
-                cloneCapture.style.height = '100%'; 
-                cloneCapture.style.overflow = 'hidden';
+                if (cloneCapture) {
+                    cloneCapture.style.height = '100%'; 
+                    cloneCapture.style.overflow = 'hidden';
+                }
                 
-                // --- OBAT PATEN ANTI GEPENG / STRETCH ---
-                cloned.querySelectorAll('.img-preview').forEach(img => {
+                // --- PENGAMANAN GAMBAR AGAR TIDAK BLANK ATAU GEPENG ---
+                const originalImgs = target.querySelectorAll('.img-preview');
+                cloned.querySelectorAll('.img-preview').forEach((img, index) => {
                     if (img.style.display !== 'none' && img.src) {
-                        const rasioGambar = img.naturalWidth / img.naturalHeight;
-                        const wadah = img.parentElement;
-                        const rasioWadah = wadah.clientWidth / wadah.clientHeight;
+                        // Ambil referensi elemen asli yang ada di layar (bukan elemen kloningan)
+                        const originalImg = originalImgs[index];
+                        const wadahAsli = originalImg.parentElement;
+                        
+                        // Gunakan dimensi wadah asli yang terbukti tidak berukuran 0
+                        const wWidth = wadahAsli.offsetWidth || 100;
+                        const wHeight = wadahAsli.offsetHeight || 135;
 
+                        const rasioGambar = img.naturalWidth / img.naturalHeight;
+                        const rasioWadah = wWidth / wHeight;
+
+                        // Reset style cloning agar dipaksa render manual oleh canvas
                         img.style.objectFit = 'none'; 
+                        img.style.minWidth = '0px';
+                        img.style.minHeight = '0px';
                         
                         if (rasioGambar > rasioWadah) {
-                            img.style.width = '100%';
+                            img.style.width = wWidth + 'px';
                             img.style.height = 'auto';
                         } else {
-                            img.style.height = '100%';
+                            img.style.height = wHeight + 'px';
                             img.style.width = 'auto';
                         }
                         
@@ -339,7 +355,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
                     }
                 });
 
-                // --- KONVERSI FORM KE TEKS MATI ---
+                // --- CONVERSI FORM INPUT KE TEKS MATI ---
                 cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach(i => {
                     let text = i.value.toUpperCase();
                     if(i.type === 'date') text = formatTanggalIndo(i.value);
@@ -385,6 +401,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
             }, 'image/png');
         }).catch(err => {
             console.error("Gagal export gambar:", err);
+            alert("Terjadi kesalahan sistem saat merender cetakan gambar.");
             btn.innerText = "EXPORT PNG ▲"; 
             btn.disabled = false;
         });
