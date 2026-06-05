@@ -282,7 +282,7 @@ function updateStatusStempel() {
 }
 
 // ==========================================================================
-// 6. ENGINE EXPORT PNG PREVIEW (PERBAIKAN TOTAL: FIX BLANK, ANTI GEPENG & ZERO-DIMENSION)
+// 6. ENGINE EXPORT PNG PREVIEW (TEKNIK ISOLASI REAL-DOM: 100% BEBAS GHOSTING PANEL)
 // ==========================================================================
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
@@ -290,7 +290,7 @@ document.getElementById('btnExport').addEventListener('click', function() {
     btn.innerText = "WAIT, LOADING IMAGES..."; 
     btn.disabled = true;
 
-    // 1. Kumpulkan semua preview gambar yang aktif di layar
+    // 1. Pastikan semua gambar di layar sudah termuat sempurna
     const allOriginalImages = Array.from(target.querySelectorAll('.img-preview'));
     const imagePromises = allOriginalImages.map(img => {
         if (img.style.display !== 'none' && img.src) {
@@ -303,108 +303,135 @@ document.getElementById('btnExport').addEventListener('click', function() {
         return Promise.resolve();
     });
 
-    // 2. Setelah semua gambar asli siap, jalankan engine rendering
     Promise.all(imagePromises).then(() => {
         btn.innerText = "GENERATING PREVIEW...";
 
-        html2canvas(target, { 
-            scale: 3, 
-            useCORS: true,
-            allowTaint: true,
-            logging: false,
-            // Trik jitu: Set dimensi render berdasarkan ukuran asli F4 di layar saat ini
-            width: target.offsetWidth,
-            height: target.offsetHeight,
-            onclone: (cloned) => {
-                const cloneCapture = cloned.getElementById('capture-area');
-                if (cloneCapture) {
-                    cloneCapture.style.height = '100%'; 
-                    cloneCapture.style.overflow = 'hidden';
-                }
-                
-                // --- PENGAMANAN GAMBAR AGAR TIDAK BLANK ATAU GEPENG ---
-                const originalImgs = target.querySelectorAll('.img-preview');
-                cloned.querySelectorAll('.img-preview').forEach((img, index) => {
-                    if (img.style.display !== 'none' && img.src) {
-                        // Ambil referensi elemen asli yang ada di layar (bukan elemen kloningan)
-                        const originalImg = originalImgs[index];
-                        const wadahAsli = originalImg.parentElement;
-                        
-                        // Gunakan dimensi wadah asli yang terbukti tidak berukuran 0
-                        const wWidth = wadahAsli.offsetWidth || 100;
-                        const wHeight = wadahAsli.offsetHeight || 135;
+        // =========================================================
+        // TRIK MUTLAK: HILANGKAN PANEL KANAN DARI LAYAR SEMENTARA
+        // =========================================================
+        const rightPanel = document.getElementById('i6uw2x');
+        const parentLeft = document.getElementById('i6wpcl');
 
-                        const rasioGambar = img.naturalWidth / img.naturalHeight;
-                        const rasioWadah = wWidth / wHeight;
+        // Kunci ukuran kertas kiri pakai Pixel biar ga mendadak melar saat panel kanan hilang
+        const wAsli = parentLeft.getBoundingClientRect().width;
+        const hAsli = parentLeft.getBoundingClientRect().height;
+        const styleWidthAsli = parentLeft.style.width;
+        const styleHeightAsli = parentLeft.style.height;
+        const styleMaxWidthAsli = parentLeft.style.maxWidth;
 
-                        // Reset style cloning agar dipaksa render manual oleh canvas
-                        img.style.objectFit = 'none'; 
-                        img.style.minWidth = '0px';
-                        img.style.minHeight = '0px';
+        parentLeft.style.width = wAsli + 'px';
+        parentLeft.style.maxWidth = wAsli + 'px';
+        parentLeft.style.height = hAsli + 'px';
+
+        // Sembunyikan panel kanan 100% dari real DOM
+        const displayKananAsli = rightPanel.style.display;
+        rightPanel.style.display = 'none';
+
+        // Gulir paksa ke atas untuk menghindari bug koordinat scroll html2canvas
+        window.scrollTo(0, 0);
+
+        // Beri jeda 100ms agar browser "napas" merender DOM baru yang bersih
+        setTimeout(() => { 
+            html2canvas(target, { 
+                scale: 3, 
+                useCORS: true,
+                allowTaint: true,
+                logging: false,
+                backgroundColor: "#ffffff", // Paksa background putih
+                onclone: (cloned) => {
+                    // --- KALIBRASI GAMBAR BIAR PAS & ANTI BLANK ---
+                    const originalImgs = target.querySelectorAll('.img-preview');
+                    cloned.querySelectorAll('.img-preview').forEach((img, index) => {
+                        if (img.style.display !== 'none' && img.src) {
+                            const originalImg = originalImgs[index];
+                            const wadahAsli = originalImg.parentElement;
+                            
+                            const wWidth = wadahAsli.getBoundingClientRect().width || 100;
+                            const wHeight = wadahAsli.getBoundingClientRect().height || 135;
+
+                            const rasioGambar = img.naturalWidth / img.naturalHeight;
+                            const rasioWadah = wWidth / wHeight;
+
+                            img.style.objectFit = 'none'; 
+                            img.style.minWidth = '0px';
+                            img.style.minHeight = '0px';
+                            
+                            if (rasioGambar > rasioWadah) {
+                                img.style.width = wWidth + 'px';
+                                img.style.height = 'auto';
+                            } else {
+                                img.style.height = wHeight + 'px';
+                                img.style.width = 'auto';
+                            }
+                            
+                            img.style.margin = 'auto';
+                            img.style.display = 'block';
+                        }
+                    });
+
+                    // --- CONVERSI FORM INPUT KE TEKS MATI ---
+                    cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach(i => {
+                        let text = i.value.toUpperCase();
+                        if(i.type === 'date') text = formatTanggalIndo(i.value);
+                        const v = cloned.createElement('div');
+                        v.innerText = text || "";
                         
-                        if (rasioGambar > rasioWadah) {
-                            img.style.width = wWidth + 'px';
-                            img.style.height = 'auto';
+                        if (i.tagName === 'TEXTAREA') {
+                            v.style.cssText = "padding:5px; font-weight:bold; font-size:10px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;";
+                        } else if (i.closest('.id-row')) {
+                            v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
+                        } else if (i.closest('.color-table')) {
+                            const originalEl = document.getElementById(i.id) || i;
+                            const computedStyle = window.getComputedStyle(originalEl);
+                            const bgComputed = computedStyle.backgroundColor || "transparent";
+                            v.style.cssText = `text-align:center; font-weight:bold; font-size:10px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgComputed};`;
                         } else {
-                            img.style.height = wHeight + 'px';
-                            img.style.width = 'auto';
+                            v.style.cssText = "text-align:center; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;";
                         }
                         
-                        img.style.margin = 'auto';
-                        img.style.display = 'block';
+                        i.style.display = "none";
+                        i.parentElement.appendChild(v);
+                    });
+                
+                    const s = cloned.getElementById('model_global');
+                    if(s) {
+                        const sv = cloned.createElement('div');
+                        sv.innerText = s.value || "-"; 
+                        sv.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
+                        s.style.display = "none";
+                        s.parentElement.appendChild(sv);
                     }
-                });
 
-                // --- CONVERSI FORM INPUT KE TEKS MATI ---
-                cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach(i => {
-                    let text = i.value.toUpperCase();
-                    if(i.type === 'date') text = formatTanggalIndo(i.value);
-                    const v = cloned.createElement('div');
-                    v.innerText = text || "";
-                    
-                    if (i.tagName === 'TEXTAREA') {
-                        v.style.cssText = "padding:5px; font-weight:bold; font-size:10px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;";
-                    } else if (i.closest('.id-row')) {
-                        v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
-                    } else if (i.closest('.color-table')) {
-                        const originalEl = document.getElementById(i.id) || i;
-                        const computedStyle = window.getComputedStyle(originalEl);
-                        const bgComputed = computedStyle.backgroundColor || "transparent";
-                        v.style.cssText = `text-align:center; font-weight:bold; font-size:10px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgComputed};`;
-                    } else {
-                        v.style.cssText = "text-align:center; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;";
-                    }
-                    
-                    i.style.display = "none";
-                    i.parentElement.appendChild(v);
-                });
-            
-                const s = cloned.getElementById('model_global');
-                if(s) {
-                    const sv = cloned.createElement('div');
-                    sv.innerText = s.value || "-"; 
-                    sv.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
-                    s.style.display = "none";
-                    s.parentElement.appendChild(sv);
+                    cloned.querySelectorAll('.img-label').forEach(label => {
+                        if(label.style.display !== 'none') label.style.display = 'none';
+                    });
                 }
+            }).then(canvas => {
+                // KEMBALIKAN DOM SEPERTI SEMULA SETELAH FOTO DIAMBIL
+                rightPanel.style.display = displayKananAsli;
+                parentLeft.style.width = styleWidthAsli;
+                parentLeft.style.maxWidth = styleMaxWidthAsli;
+                parentLeft.style.height = styleHeightAsli;
 
-                cloned.querySelectorAll('.img-label').forEach(label => {
-                    if(label.style.display !== 'none') label.style.display = 'none';
-                });
-            }
-        }).then(canvas => {
-            canvas.toBlob(blob => {
-                const url = URL.createObjectURL(blob);
-                window.open(url, '_blank');
+                canvas.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    window.open(url, '_blank');
+                    btn.innerText = "EXPORT PNG ▲"; 
+                    btn.disabled = false;
+                }, 'image/png');
+            }).catch(err => {
+                // JIKA ERROR, PASTIKAN DOM TETAP DIKEMBALIKAN
+                rightPanel.style.display = displayKananAsli;
+                parentLeft.style.width = styleWidthAsli;
+                parentLeft.style.maxWidth = styleMaxWidthAsli;
+                parentLeft.style.height = styleHeightAsli;
+
+                console.error("Gagal export gambar:", err);
+                alert("Terjadi kesalahan sistem rendering.");
                 btn.innerText = "EXPORT PNG ▲"; 
                 btn.disabled = false;
-            }, 'image/png');
-        }).catch(err => {
-            console.error("Gagal export gambar:", err);
-            alert("Terjadi kesalahan sistem saat merender cetakan gambar.");
-            btn.innerText = "EXPORT PNG ▲"; 
-            btn.disabled = false;
-        });
+            });
+        }, 100); // Akhir dari setTimeout
     });
 });
 
