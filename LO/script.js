@@ -181,13 +181,14 @@ function formatTanggalIndo(dateStr) {
 }
 
 // ==========================================================================
-// 4. SISTEM UPLOAD GAMBAR SUPER PRO (KLIK + PASTE CTRL+V + DRAG-DROP)
+// 4. SISTEM UPLOAD GAMBAR SUPER PRO (KLIK AKTIF + DBLCLICK + DELETE HAPUS)
 // ==========================================================================
 document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
     const input = wrapper.querySelector('.img-upload-input');
     const imgElement = wrapper.querySelector('.img-preview');
     const labelElement = wrapper.querySelector('.img-label');
 
+    // --- FUNGSI UTAMA: MENAMPILKAN GAMBAR ---
     function tampilkanGambar(file) {
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
@@ -207,8 +208,37 @@ document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
     }
 
     wrapper.setAttribute('tabindex', '0');
-    wrapper.addEventListener('click', () => { wrapper.focus(); });
-    
+
+    // --- LOGIKA 1: KLIK 1X (PILIH/AKTIFKAN KOTAK) ---
+    wrapper.addEventListener('click', function(e) {
+        e.preventDefault(); // Mencegah label otomatis membuka file explorer
+        
+        // Bersihkan efek aktif dari semua kotak lain
+        document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box'));
+        
+        // Aktifkan kotak ini saja
+        wrapper.classList.add('active-box');
+        wrapper.focus();
+    });
+
+    // --- LOGIKA 2: KLIK 2X (BUKA FILE EXPLORER) ---
+    wrapper.addEventListener('dblclick', function(e) {
+        if (input) input.click();
+    });
+
+    // --- LOGIKA 3: TOMBOL DELETE / BACKSPACE (HAPUS GAMBAR) ---
+    wrapper.addEventListener('keydown', function(e) {
+        // Cek apakah tombol yg ditekan adalah Delete/Backspace DAN kotaknya sedang aktif
+        if ((e.key === 'Delete' || e.key === 'Backspace') && wrapper.classList.contains('active-box')) {
+            e.preventDefault();
+            imgElement.src = '';
+            imgElement.style.display = 'none';
+            labelElement.style.display = ''; // Kosongkan agar kembali ke display default CSS (flex)
+            if (input) input.value = ''; // Reset file input
+        }
+    });
+
+    // --- LOGIKA 4: PASTE CTRL+V ---
     wrapper.addEventListener('paste', function(e) {
         const items = (e.clipboardData || e.originalEvent.clipboardData).items;
         for (let i = 0; i < items.length; i++) {
@@ -227,22 +257,20 @@ document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
         }
     });
 
+    // --- LOGIKA 5: DRAG & DROP ---
     wrapper.addEventListener('dragover', function(e) {
         e.preventDefault();
-        wrapper.style.borderColor = '#34d399';
-        wrapper.style.backgroundColor = 'rgba(52, 211, 153, 0.05)';
+        wrapper.classList.add('active-box');
     });
 
     wrapper.addEventListener('dragleave', function(e) {
         e.preventDefault();
-        wrapper.style.borderColor = wrapper.classList.contains('detail-box-img-row') ? 'transparent' : '#000';
-        wrapper.style.backgroundColor = '#fff';
+        wrapper.classList.remove('active-box');
     });
 
     wrapper.addEventListener('drop', function(e) {
         e.preventDefault();
-        wrapper.style.borderColor = wrapper.classList.contains('detail-box-img-row') ? 'transparent' : '#000';
-        wrapper.style.backgroundColor = '#fff';
+        wrapper.classList.remove('active-box');
         
         const file = e.dataTransfer.files[0];
         tampilkanGambar(file);
@@ -253,6 +281,14 @@ document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
             input.files = dataTransfer.files;
         }
     });
+});
+
+// --- LOGIKA 6: KLIK DI LUAR KOTAK (HILANGKAN FOKUS) ---
+document.addEventListener('click', function(e) {
+    // Kalau yang diklik BUKAN bagian dari kotak upload gambar, hilangkan efek aktifnya
+    if (!e.target.closest('.img-upload-wrapper')) {
+        document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box'));
+    }
 });
 
 // ==========================================================================
