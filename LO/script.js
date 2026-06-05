@@ -282,58 +282,75 @@ function updateStatusStempel() {
 }
 
 // ==========================================================================
-// 6. ENGINE EXPORT PNG PREVIEW (FINAL FIX: ANTI GHOSTING PANEL & GAMBAR HILANG)
+// 6. ENGINE EXPORT PNG PREVIEW (FINAL: NATIVE IGNORE & PRE-CALCULATED SIZES)
 // ==========================================================================
 document.getElementById('btnExport').addEventListener('click', function() {
     const target = document.getElementById('capture-area');
     const btn = this; 
-    btn.innerText = "WAIT, MERENDERING..."; 
+    btn.innerText = "WAIT, LOADING IMAGES..."; 
     btn.disabled = true;
 
-    // --- ELEMINASI MASALAH GHOSTING PANEL KANAN ---
-    const parentLeft = document.getElementById('i6wpcl');
-    const rightPanel = document.getElementById('i6uw2x');
+    // 1. Kumpulkan semua gambar dan CATAT UKURAN WADAH ASLINYA SEKARANG (Sebelum di-clone)
+    const originalImgs = Array.from(target.querySelectorAll('.img-preview'));
+    const wadahSizes = originalImgs.map(img => {
+        const rect = img.parentElement.getBoundingClientRect();
+        return { w: rect.width || 100, h: rect.height || 135 }; // Simpan ukuran pixel asli!
+    });
 
-    // Ambil ukuran target dalam Pixel Mutlak
-    const targetWidth = target.offsetWidth;
-    const targetHeight = target.offsetHeight;
+    // 2. Pastikan gambar sudah beres di-load
+    const imagePromises = originalImgs.map(img => {
+        if (img.style.display !== 'none' && img.src) {
+            if (img.complete) return Promise.resolve();
+            return new Promise(resolve => { img.onload = resolve; img.onerror = resolve; });
+        }
+        return Promise.resolve();
+    });
 
-    // Simpan state asli CSS
-    const oriWidth = parentLeft.style.width;
-    const oriMaxWidth = parentLeft.style.maxWidth;
-    const oriFlex = parentLeft.style.flex;
-    const oriDisplay = rightPanel.style.display;
+    // 3. Simpan referensi input asli untuk ngambil warna background nanti
+    const originalInputs = Array.from(target.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input'));
 
-    // Kunci dimensi target agar tidak melar saat panel kanan dihilangkan
-    parentLeft.style.flex = 'none';
-    parentLeft.style.width = targetWidth + 'px';
-    parentLeft.style.maxWidth = targetWidth + 'px';
+    Promise.all(imagePromises).then(() => {
+        btn.innerText = "GENERATING PREVIEW...";
 
-    // Lenyapkan panel kanan murni dari flow layar
-    rightPanel.style.display = 'none';
-
-    // Gulir ke atas untuk perbaiki koordinat jepretan
-    window.scrollTo(0, 0);
-
-    // Beri jeda browser stabil sebelum menjepret (150ms)
-    setTimeout(() => {
-        html2canvas(target, {
-            scale: 2, // Skala 2 dijamin super aman untuk memori dan gambar tidak blank
+        html2canvas(target, { 
+            scale: 2, // Skala 2 pas banget: Tajam, tapi gak bikin browser berat/nge-blank
             useCORS: true,
             allowTaint: true,
-            logging: false,
             backgroundColor: "#ffffff",
+            // --- FITUR SAKTI: HAPUS PANEL KANAN TANPA MERUSAK LAYOUT ---
+            ignoreElements: (element) => {
+                if (element.id === 'i6uw2x') {
+                    return true; // "Abaikan elemen ini saat difoto!"
+                }
+                return false;
+            },
             onclone: (cloned) => {
-                // --- KITA TIDAK LAGI MENGUBAH DIMENSI GAMBAR DI SINI ---
-                // html2canvas v1.4.1 sudah membaca `object-fit` dengan baik.
-                
-                // Cukup sembunyikan teks label jika gambar sudah terisi
-                cloned.querySelectorAll('.img-label').forEach(label => {
-                    if(label.style.display !== 'none') label.style.display = 'none';
+                // --- RUMUS ANTI-GEPENG (Pakai data ukuran asli yang sudah dicatat) ---
+                cloned.querySelectorAll('.img-preview').forEach((img, index) => {
+                    if (img.style.display !== 'none' && img.src) {
+                        const size = wadahSizes[index]; // Ambil ukuran yang 100% valid
+                        const rasioGambar = img.naturalWidth / img.naturalHeight;
+                        const rasioWadah = size.w / size.h;
+
+                        img.style.objectFit = 'none'; 
+                        img.style.minWidth = '0px';
+                        img.style.minHeight = '0px';
+                        
+                        if (rasioGambar > rasioWadah) {
+                            img.style.width = size.w + 'px';
+                            img.style.height = 'auto';
+                        } else {
+                            img.style.height = size.h + 'px';
+                            img.style.width = 'auto';
+                        }
+                        
+                        img.style.margin = 'auto';
+                        img.style.display = 'block';
+                    }
                 });
 
                 // --- CONVERSI FORM INPUT KE TEKS MATI ---
-                cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach(i => {
+                cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach((i, index) => {
                     let text = i.value.toUpperCase();
                     if(i.type === 'date' && typeof formatTanggalIndo === 'function') text = formatTanggalIndo(i.value);
                     const v = cloned.createElement('div');
@@ -344,7 +361,8 @@ document.getElementById('btnExport').addEventListener('click', function() {
                     } else if (i.closest('.id-row')) {
                         v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
                     } else if (i.closest('.color-table')) {
-                        const originalEl = document.getElementById(i.id) || i;
+                        // Ambil warna background dari elemen ASLI di layar, bukan hasil kloningan
+                        const originalEl = originalInputs[index];
                         const computedStyle = window.getComputedStyle(originalEl);
                         const bgComputed = computedStyle.backgroundColor || "transparent";
                         v.style.cssText = `text-align:center; font-weight:bold; font-size:10px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgComputed};`;
@@ -364,14 +382,12 @@ document.getElementById('btnExport').addEventListener('click', function() {
                     s.style.display = "none";
                     s.parentElement.appendChild(sv);
                 }
+
+                cloned.querySelectorAll('.img-label').forEach(label => {
+                    if(label.style.display !== 'none') label.style.display = 'none';
+                });
             }
         }).then(canvas => {
-            // KEMBALIKAN DOM LAYAR SEPERTI SEMULA
-            parentLeft.style.width = oriWidth;
-            parentLeft.style.maxWidth = oriMaxWidth;
-            parentLeft.style.flex = oriFlex;
-            rightPanel.style.display = oriDisplay;
-
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 window.open(url, '_blank');
@@ -379,18 +395,12 @@ document.getElementById('btnExport').addEventListener('click', function() {
                 btn.disabled = false;
             }, 'image/png');
         }).catch(err => {
-            // JIKA ERROR, DOM HARUS TETAP DIKEMBALIKAN
-            parentLeft.style.width = oriWidth;
-            parentLeft.style.maxWidth = oriMaxWidth;
-            parentLeft.style.flex = oriFlex;
-            rightPanel.style.display = oriDisplay;
-
             console.error("Gagal export gambar:", err);
-            alert("Gagal memproses gambar saat di-export.");
+            alert("Sistem rendering error. Coba reload halaman.");
             btn.innerText = "EXPORT PNG ▲"; 
             btn.disabled = false;
         });
-    }, 150);
+    });
 });
 
 // ==========================================================================
