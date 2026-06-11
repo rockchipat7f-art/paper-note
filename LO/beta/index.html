@@ -3,310 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google</title>
-    <style>
-        /* Menggunakan font default Google */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #ffffff;
-            color: #202124;
-        }
-
-        /* Navigasi Kanan Atas */
-        header {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 16px 24px;
-            font-size: 13px;
-        }
-
-        header a {
-            color: rgba(0,0,0,0.87);
-            text-decoration: none;
-            margin-right: 15px;
-        }
-
-        header a:hover {
-            text-decoration: underline;
-        }
-
-        /* Tombol Aplikasi & Profil */
-        .apps-icon {
-            padding: 4px;
-            margin-right: 8px;
-            cursor: pointer;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .apps-icon:hover {
-            background-color: #f1f3f4;
-        }
-
-        .profile-pic {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 1px solid #dadce0;
-        }
-
-        /* Konten Utama (Logo & Pencarian) */
-        main {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding-bottom: 100px; /* Dorong sedikit ke atas agar seimbang */
-        }
-
-        /* Logo Google SVG */
-        .logo {
-            width: 272px;
-            height: 92px;
-            margin-bottom: 30px;
-        }
-
-        /* Kotak Pencarian */
-        .search-container {
-            width: 100%;
-            max-width: 584px;
-            position: relative;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            border: 1px solid #dee1e5;
-            border-radius: 24px;
-            padding: 0 14px;
-            height: 44px;
-            background-color: #fff;
-            transition: box-shadow 0.1s;
-        }
-
-        .search-box:hover, .search-box:focus-within {
-            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
-            border-color: rgba(223,225,229,0);
-        }
-
-        .search-input {
-            flex-grow: 1;
-            border: none;
-            height: 34px;
-            font-size: 16px;
-            color: #000;
-            outline: none;
-            padding: 0 10px;
-        }
-
-        /* Icon didalam Kotak Pencarian */
-        .search-icon, .voice-icon, .lens-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            width: 24px;
-            height: 24px;
-        }
-
-        .search-icon svg {
-            fill: #9aa0a6;
-        }
-
-        .mic-lens-container {
-            display: flex;
-            gap: 12px;
-        }
-
-        /* Tombol Pencarian */
-        .buttons-container {
-            margin-top: 29px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            background-color: #f8f9fa;
-            border: 1px solid #f8f9fa;
-            border-radius: 4px;
-            color: #3c4043;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            margin: 11px 4px;
-            padding: 0 16px;
-            line-height: 27px;
-            height: 36px;
-            min-width: 54px;
-            text-align: center;
-            cursor: pointer;
-            user-select: none;
-            transition: border-color 0.15s, box-shadow 0.15s;
-        }
-
-        .btn:hover {
-            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-            background-color: #f8f9fa;
-            border: 1px solid #dadce0;
-            color: #202124;
-        }
-
-        /* Informasi Bahasa */
-        .language-info {
-            font-size: 13px;
-            margin-top: 25px;
-            color: #4d5156;
-        }
-
-        .language-info a {
-            color: #1a0dab;
-            text-decoration: none;
-            margin-left: 5px;
-        }
-
-        .language-info a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #f2f2f2;
-            font-size: 14px;
-            color: #70757a;
-            border-top: 1px solid #dadce0;
-        }
-
-        .footer-location {
-            padding: 15px 30px;
-            border-bottom: 1px solid #dadce0;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            padding: 15px 30px;
-        }
-
-        .footer-links-left, .footer-links-right {
-            display: flex;
-            gap: 27px;
-        }
-
-        .footer-links a {
-            color: #70757a;
-            text-decoration: none;
-        }
-
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <title>WJSPORT - LEMBAR PRODUKSI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body id="ibody">
 
-    <!-- Header Navigasi Kanan Atas -->
-    <header>
-        <a href="https://mail.google.com" target="_blank">Gmail</a>
-        <a href="https://images.google.com" target="_blank">Gambar</a>
+<div class="gjs-container">
+    <div data-type-role="flex-row" class="gjs-plg-flex-row" id="iqp27l">
         
-        <!-- Ikon Sembilan Titik (Google Apps) -->
-        <div class="apps-icon" title="Aplikasi Google">
-            <svg viewBox="0 0 24 24" width="24" height="24">
-                <path d="M6 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 12c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0-6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-6 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z" fill="#5F6368"></path>
-            </svg>
-        </div>
-
-        <!-- Foto Profil Default -->
-        <img class="profile-pic" src="https://lh3.googleusercontent.com/ogw/AF2bZyh4hetLi0yQkKLT3S4aXIutXNLPzwoYCuO1dTXpF-qnm8Y=s32-c-mo" alt="Foto Profil" title="Akun Google">
-    </header>
-
-    <!-- Konten Utama -->
-    <main>
-        <!-- Logo Google Resmi berbasis Inline SVG -->
-        <svg class="logo" aria-label="Google" viewBox="0 0 272 92" xmlns="http://www.w3.org/2000/svg">
-            <!-- Huruf 'g' pertama (Biru) -->
-            <path d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z" fill="#4285F4"></path>
-            <!-- Huruf 'o' pertama (Merah) -->
-            <path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#EA4335"></path>
-            <!-- Huruf 'o' kedua (Kuning) -->
-            <path d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#FBBC05"></path>
-            <!-- Huruf 'g' kedua (Biru) -->
-            <path d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z" fill="#4285F4"></path>
-            <!-- Huruf 'l' (Hijau) -->
-            <path d="M225 3v65h-9.5V3h9.5z" fill="#34A853"></path>
-            <!-- Huruf 'e' terakhir (Merah) -->
-            <path d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z" fill="#EA4335"></path>
-        </svg>
-
-        <!-- Kotak Pencarian -->
-        <div class="search-container">
-            <div class="search-box">
-                <div class="search-icon">
-                    <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-                    </svg>
-                </div>
-                <input class="search-input" type="text" autofocus>
-                <div class="mic-lens-container">
-                    <!-- Icon Mic -->
-                    <div class="voice-icon" title="Telusuri dengan suara">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="#4285F4" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"></path>
-                            <path fill="#34A853" d="M12 16c-2.76 0-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2c0 2.76-2.24 5-5 5z"></path>
-                        </svg>
+        <div data-type-role="flex-column" class="gjs-plg-flex-column" id="i6wpcl">
+            <div id="capture-area">
+                <div class="main-container">
+                    
+                    <div class="logo-header-space">
+                        <img src="logo-header.png" alt="HEADER LEMBAR ORDER WJSPORT" class="header-png-img">
                     </div>
-                    <!-- Icon Lens -->
-                    <div class="lens-icon" title="Telusuri pakai gambar">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="#4285F4" d="M4 4h3V2H4c-1.1 0-2 .9-2 2v3h2V4zm16-2h-3v2h3v3h2V4c0-1.1-.9-2-2-2zM4 20h3v2H4c-1.1 0-2-.9-2-2v-3h2v3zm16 2h-3v-2h3v-3h2v3c0 1.1-.9 2-2 2z"></path>
-                            <circle fill="#FBBC05" cx="12" cy="12" r="3"></circle>
-                            <path fill="#34A853" d="M12 17c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z"></path>
-                        </svg>
+                    
+                    <div class="header-section">
+                        <div id="ilbdf2" class="payment-status">
+                            <div id="io2iie" class="box-stempel">
+                                <div id="igi7vw" class="top-label">DP</div>
+                                <div id="iuosnk" class="space-stempel">
+                                    <img id="img-stempel-dp" src="stempel_DP.png" alt="Stempel DP" style="display: none; width: 62px; margin: 0 auto;">
+                                    <div id="text-stempel-dp" class="keterangan-stempel"></div>
+                                </div>
+                            </div>
+                            <div id="iaongk" class="box-stempel">
+                                <div id="ixvq7e" class="top-label">LUNAS</div>
+                                <div id="iuylrr" class="space-stempel">
+                                    <img id="img-stempel-lunas" src="stempel_LUNAS.png" alt="Stempel Lunas" style="display: none; width: 62px; margin: 0 auto;">
+                                    <div id="text-stempel-lunas" class="keterangan-stempel"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="qr-container"><div id="qrcode"></div></div>
+                        <div class="identity-group">
+                            <div class="identity-grid">
+                                <div class="id-row"><span class="id-tag">NAMA</span><input type="text" id="nama" placeholder=" "></div>
+                                <div class="id-row"><span class="id-tag">ORDERAN</span><input type="text" id="orderan" placeholder=" "></div>
+                                <div class="id-row"><span class="id-tag">TGL MASUK</span><input type="date" id="tgl_masuk"></div>
+                                <div class="id-row"><span class="id-tag">DEADLINE/DT</span><input type="date" id="deadline"></div>
+                            </div>
+                            <div class="identity-grid">
+                                <div class="id-row"><span class="id-tag">NO LO.</span><input type="text" id="nolo" placeholder=" "></div>
+                                <div class="id-row">
+                                    <span class="id-tag">MODEL</span>
+                                    <select id="model_global" onchange="updateDynamicMenu()">
+                                        <option value="">-- PILIH --</option>
+                                        <option value="KAOS">KAOS</option>
+                                        <option value="ROMPI">ROMPI</option>
+                                        <option value="JAKET">JAKET</option>
+                                        <option value="JAS ALMAMATER">JAS ALMAMATER</option>
+                                        <option value="TRAINING">TRAINING</option>
+                                        <option value="KEMEJA">KEMEJA</option>
+                                        <option value="WEARPACK">WEARPACK</option>
+                                        <option value="SETELAN BAJU">SETELAN BAJU</option>
+                                        <option value="SETELAN OR">SETELAN OR</option>
+                                        <option value="ATRIBUT">ATRIBUT</option>
+                                    </select>
+                                </div>
+                                <div class="id-row"><span class="id-tag">BAHAN</span><input type="text" id="bahan" placeholder=" "></div>
+                                <div class="id-row"><span class="id-tag">KODE</span><input type="text" id="kode" placeholder=" "></div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="menu-grid" id="menu-area"></div>
+
+                    <div class="main-design-grid">
+                        <div class="main-design-section img-upload-wrapper">
+                            <input type="file" id="main-design-1" class="img-upload-input" accept="image/*" style="display: none;">
+                            <label for="main-design-1" class="img-label">DESAIN 1</label>
+                            <img class="img-preview" src="" style="display: none;">
+                        </div>
+
+                        <div class="main-design-section img-upload-wrapper">
+                            <input type="file" id="main-design-2" class="img-upload-input" accept="image/*" style="display: none;">
+                            <label for="main-design-2" class="img-label">DESAIN 2</label>
+                            <img class="img-preview" src="" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <script>
+                            // Looping presisi 6 kotak gambar agar tidak melar (TOTAL 7 KOLOM)
+                            const judulDetail = ["DADA KANAN", "DADA KIRI", "DEPAN", "PUNGGUNG", "LNGN KANAN", "LNGN KIRI"];
+                            judulDetail.forEach((judul, i) => {
+                                document.write(`
+                                <div class="detail-box-container">
+                                    <div class="detail-box-input-row">
+                                        <input type="text" class="export-input" value="${judul}">
+                                    </div>
+                                    <div class="detail-box-img-row img-upload-wrapper">
+                                        <input type="file" id="detail-img-${i+1}" class="img-upload-input" accept="image/*" style="display: none;">
+                                        <label for="detail-img-${i+1}" class="img-label" style="font-size:10px; font-weight:bold;">GAMBAR<br>DETAIL</label>
+                                        <img class="img-preview" src="" style="display: none;">
+                                    </div>
+                                </div>`);
+                            });
+                        </script>
+
+                        <!-- Kotak ke-7: Keterangan Teks (WARNA) Paling Kanan -->
+                        <div class="detail-text-box">
+                            <div class="detail-header-red">WARNA</div>
+                            <textarea class="export-input" placeholder="Keterangan text..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="sizing-section">
+                        <div class="notes-box">
+                            <textarea class="export-input" placeholder="Tulis catatan tambahan di sini..."></textarea>
+                        </div>
+                        <div class="size-table-wrapper">
+                            <table class="size-table">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">SIZE</th>
+                                        <th colspan="2">DEWASA</th>
+                                        <th colspan="2">ANAK</th>
+                                    </tr>
+                                    <tr>
+                                        <th>PNDK</th><th>PNJNG</th><th>PNDK</th><th>PNJNG</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <script>
+                                        // Looping khusus S sampai 6XL dengan input agar bisa di-custom sendiri
+                                        const sizes = ['S','M','L','XL','XXL','XXXL','4XL','5XL','6XL'];
+                                        sizes.forEach(s => {
+                                            document.write(`
+                                            <tr>
+                                                <td><input type="text" class="export-input" value="${s}" style="font-weight:bold;"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                            </tr>`);
+                                        });
+                                    </script>
+                                    
+                                    <tr>
+                                        <td><input type="text" class="export-input" value="TOTAL" style="font-weight:bold; color:#ff0000;"></td>
+                                        <td colspan="2"><input type="text" class="export-input" placeholder="TOTAL DEWASA" style="font-weight:bold;"></td>
+                                        <td colspan="2"><input type="text" class="export-input" placeholder="TOTAL ANAK" style="font-weight:bold;"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bottom-color-grid">
+                        <table class="color-table">
+                            <tr class="row-grey">
+                                <script>
+                                    const komponenAbu = ["ADMIN", "DESAIN", "KONFIRMASI", "CUTTING", "SABLON", "BORDIR", "JAHIT", "LBNG KCNG", "QC ADMIN", "PACKING", "PENGIRIMAN"];
+                                    komponenAbu.forEach(teks => {
+                                        document.write(`<td><input type="text" class="export-input" value="${teks}" style="font-weight: bold; background: #e2e8f0; color: #000;"></td>`);
+                                    });
+                                </script>
+                            </tr>
+                            <tr class="row-white-atas"> 
+                                <script>
+                                    const komponenPutih1 = ["YEN", "GOR", " ", " ", " ", " ", " ", " ", " ", " ", " "];
+                                    komponenPutih1.forEach(teks => {
+                                        document.write(`<td><input type="text" class="export-input" value="${teks}"></td>`);
+                                    });
+                                </script>
+                            </tr>
+                            <tr class="row-yellow">
+                                <script>
+                                    const komponenKuning = [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "];
+                                    komponenKuning.forEach(teks => {
+                                        document.write(`<td><input type="text" class="export-input" value="${teks}" style="font-weight: bold; background: #fef08a; color: #000;"></td>`);
+                                    });
+                                </script>
+                            </tr>
+                            <tr class="row-white-bawah"> 
+                                <script>
+                                    for(let i=0; i<11; i++) {
+                                        document.write('<td><input type="text" class="export-input" value=" "></td>');
+                                    }
+                                </script>
+                            </tr>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </div>
-
-        <!-- Tombol Pencarian -->
-        <div class="buttons-container">
-            <button class="btn" onclick="alert('Mencari sesuatu...')">Penelusuran Google</button>
-            <button class="btn" onclick="location.href='https://www.google.com/doodles'">Saya Lagi Beruntung</button>
-        </div>
-
-        <!-- Info Bahasa -->
-        <div class="language-info">
-            Google tersedia dalam bahasa: 
-            <a href="#">English</a>
-            <a href="#">Basa Bali</a>
-        </div>
-    </main>
-
-    <!-- Footer Bawah -->
-    <footer>
-        <div class="footer-location">Indonesia</div>
-        <div class="footer-links">
-            <div class="footer-links-left">
-                <a href="#">Tentang</a>
-                <a href="#">Periklanan</a>
-                <a href="#">Bisnis</a>
-                <a href="#">Cara kerja Penelusuran</a>
+        
+        <div data-type-role="flex-column" class="gjs-plg-flex-column" id="i6uw2x">
+            <div class="control-panel-header">
+                <h3>PANEL OPERASI</h3>
+                <p>Silakan isi identitas di lembar kiri, lalu pilih kriteria spesifik di bawah ini:</p>
             </div>
-            <div class="footer-links-right">
-                <a href="#">Privasi</a>
-                <a href="#">Persyaratan</a>
-                <a href="#">Setelan</a>
+            <div id="pilihan-opsi-dinamis">
+                <p class="notif-pilih">← Pilih Jenis <strong>MODEL</strong> terlebih dahulu pada lembar order untuk memunculkan daftar opsi kerja.</p>
+            </div>
+            <div class="checkbox-container-right" style="margin-top: 15px;">
+                <div class="section-title-right">STATUS PEMBAYARAN</div>
+    
+                <div style="display: flex; gap: 15px; margin-bottom: 10px; width: 100%;">
+                    <label class="check-item-right">
+                        <input type="radio" name="status_bayar" value="BELUM" checked onchange="updateStatusStempel()"> BELUM BAYAR
+                    </label>
+                    <label class="check-item-right">
+                        <input type="radio" name="status_bayar" value="DP" onchange="updateStatusStempel()"> DP
+                    </label>
+                    <label class="check-item-right">
+                        <input type="radio" name="status_bayar" value="LUNAS" onchange="updateStatusStempel()"> LUNAS
+                    </label>
+                </div>
+                
+                <div style="width: 100%;">
+                    <span style="font-size: 11px; color: #94a3b8; display: block; margin-bottom: 5px;">NOMINAL / KETERANGAN:</span>
+                    <input type="text" id="input_nominal_stempel" placeholder="Contoh: Rp 500.000 atau lunas" oninput="updateStatusStempel()" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; font-family: sans-serif; font-size: 13px;">
+                </div>
+            </div>
+            <div class="footer-tools">
+                <button onclick="updateQR()" class="btn-tool">REFRESH QR</button>
+                <button id="btnExport" class="btn-main">EXPORT PNG ▲</button>
             </div>
         </div>
-    </footer>
 
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
