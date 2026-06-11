@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WJSPORT - LEMBAR PRODUKSI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="ibody">
+
+<div class="gjs-container">
+    <div data-type-role="flex-row" class="gjs-plg-flex-row" id="iqp27l">
+        
+        <div data-type-role="flex-column" class="gjs-plg-flex-column" id="i6wpcl">
+            <div id="capture-area">
+                <div class="main-container">
+                    
+                    <div class="logo-header-space">
+                        <img src="logo-header.png" alt="HEADER LEMBAR ORDER WJSPORT" class="header-png-img">
+                    </div>
+                    
+                    <div class="header-section">
+                        <div id="ilbdf2" class="payment-status">
+                            <div id="io2iie" class="box-stempel">
+                                <div id="igi7vw" class="top-label">DP</div>
+                                <div id="iuosnk" class="space-stempel">
+                                    <img id="img-stempel-dp" src="stempel_DP.png" alt="Stempel DP" style="display: none; width: 62px; margin: 0 auto;">
+                                    <div id="text-stempel-dp" class="keterangan-stempel"></div>
+                                </div>
+                            </div>
+                            <div id="iaongk" class="box-stempel">
+                                <div id="ixvq7e" class="top-label">LUNAS</div>
+                                <div id="iuylrr" class="space-stempel">
+                                    <img id="img-stempel-lunas" src="stempel_LUNAS.png" alt="Stempel Lunas" style="display: none; width: 62px; margin: 0 auto;">
+                                    <div id="text-stempel-lunas" class="keterangan-stempel"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="qr-container"><div id="qrcode"></div></div>
+                        <div class="identity-group">
+                            <div class="identity-grid">
+                                <div class="id-row"><span class="id-tag">NAMA</span><input type="text" id="nama" placeholder=" "></div>
+                                <div class="id-row"><span class="id-tag">ORDERAN</span><input type="text" id="orderan" placeholder=" "></div>
+                                <div class="id-row"><span class="id-tag">TGL MASUK</span><input type="date" id="tgl_masuk"></div>
+                                <div class="id-row"><span class="id-tag">DEADLINE/DT</span><input type="date" id="deadline"></div>
+                            </div>
+                            <div class="identity-grid">
+                                <div class="id-row"><span class="id-tag">NO LO.</span><input type="text" id="nolo" placeholder=" "></div>
+                                <div class="id-row">
+                                    <span class="id-tag">MODEL</span>
+                                    <select id="model_global" onchange="updateDynamicMenu()">
+                                        <option value="">-- PILIH --</option>
+                                        <option value="KAOS">KAOS</option>
+                                        <option value="ROMPI">ROMPI</option>
+                                        <option value="JAKET">JAKET</option>
+                                        <option value="JAS ALMAMATER">JAS ALMAMATER</option>
+                                        <option value="TRAINING">TRAINING</option>
+                                        <option value="KEMEJA">KEMEJA</option>
+                                        <option value="WEARPACK">WEARPACK</option>
+                                        <option value="SETELAN BAJU">SETELAN BAJU</option>
+                                        <option value="SETELAN OR">SETELAN OR</option>
+                                        <option value="ATRIBUT">ATRIBUT</option>
+                                    </select>
+                                </div>
+                                <div class="id-row"><span class="id-tag">BAHAN</span><input type="text" id="bahan" placeholder=" "></div>
+                                <div class="id-row"><span class="id-tag">KODE</span><input type="text" id="kode" placeholder=" "></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-grid" id="menu-area"></div>
+
+                    <div class="main-design-grid">
+                        <div class="main-design-section img-upload-wrapper">
+                            <input type="file" id="main-design-1" class="img-upload-input" accept="image/*" style="display: none;">
+                            <label for="main-design-1" class="img-label">DESAIN 1</label>
+                            <img class="img-preview" src="" style="display: none;">
+                        </div>
+
+                        <div class="main-design-section img-upload-wrapper">
+                            <input type="file" id="main-design-2" class="img-upload-input" accept="image/*" style="display: none;">
+                            <label for="main-design-2" class="img-label">DESAIN 2</label>
+                            <img class="img-preview" src="" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <script>
+                            // Looping presisi 6 kotak gambar agar tidak melar (TOTAL 7 KOLOM)
+                            const judulDetail = ["DADA KANAN", "DADA KIRI", "DEPAN", "PUNGGUNG", "LNGN KANAN", "LNGN KIRI"];
+                            judulDetail.forEach((judul, i) => {
+                                document.write(`
+                                <div class="detail-box-container">
+                                    <div class="detail-box-input-row">
+                                        <input type="text" class="export-input" value="${judul}">
+                                    </div>
+                                    <div class="detail-box-img-row img-upload-wrapper">
+                                        <input type="file" id="detail-img-${i+1}" class="img-upload-input" accept="image/*" style="display: none;">
+                                        <label for="detail-img-${i+1}" class="img-label" style="font-size:10px; font-weight:bold;">GAMBAR<br>DETAIL</label>
+                                        <img class="img-preview" src="" style="display: none;">
+                                    </div>
+                                </div>`);
+                            });
+                        </script>
+
+                        <!-- Kotak ke-7: Keterangan Teks (WARNA) Paling Kanan -->
+                        <div class="detail-text-box">
+                            <div class="detail-header-red">WARNA</div>
+                            <textarea class="export-input" placeholder="Keterangan text..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="sizing-section">
+                        <div class="notes-box">
+                            <textarea class="export-input" placeholder="Tulis catatan tambahan di sini..."></textarea>
+                        </div>
+                        <div class="size-table-wrapper">
+                            <table class="size-table">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">SIZE</th>
+                                        <th colspan="2">DEWASA</th>
+                                        <th colspan="2">ANAK</th>
+                                    </tr>
+                                    <tr>
+                                        <th>PNDK</th><th>PNJNG</th><th>PNDK</th><th>PNJNG</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <script>
+                                        // Looping khusus S sampai 6XL dengan input agar bisa di-custom sendiri
+                                        const sizes = ['S','M','L','XL','XXL','XXXL','4XL','5XL','6XL'];
+                                        sizes.forEach(s => {
+                                            document.write(`
+                                            <tr>
+                                                <td><input type="text" class="export-input" value="${s}" style="font-weight:bold;"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                                <td><input type="text" class="export-input"></td>
+                                            </tr>`);
+                                        });
+                                    </script>
+                                    
+                                    <tr>
+                                        <td><input type="text" class="export-input" value="TOTAL" style="font-weight:bold; color:#ff0000;"></td>
+                                        <td colspan="2"><input type="text" class="export-input" placeholder="TOTAL DEWASA" style="font-weight:bold;"></td>
+                                        <td colspan="2"><input type="text" class="export-input" placeholder="TOTAL ANAK" style="font-weight:bold;"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bottom-color-grid">
+                        <table class="color-table">
+                            <tr class="row-grey">
+                                <script>
+                                    const komponenAbu = ["ADMIN", "DESAIN", "KONFIRMASI", "CUTTING", "SABLON", "BORDIR", "JAHIT", "LBNG KCNG", "QC ADMIN", "PACKING", "PENGIRIMAN"];
+                                    komponenAbu.forEach(teks => {
+                                        document.write(`<td><input type="text" class="export-input" value="${teks}" style="font-weight: bold; background: #e2e8f0; color: #000;"></td>`);
+                                    });
+                                </script>
+                            </tr>
+                            <tr class="row-white-atas"> 
+                                <script>
+                                    const komponenPutih1 = ["YEN", "GOR", " ", " ", " ", " ", " ", " ", " ", " ", " "];
+                                    komponenPutih1.forEach(teks => {
+                                        document.write(`<td><input type="text" class="export-input" value="${teks}"></td>`);
+                                    });
+                                </script>
+                            </tr>
+                            <tr class="row-yellow">
+                                <script>
+                                    const komponenKuning = [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "];
+                                    komponenKuning.forEach(teks => {
+                                        document.write(`<td><input type="text" class="export-input" value="${teks}" style="font-weight: bold; background: #fef08a; color: #000;"></td>`);
+                                    });
+                                </script>
+                            </tr>
+                            <tr class="row-white-bawah"> 
+                                <script>
+                                    for(let i=0; i<11; i++) {
+                                        document.write('<td><input type="text" class="export-input" value=" "></td>');
+                                    }
+                                </script>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+        <div data-type-role="flex-column" class="gjs-plg-flex-column" id="i6uw2x">
+            <div class="control-panel-header">
+                <h3>PANEL OPERASI</h3>
+                <p>Silakan isi identitas di lembar kiri, lalu pilih kriteria spesifik di bawah ini:</p>
+            </div>
+            <div id="pilihan-opsi-dinamis">
+                <p class="notif-pilih">← Pilih Jenis <strong>MODEL</strong> terlebih dahulu pada lembar order untuk memunculkan daftar opsi kerja.</p>
+            </div>
+            <div class="checkbox-container-right" style="margin-top: 15px;">
+                <div class="section-title-right">STATUS PEMBAYARAN</div>
+    
+                <div style="display: flex; gap: 15px; margin-bottom: 10px; width: 100%;">
+                    <label class="check-item-right">
+                        <input type="radio" name="status_bayar" value="BELUM" checked onchange="updateStatusStempel()"> BELUM BAYAR
+                    </label>
+                    <label class="check-item-right">
+                        <input type="radio" name="status_bayar" value="DP" onchange="updateStatusStempel()"> DP
+                    </label>
+                    <label class="check-item-right">
+                        <input type="radio" name="status_bayar" value="LUNAS" onchange="updateStatusStempel()"> LUNAS
+                    </label>
+                </div>
+                
+                <div style="width: 100%;">
+                    <span style="font-size: 11px; color: #94a3b8; display: block; margin-bottom: 5px;">NOMINAL / KETERANGAN:</span>
+                    <input type="text" id="input_nominal_stempel" placeholder="Contoh: Rp 500.000 atau lunas" oninput="updateStatusStempel()" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; font-family: sans-serif; font-size: 13px;">
+                </div>
+            </div>
+            <div class="footer-tools">
+                <button onclick="updateQR()" class="btn-tool">REFRESH QR</button>
+                <button id="btnExport" class="btn-main">EXPORT PNG ▲</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
