@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google</title>
+    <style>
+        /* Menggunakan font default Google */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #ffffff;
+            color: #202124;
+        }
+
+        /* Navigasi Kanan Atas */
+        header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 16px 24px;
+            font-size: 13px;
+        }
+
+        header a {
+            color: rgba(0,0,0,0.87);
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tombol Aplikasi & Profil */
+        .apps-icon {
+            padding: 4px;
+            margin-right: 8px;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .apps-icon:hover {
+            background-color: #f1f3f4;
+        }
+
+        .profile-pic {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid #dadce0;
+        }
+
+        /* Konten Utama (Logo & Pencarian) */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 100px; /* Dorong sedikit ke atas agar seimbang */
+        }
+
+        /* Logo Google SVG */
+        .logo {
+            width: 272px;
+            height: 92px;
+            margin-bottom: 30px;
+        }
+
+        /* Kotak Pencarian */
+        .search-container {
+            width: 100%;
+            max-width: 584px;
+            position: relative;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #dee1e5;
+            border-radius: 24px;
+            padding: 0 14px;
+            height: 44px;
+            background-color: #fff;
+            transition: box-shadow 0.1s;
+        }
+
+        .search-box:hover, .search-box:focus-within {
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+            border-color: rgba(223,225,229,0);
+        }
+
+        .search-input {
+            flex-grow: 1;
+            border: none;
+            height: 34px;
+            font-size: 16px;
+            color: #000;
+            outline: none;
+            padding: 0 10px;
+        }
+
+        /* Icon didalam Kotak Pencarian */
+        .search-icon, .voice-icon, .lens-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
+
+        .search-icon svg {
+            fill: #9aa0a6;
+        }
+
+        .mic-lens-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Tombol Pencarian */
+        .buttons-container {
+            margin-top: 29px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin: 11px 4px;
+            padding: 0 16px;
+            line-height: 27px;
+            height: 36px;
+            min-width: 54px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .btn:hover {
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            background-color: #f8f9fa;
+            border: 1px solid #dadce0;
+            color: #202124;
+        }
+
+        /* Informasi Bahasa */
+        .language-info {
+            font-size: 13px;
+            margin-top: 25px;
+            color: #4d5156;
+        }
+
+        .language-info a {
+            color: #1a0dab;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        .language-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #f2f2f2;
+            font-size: 14px;
+            color: #70757a;
+            border-top: 1px solid #dadce0;
+        }
+
+        .footer-location {
+            padding: 15px 30px;
+            border-bottom: 1px solid #dadce0;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 15px 30px;
+        }
+
+        .footer-links-left, .footer-links-right {
+            display: flex;
+            gap: 27px;
+        }
+
+        .footer-links a {
+            color: #70757a;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigasi Kanan Atas -->
+    <header>
+        <a href="https://mail.google.com" target="_blank">Gmail</a>
+        <a href="https://images.google.com" target="_blank">Gambar</a>
+        
+        <!-- Ikon Sembilan Titik (Google Apps) -->
+        <div class="apps-icon" title="Aplikasi Google">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+                <path d="M6 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 12c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0-6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-6 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z" fill="#5F6368"></path>
+            </svg>
+        </div>
+
+        <!-- Foto Profil Default -->
+        <img class="profile-pic" src="https://lh3.googleusercontent.com/ogw/AF2bZyh4hetLi0yQkKLT3S4aXIutXNLPzwoYCuO1dTXpF-qnm8Y=s32-c-mo" alt="Foto Profil" title="Akun Google">
+    </header>
+
+    <!-- Konten Utama -->
+    <main>
+        <!-- Logo Google Resmi berbasis Inline SVG -->
+        <svg class="logo" aria-label="Google" viewBox="0 0 272 92" xmlns="http://www.w3.org/2000/svg">
+            <!-- Huruf 'g' pertama (Biru) -->
+            <path d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z" fill="#4285F4"></path>
+            <!-- Huruf 'o' pertama (Merah) -->
+            <path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#EA4335"></path>
+            <!-- Huruf 'o' kedua (Kuning) -->
+            <path d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#FBBC05"></path>
+            <!-- Huruf 'g' kedua (Biru) -->
+            <path d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z" fill="#4285F4"></path>
+            <!-- Huruf 'l' (Hijau) -->
+            <path d="M225 3v65h-9.5V3h9.5z" fill="#34A853"></path>
+            <!-- Huruf 'e' terakhir (Merah) -->
+            <path d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z" fill="#EA4335"></path>
+        </svg>
+
+        <!-- Kotak Pencarian -->
+        <div class="search-container">
+            <div class="search-box">
+                <div class="search-icon">
+                    <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                    </svg>
+                </div>
+                <input class="search-input" type="text" autofocus>
+                <div class="mic-lens-container">
+                    <!-- Icon Mic -->
+                    <div class="voice-icon" title="Telusuri dengan suara">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="#4285F4" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"></path>
+                            <path fill="#34A853" d="M12 16c-2.76 0-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2c0 2.76-2.24 5-5 5z"></path>
+                        </svg>
+                    </div>
+                    <!-- Icon Lens -->
+                    <div class="lens-icon" title="Telusuri pakai gambar">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="#4285F4" d="M4 4h3V2H4c-1.1 0-2 .9-2 2v3h2V4zm16-2h-3v2h3v3h2V4c0-1.1-.9-2-2-2zM4 20h3v2H4c-1.1 0-2-.9-2-2v-3h2v3zm16 2h-3v-2h3v-3h2v3c0 1.1-.9 2-2 2z"></path>
+                            <circle fill="#FBBC05" cx="12" cy="12" r="3"></circle>
+                            <path fill="#34A853" d="M12 17c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tombol Pencarian -->
+        <div class="buttons-container">
+            <button class="btn" onclick="alert('Mencari sesuatu...')">Penelusuran Google</button>
+            <button class="btn" onclick="location.href='https://www.google.com/doodles'">Saya Lagi Beruntung</button>
+        </div>
+
+        <!-- Info Bahasa -->
+        <div class="language-info">
+            Google tersedia dalam bahasa: 
+            <a href="#">English</a>
+            <a href="#">Basa Bali</a>
+        </div>
+    </main>
+
+    <!-- Footer Bawah -->
+    <footer>
+        <div class="footer-location">Indonesia</div>
+        <div class="footer-links">
+            <div class="footer-links-left">
+                <a href="#">Tentang</a>
+                <a href="#">Periklanan</a>
+                <a href="#">Bisnis</a>
+                <a href="#">Cara kerja Penelusuran</a>
+            </div>
+            <div class="footer-links-right">
+                <a href="#">Privasi</a>
+                <a href="#">Persyaratan</a>
+                <a href="#">Setelan</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
