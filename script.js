@@ -15,6 +15,7 @@ const databaseKriteria = {
     ],
     "ROMPI": [
         { label: "MODEL ROMPI", isi: ["LAPANGAN", "PARKIR", "DINAS"] },
+        { label: "KRAH", isi: ["V-PENDEK", "V-PANJANG", "BULAT", "RESLETING"] },
         { label: "KANTONG", isi: ["KOTAK", "BOX", "GEMBOS", "KANTONG DALAM"] },
         { label: "LABEL", isi: ["WJ SPORT", "JERSEY", "POLOS", "CUSTOM"] },
         { label: "BAHAN", isi: ["DRILL", "TASLAN", "JARING"] }
