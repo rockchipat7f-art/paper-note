@@ -52,7 +52,7 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 .size-table-wrapper { width: 350px; }
 .size-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 11px; }
 .size-table td { border: 2px solid #000000; padding: 3px; color: #000000; height: 38px; color: #000; }
-.size-table th { border: 3px solid #000000; color: #000000; font-weight: 900; font-size: 17px; padding: 10px 3px; }
+.size-table th { border: 2px solid #000000; color: #000000; font-weight: 900; font-size: 17px; padding: 10px 3px; }
 .size-table input { width: 100%; height: 100%; border: none; text-align: center; font-weight: bold; font-size: 14px; outline: none; color: #000; background: transparent; }
 
 /* --- TABEL WARNA PRODUKSI --- */
