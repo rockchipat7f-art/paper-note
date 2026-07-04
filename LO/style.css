@@ -46,8 +46,8 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 .detail-text-box textarea { width: 100%; flex: 1; border: none; resize: none; font-size: 16px; font-weight: bold; padding: 4px; outline: none; box-sizing: border-box; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; text-align: center; }
 
 /* --- AREA CATATAN & TABEL SIZING REVISI GARIS TEBAL 2PX --- */
-.sizing-section { display: flex; border: 2px solid #000; border-top: none; }
-.notes-box { flex: 1; border-right: 2px solid #000; display: flex; }
+.sizing-section { display: flex; }
+.notes-box { flex: 1; display: flex; }
 .notes-box textarea { flex: 1; border: none; resize: none; font-family: 'Arial', sans-serif; font-size: 24px; padding: 30px; outline: none; }
 .size-table-wrapper { width: 350px; }
 .size-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 11px; }
