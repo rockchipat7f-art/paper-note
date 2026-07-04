@@ -43,7 +43,7 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 .detail-box-img-row { display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; text-align: center; background: #fff; height: 135px; box-sizing: border-box; }
 .detail-header-red { font-size: 15px; text-align: center; color: #ff0000; font-weight: 900; border-bottom: 1px solid #ff0000; font-family: 'Arial Black', sans-serif; min-height: 25px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; padding: 1px 2px; }
 .detail-text-box { height: 160px; display: flex; flex-direction: column; background: #fff; box-sizing: border-box; }
-.detail-text-box textarea { width: 100%; flex: 1; border: none; resize: none; font-size: 10px; font-weight: bold; padding: 4px; outline: none; box-sizing: border-box; font-family: Arial, sans-serif; }
+.detail-text-box textarea { width: 100%; flex: 1; border: none; resize: none; font-size: 16px; font-weight: bold; padding: 4px; outline: none; box-sizing: border-box; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; text-align: center; }
 
 /* --- AREA CATATAN & TABEL SIZING REVISI GARIS TEBAL 2PX --- */
 .sizing-section { display: flex; border: 2px solid #000; border-top: none; }
