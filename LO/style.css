@@ -41,7 +41,7 @@ body { font-family: 'Arial Black', sans-serif; background: #1e293b; margin: 0; p
 .detail-box-input-row { display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #ff0000; background: #fff; box-sizing: border-box; height: 25px; }
 .detail-box-input-row input { width: 100%; height: 100%; border: none; text-align: center; font-weight: 900; font-size: 15px; color: #ff0000; outline: none; background: transparent; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
 .detail-box-img-row { display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; position: relative; text-align: center; background: #fff; height: 135px; box-sizing: border-box; }
-.detail-header-red { font-size: 15px; text-align: center; color: #ff0000; font-weight: 900; border-bottom: 1px solid #ff0000; font-family: 'Arial Black', sans-serif; height: 30px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; padding: 0; }
+.detail-header-red { font-size: 15px; text-align: center; color: #ff0000; font-weight: 900; border-bottom: 1px solid #ff0000; font-family: 'Arial Black', sans-serif; min-height: 30px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; padding: 4px 0; }
 .detail-text-box { height: 160px; display: flex; flex-direction: column; background: #fff; box-sizing: border-box; }
 .detail-text-box textarea { width: 100%; flex: 1; border: none; resize: none; font-size: 10px; font-weight: bold; padding: 4px; outline: none; box-sizing: border-box; font-family: Arial, sans-serif; }
 
