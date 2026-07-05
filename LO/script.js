@@ -115,10 +115,76 @@ function updateQR() { const qrcodeDiv = document.getElementById("qrcode"); qrcod
 function formatTanggalIndo(dateStr) { if(!dateStr) return "-"; const bulanIndo = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"]; const d = new Date(dateStr); return `${d.getDate()} ${bulanIndo[d.getMonth()]} ${d.getFullYear()}`; }
 
 // ==========================================================================
-// 4. SISTEM UPLOAD GAMBAR SUPER PRO (KLIK AKTIF + DBLCLICK + DELETE HAPUS)
+// 4. SISTEM UPLOAD GAMBAR SUPER PRO (FIXED BUG EXPLORER)
 // ==========================================================================
-document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => { const input = wrapper.querySelector('.img-upload-input'); const imgElement = wrapper.querySelector('.img-preview'); const labelElement = wrapper.querySelector('.img-label'); function tampilkanGambar(file) { if (file && file.type.startsWith('image/')) { const reader = new FileReader(); reader.onload = function(e) { imgElement.src = e.target.result; imgElement.style.display = 'block'; labelElement.style.display = 'none'; }; reader.readAsDataURL(file); } } if (input) { input.addEventListener('change', function(e) { tampilkanGambar(e.target.files[0]); }); } wrapper.setAttribute('tabindex', '0'); wrapper.addEventListener('click', function(e) { e.preventDefault(); document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box')); wrapper.classList.add('active-box'); wrapper.focus(); }); wrapper.addEventListener('dblclick', function(e) { if (input) input.click(); }); wrapper.addEventListener('keydown', function(e) { if ((e.key === 'Delete' || e.key === 'Backspace') && wrapper.classList.contains('active-box')) { e.preventDefault(); imgElement.src = ''; imgElement.style.display = 'none'; labelElement.style.display = ''; if (input) input.value = ''; } }); wrapper.addEventListener('paste', function(e) { const items = (e.clipboardData || e.originalEvent.clipboardData).items; for (let i = 0; i < items.length; i++) { if (items[i].type.indexOf('image') !== -1) { const blob = items[i].getAsFile(); tampilkanGambar(blob); if (input) { const dataTransfer = new DataTransfer(); dataTransfer.items.add(blob); input.files = dataTransfer.files; } e.preventDefault(); break; } } }); wrapper.addEventListener('dragover', function(e) { e.preventDefault(); wrapper.classList.add('active-box'); }); wrapper.addEventListener('dragleave', function(e) { e.preventDefault(); wrapper.classList.remove('active-box'); }); wrapper.addEventListener('drop', function(e) { e.preventDefault(); wrapper.classList.remove('active-box'); const file = e.dataTransfer.files[0]; tampilkanGambar(file); if (input && file) { const dataTransfer = new DataTransfer(); dataTransfer.items.add(file); input.files = dataTransfer.files; } }); });
-document.addEventListener('click', function(e) { if (!e.target.closest('.img-upload-wrapper')) { document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box')); } });
+document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => { 
+    const input = wrapper.querySelector('.img-upload-input'); 
+    const imgElement = wrapper.querySelector('.img-preview'); 
+    const labelElement = wrapper.querySelector('.img-label'); 
+    
+    // PERBAIKAN 1: Cabut paksa atribut 'for' dari label via JS agar klik 1x tidak jebol
+    if(labelElement) labelElement.removeAttribute('for');
+
+    function tampilkanGambar(file) { 
+        if (file && file.type.startsWith('image/')) { 
+            const reader = new FileReader(); 
+            reader.onload = function(e) { 
+                imgElement.src = e.target.result; 
+                imgElement.style.display = 'block'; 
+                labelElement.style.display = 'none'; 
+            }; 
+            reader.readAsDataURL(file); 
+        } 
+    } 
+    
+    if (input) { 
+        input.addEventListener('change', function(e) { tampilkanGambar(e.target.files[0]); }); 
+        
+        // PERBAIKAN 2: Cegah klik dari input bentrok dan dibatalkan oleh wrapper
+        input.addEventListener('click', function(e) { e.stopPropagation(); });
+    } 
+    
+    wrapper.setAttribute('tabindex', '0'); 
+    
+    wrapper.addEventListener('click', function(e) { 
+        e.preventDefault(); 
+        document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box')); 
+        wrapper.classList.add('active-box'); 
+        wrapper.focus(); 
+    }); 
+    
+    wrapper.addEventListener('dblclick', function(e) { 
+        if (input) input.click(); 
+    }); 
+    
+    wrapper.addEventListener('keydown', function(e) { 
+        if ((e.key === 'Delete' || e.key === 'Backspace') && wrapper.classList.contains('active-box')) { 
+            e.preventDefault(); imgElement.src = ''; imgElement.style.display = 'none'; labelElement.style.display = ''; if (input) input.value = ''; 
+        } 
+    }); 
+    
+    wrapper.addEventListener('paste', function(e) { 
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items; 
+        for (let i = 0; i < items.length; i++) { 
+            if (items[i].type.indexOf('image') !== -1) { 
+                const blob = items[i].getAsFile(); tampilkanGambar(blob); 
+                if (input) { const dataTransfer = new DataTransfer(); dataTransfer.items.add(blob); input.files = dataTransfer.files; } 
+                e.preventDefault(); break; 
+            } 
+        } 
+    }); 
+    
+    wrapper.addEventListener('dragover', function(e) { e.preventDefault(); wrapper.classList.add('active-box'); }); 
+    wrapper.addEventListener('dragleave', function(e) { e.preventDefault(); wrapper.classList.remove('active-box'); }); 
+    wrapper.addEventListener('drop', function(e) { 
+        e.preventDefault(); wrapper.classList.remove('active-box'); 
+        const file = e.dataTransfer.files[0]; tampilkanGambar(file); 
+        if (input && file) { const dataTransfer = new DataTransfer(); dataTransfer.items.add(file); input.files = dataTransfer.files; } 
+    }); 
+});
+document.addEventListener('click', function(e) { 
+    if (!e.target.closest('.img-upload-wrapper')) { document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box')); } 
+});
 
 // ==========================================================================
 // 5. SISTEM STEMPEL REALTIME DP / LUNAS AUTOMATION
