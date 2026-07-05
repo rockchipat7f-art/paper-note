@@ -105,348 +105,44 @@ const databaseKriteria = {
 // ==========================================================================
 // 2. SISTEM GENERATE OPSI MENU KANAN DAN TABEL KIRI
 // ==========================================================================
-function updateDynamicMenu() {
-    const model = document.getElementById('model_global').value;
-    const kananContainer = document.getElementById('pilihan-opsi-dinamis');
-    const kiriContainer = document.getElementById('menu-area');
-    kananContainer.innerHTML = ""; kiriContainer.innerHTML = "";
-
-    if (model && databaseKriteria[model]) {
-        databaseKriteria[model].forEach((item, idx) => {
-            const rightBox = document.createElement('div');
-            rightBox.className = 'checkbox-container-right';
-            const rightTitle = document.createElement('div');
-            rightTitle.className = 'section-title-right';
-            rightTitle.innerText = item.label;
-            rightBox.appendChild(rightTitle);
-
-            item.isi.forEach((opt, i) => {
-                const labelObj = document.createElement('label');
-                labelObj.className = 'check-item-right';
-                const chk = document.createElement('input');
-                chk.type = 'checkbox';
-                chk.id = `opt-${idx}-${i}`;
-                chk.value = opt;
-                chk.addEventListener('change', hitungUlangPilihanKiri);
-                labelObj.appendChild(chk);
-                labelObj.appendChild(document.createTextNode(" " + opt));
-                rightBox.appendChild(labelObj);
-            });
-            kananContainer.appendChild(rightBox);
-
-            const leftBox = document.createElement('div');
-            leftBox.className = 'menu-item';
-            leftBox.id = `left-block-${idx}`;
-            leftBox.innerHTML = `
-                <div class="menu-header">${item.label}</div>
-                <div id="left-val-${idx}" style="padding:4px 2px; text-align:center; font-weight:900; font-size:10px; color:#000; min-height:25px; display:flex; align-items:center; justify-content:center; line-height:1.2;">-</div>
-            `;
-            kiriContainer.appendChild(leftBox);
-        });
-    } else {
-        kananContainer.innerHTML = "<p class='notif-pilih'>← Pilih Jenis <strong>MODEL</strong> terlebih dahulu pada lembar order untuk memunculkan daftar opsi kerja.</p>";
-        kiriContainer.innerHTML = "<p style='grid-column: span 6; text-align: center; color: #999; padding: 20px; font-size:12px;'>MENUNGGU MODEL DIISI...</p>";
-    }
-}
-
-function hitungUlangPilihanKiri() {
-    const model = document.getElementById('model_global').value;
-    if (!model || !databaseKriteria[model]) return;
-    databaseKriteria[model].forEach((item, idx) => {
-        const blockKanan = document.getElementsByClassName('checkbox-container-right')[idx];
-        if(blockKanan) {
-            const checkedBoxes = Array.from(blockKanan.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
-            const targetTeksKiri = document.getElementById(`left-val-${idx}`);
-            if(targetTeksKiri) { targetTeksKiri.innerText = checkedBoxes.length > 0 ? checkedBoxes.join(", ").toUpperCase() : "-"; }
-        }
-    });
-}
+function updateDynamicMenu() { const model = document.getElementById('model_global').value; const kananContainer = document.getElementById('pilihan-opsi-dinamis'); const kiriContainer = document.getElementById('menu-area'); kananContainer.innerHTML = ""; kiriContainer.innerHTML = ""; if (model && databaseKriteria[model]) { databaseKriteria[model].forEach((item, idx) => { const rightBox = document.createElement('div'); rightBox.className = 'checkbox-container-right'; const rightTitle = document.createElement('div'); rightTitle.className = 'section-title-right'; rightTitle.innerText = item.label; rightBox.appendChild(rightTitle); item.isi.forEach((opt, i) => { const labelObj = document.createElement('label'); labelObj.className = 'check-item-right'; const chk = document.createElement('input'); chk.type = 'checkbox'; chk.id = `opt-${idx}-${i}`; chk.value = opt; chk.addEventListener('change', hitungUlangPilihanKiri); labelObj.appendChild(chk); labelObj.appendChild(document.createTextNode(" " + opt)); rightBox.appendChild(labelObj); }); kananContainer.appendChild(rightBox); const leftBox = document.createElement('div'); leftBox.className = 'menu-item'; leftBox.id = `left-block-${idx}`; leftBox.innerHTML = `<div class="menu-header">${item.label}</div><div id="left-val-${idx}" style="padding:4px 2px; text-align:center; font-weight:900; font-size:10px; color:#000; min-height:25px; display:flex; align-items:center; justify-content:center; line-height:1.2;">-</div>`; kiriContainer.appendChild(leftBox); }); } else { kananContainer.innerHTML = "<p class='notif-pilih'>← Pilih Jenis <strong>MODEL</strong> terlebih dahulu pada lembar order untuk memunculkan daftar opsi kerja.</p>"; kiriContainer.innerHTML = "<p style='grid-column: span 6; text-align: center; color: #999; padding: 20px; font-size:12px;'>MENUNGGU MODEL DIISI...</p>"; } }
+function hitungUlangPilihanKiri() { const model = document.getElementById('model_global').value; if (!model || !databaseKriteria[model]) return; databaseKriteria[model].forEach((item, idx) => { const blockKanan = document.getElementsByClassName('checkbox-container-right')[idx]; if(blockKanan) { const checkedBoxes = Array.from(blockKanan.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value); const targetTeksKiri = document.getElementById(`left-val-${idx}`); if(targetTeksKiri) { targetTeksKiri.innerText = checkedBoxes.length > 0 ? checkedBoxes.join(", ").toUpperCase() : "-"; } } }); }
 
 // ==========================================================================
 // 3. FITUR UTILS (QR CODE & FORMAT TANGGAL)
 // ==========================================================================
-function updateQR() {
-    const qrcodeDiv = document.getElementById("qrcode"); qrcodeDiv.innerHTML = ""; 
-    const nolo = (document.getElementById("nolo").value || "000").toUpperCase();
-    const nama = (document.getElementById("nama").value || "NONAME").toUpperCase();
-    const orderan = (document.getElementById("orderan").value || "-").toUpperCase();
-    const model = (document.getElementById("model_global").value || "-").toUpperCase();
-    new QRCode(qrcodeDiv, { text: `${nolo}\t${nama}\t${orderan}\t${model}`, width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
-}
-
-function formatTanggalIndo(dateStr) {
-    if(!dateStr) return "-";
-    const bulanIndo = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
-    const d = new Date(dateStr); return `${d.getDate()} ${bulanIndo[d.getMonth()]} ${d.getFullYear()}`;
-}
+function updateQR() { const qrcodeDiv = document.getElementById("qrcode"); qrcodeDiv.innerHTML = ""; const nolo = (document.getElementById("nolo").value || "000").toUpperCase(); const nama = (document.getElementById("nama").value || "NONAME").toUpperCase(); const orderan = (document.getElementById("orderan").value || "-").toUpperCase(); const model = (document.getElementById("model_global").value || "-").toUpperCase(); new QRCode(qrcodeDiv, { text: `${nolo}\t${nama}\t${orderan}\t${model}`, width: 120, height: 120, correctLevel: QRCode.CorrectLevel.H }); }
+function formatTanggalIndo(dateStr) { if(!dateStr) return "-"; const bulanIndo = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"]; const d = new Date(dateStr); return `${d.getDate()} ${bulanIndo[d.getMonth()]} ${d.getFullYear()}`; }
 
 // ==========================================================================
 // 4. SISTEM UPLOAD GAMBAR SUPER PRO (KLIK AKTIF + DBLCLICK + DELETE HAPUS)
 // ==========================================================================
-document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => {
-    const input = wrapper.querySelector('.img-upload-input');
-    const imgElement = wrapper.querySelector('.img-preview');
-    const labelElement = wrapper.querySelector('.img-label');
-
-    // --- FUNGSI UTAMA: MENAMPILKAN GAMBAR ---
-    function tampilkanGambar(file) {
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imgElement.src = e.target.result;
-                imgElement.style.display = 'block';
-                labelElement.style.display = 'none';
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-
-    if (input) {
-        input.addEventListener('change', function(e) {
-            tampilkanGambar(e.target.files[0]);
-        });
-    }
-
-    wrapper.setAttribute('tabindex', '0');
-
-    // --- LOGIKA 1: KLIK 1X (PILIH/AKTIFKAN KOTAK) ---
-    wrapper.addEventListener('click', function(e) {
-        e.preventDefault(); // Mencegah label otomatis membuka file explorer
-        
-        // Bersihkan efek aktif dari semua kotak lain
-        document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box'));
-        
-        // Aktifkan kotak ini saja
-        wrapper.classList.add('active-box');
-        wrapper.focus();
-    });
-
-    // --- LOGIKA 2: KLIK 2X (BUKA FILE EXPLORER) ---
-    wrapper.addEventListener('dblclick', function(e) {
-        if (input) input.click();
-    });
-
-    // --- LOGIKA 3: TOMBOL DELETE / BACKSPACE (HAPUS GAMBAR) ---
-    wrapper.addEventListener('keydown', function(e) {
-        // Cek apakah tombol yg ditekan adalah Delete/Backspace DAN kotaknya sedang aktif
-        if ((e.key === 'Delete' || e.key === 'Backspace') && wrapper.classList.contains('active-box')) {
-            e.preventDefault();
-            imgElement.src = '';
-            imgElement.style.display = 'none';
-            labelElement.style.display = ''; // Kosongkan agar kembali ke display default CSS (flex)
-            if (input) input.value = ''; // Reset file input
-        }
-    });
-
-    // --- LOGIKA 4: PASTE CTRL+V ---
-    wrapper.addEventListener('paste', function(e) {
-        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].type.indexOf('image') !== -1) {
-                const blob = items[i].getAsFile();
-                tampilkanGambar(blob);
-                
-                if (input) {
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(blob);
-                    input.files = dataTransfer.files;
-                }
-                e.preventDefault();
-                break;
-            }
-        }
-    });
-
-    // --- LOGIKA 5: DRAG & DROP ---
-    wrapper.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        wrapper.classList.add('active-box');
-    });
-
-    wrapper.addEventListener('dragleave', function(e) {
-        e.preventDefault();
-        wrapper.classList.remove('active-box');
-    });
-
-    wrapper.addEventListener('drop', function(e) {
-        e.preventDefault();
-        wrapper.classList.remove('active-box');
-        
-        const file = e.dataTransfer.files[0];
-        tampilkanGambar(file);
-        
-        if (input && file) {
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            input.files = dataTransfer.files;
-        }
-    });
-});
-
-// --- LOGIKA 6: KLIK DI LUAR KOTAK (HILANGKAN FOKUS) ---
-document.addEventListener('click', function(e) {
-    // Kalau yang diklik BUKAN bagian dari kotak upload gambar, hilangkan efek aktifnya
-    if (!e.target.closest('.img-upload-wrapper')) {
-        document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box'));
-    }
-});
+document.querySelectorAll('.img-upload-wrapper').forEach(wrapper => { const input = wrapper.querySelector('.img-upload-input'); const imgElement = wrapper.querySelector('.img-preview'); const labelElement = wrapper.querySelector('.img-label'); function tampilkanGambar(file) { if (file && file.type.startsWith('image/')) { const reader = new FileReader(); reader.onload = function(e) { imgElement.src = e.target.result; imgElement.style.display = 'block'; labelElement.style.display = 'none'; }; reader.readAsDataURL(file); } } if (input) { input.addEventListener('change', function(e) { tampilkanGambar(e.target.files[0]); }); } wrapper.setAttribute('tabindex', '0'); wrapper.addEventListener('click', function(e) { e.preventDefault(); document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box')); wrapper.classList.add('active-box'); wrapper.focus(); }); wrapper.addEventListener('dblclick', function(e) { if (input) input.click(); }); wrapper.addEventListener('keydown', function(e) { if ((e.key === 'Delete' || e.key === 'Backspace') && wrapper.classList.contains('active-box')) { e.preventDefault(); imgElement.src = ''; imgElement.style.display = 'none'; labelElement.style.display = ''; if (input) input.value = ''; } }); wrapper.addEventListener('paste', function(e) { const items = (e.clipboardData || e.originalEvent.clipboardData).items; for (let i = 0; i < items.length; i++) { if (items[i].type.indexOf('image') !== -1) { const blob = items[i].getAsFile(); tampilkanGambar(blob); if (input) { const dataTransfer = new DataTransfer(); dataTransfer.items.add(blob); input.files = dataTransfer.files; } e.preventDefault(); break; } } }); wrapper.addEventListener('dragover', function(e) { e.preventDefault(); wrapper.classList.add('active-box'); }); wrapper.addEventListener('dragleave', function(e) { e.preventDefault(); wrapper.classList.remove('active-box'); }); wrapper.addEventListener('drop', function(e) { e.preventDefault(); wrapper.classList.remove('active-box'); const file = e.dataTransfer.files[0]; tampilkanGambar(file); if (input && file) { const dataTransfer = new DataTransfer(); dataTransfer.items.add(file); input.files = dataTransfer.files; } }); });
+document.addEventListener('click', function(e) { if (!e.target.closest('.img-upload-wrapper')) { document.querySelectorAll('.img-upload-wrapper').forEach(w => w.classList.remove('active-box')); } });
 
 // ==========================================================================
 // 5. SISTEM STEMPEL REALTIME DP / LUNAS AUTOMATION
 // ==========================================================================
-function updateStatusStempel() {
-    const statusTerpilih = document.querySelector('input[name="status_bayar"]:checked');
-    const status = statusTerpilih ? statusTerpilih.value : 'BELUM';
-    const inputNominal = document.getElementById('input_nominal_stempel');
-    const nominal = inputNominal ? inputNominal.value.toUpperCase() : '';
-
-    const imgDp = document.getElementById('img-stempel-dp');
-    const textDp = document.getElementById('text-stempel-dp');
-    const imgLunas = document.getElementById('img-stempel-lunas');
-    const textLunas = document.getElementById('text-stempel-lunas');
-
-    if (imgDp && textDp && imgLunas && textLunas) {
-        imgDp.style.display = 'none'; textDp.innerText = '';
-        imgLunas.style.display = 'none'; textLunas.innerText = '';
-
-        if (status === 'DP') {
-            imgDp.style.display = 'block'; textDp.innerText = nominal;
-        } else if (status === 'LUNAS') {
-            imgLunas.style.display = 'block'; textLunas.innerText = nominal;
-        }
-    }
-}
+function updateStatusStempel() { const statusTerpilih = document.querySelector('input[name="status_bayar"]:checked'); const status = statusTerpilih ? statusTerpilih.value : 'BELUM'; const inputNominal = document.getElementById('input_nominal_stempel'); const nominal = inputNominal ? inputNominal.value.toUpperCase() : ''; const imgDp = document.getElementById('img-stempel-dp'); const textDp = document.getElementById('text-stempel-dp'); const imgLunas = document.getElementById('img-stempel-lunas'); const textLunas = document.getElementById('text-stempel-lunas'); if (imgDp && textDp && imgLunas && textLunas) { imgDp.style.display = 'none'; textDp.innerText = ''; imgLunas.style.display = 'none'; textLunas.innerText = ''; if (status === 'DP') { imgDp.style.display = 'block'; textDp.innerText = nominal; } else if (status === 'LUNAS') { imgLunas.style.display = 'block'; textLunas.innerText = nominal; } } }
 
 // ==========================================================================
-// 6. ENGINE EXPORT PNG PREVIEW (FINAL: NATIVE IGNORE & PRE-CALCULATED SIZES)
+// 6. ENGINE EXPORT PNG PREVIEW (FINAL: F4 EXACT RATIO 21x33 / 100:157.14)
 // ==========================================================================
-document.getElementById('btnExport').addEventListener('click', function() {
-    const target = document.getElementById('capture-area');
-    const btn = this; 
-    btn.innerText = "WAIT, LOADING IMAGES..."; 
-    btn.disabled = true;
-
-    // 1. Kumpulkan semua gambar dan CATAT UKURAN WADAH ASLINYA SEKARANG (Sebelum di-clone)
-    const originalImgs = Array.from(target.querySelectorAll('.img-preview'));
-    const wadahSizes = originalImgs.map(img => {
-        const rect = img.parentElement.getBoundingClientRect();
-        return { w: rect.width || 100, h: rect.height || 135 }; // Simpan ukuran pixel asli!
-    });
-
-    // 2. Pastikan gambar sudah beres di-load
-    const imagePromises = originalImgs.map(img => {
-        if (img.style.display !== 'none' && img.src) {
-            if (img.complete) return Promise.resolve();
-            return new Promise(resolve => { img.onload = resolve; img.onerror = resolve; });
-        }
-        return Promise.resolve();
-    });
-
-    // 3. Simpan referensi input asli untuk ngambil warna background nanti
-    const originalInputs = Array.from(target.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input'));
-
-    Promise.all(imagePromises).then(() => {
-        btn.innerText = "GENERATING PREVIEW...";
-
-        html2canvas(target, { 
-            scale: 2, // Skala 2 pas banget: Tajam, tapi gak bikin browser berat/nge-blank
-            useCORS: true,
-            allowTaint: true,
-            backgroundColor: "#ffffff",
-            // --- FITUR SAKTI: HAPUS PANEL KANAN TANPA MERUSAK LAYOUT ---
-            ignoreElements: (element) => {
-                if (element.id === 'i6uw2x') {
-                    return true; // "Abaikan elemen ini saat difoto!"
-                }
-                return false;
-            },
-            onclone: (cloned) => {
-                // --- RUMUS ANTI-GEPENG (Pakai data ukuran asli yang sudah dicatat) ---
-                cloned.querySelectorAll('.img-preview').forEach((img, index) => {
-                    if (img.style.display !== 'none' && img.src) {
-                        const size = wadahSizes[index]; // Ambil ukuran yang 100% valid
-                        const rasioGambar = img.naturalWidth / img.naturalHeight;
-                        const rasioWadah = size.w / size.h;
-
-                        img.style.objectFit = 'none'; 
-                        img.style.minWidth = '0px';
-                        img.style.minHeight = '0px';
-                        
-                        if (rasioGambar > rasioWadah) {
-                            img.style.width = size.w + 'px';
-                            img.style.height = 'auto';
-                        } else {
-                            img.style.height = size.h + 'px';
-                            img.style.width = 'auto';
-                        }
-                        
-                        img.style.margin = 'auto';
-                        img.style.display = 'block';
-                    }
-                });
-
-                // --- CONVERSI FORM INPUT KE TEKS MATI ---
-                cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach((i, index) => {
-                    let text = i.value.toUpperCase();
-                    if(i.type === 'date' && typeof formatTanggalIndo === 'function') text = formatTanggalIndo(i.value);
-                    const v = cloned.createElement('div');
-                    v.innerText = text || "";
-                    
-                    if (i.tagName === 'TEXTAREA') {
-                        v.style.cssText = "padding:5px; font-weight:bold; font-size:10px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;";
-                    } else if (i.closest('.id-row')) {
-                        v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
-                    } else if (i.closest('.color-table')) {
-                        // Ambil warna background dari elemen ASLI di layar, bukan hasil kloningan
-                        const originalEl = originalInputs[index];
-                        const computedStyle = window.getComputedStyle(originalEl);
-                        const bgComputed = computedStyle.backgroundColor || "transparent";
-                        v.style.cssText = `text-align:center; font-weight:bold; font-size:10px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgComputed};`;
-                    } else {
-                        v.style.cssText = "text-align:center; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;";
-                    }
-                    
-                    i.style.display = "none";
-                    i.parentElement.appendChild(v);
-                });
-            
-                const s = cloned.getElementById('model_global');
-                if(s) {
-                    const sv = cloned.createElement('div');
-                    sv.innerText = s.value || "-"; 
-                    sv.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;";
-                    s.style.display = "none";
-                    s.parentElement.appendChild(sv);
-                }
-
-                cloned.querySelectorAll('.img-label').forEach(label => {
-                    if(label.style.display !== 'none') label.style.display = 'none';
-                });
-            }
-        }).then(canvas => {
-            canvas.toBlob(blob => {
-                const url = URL.createObjectURL(blob);
-                window.open(url, '_blank');
-                btn.innerText = "EXPORT PNG ▲"; 
-                btn.disabled = false;
-            }, 'image/png');
-        }).catch(err => {
-            console.error("Gagal export gambar:", err);
-            alert("Sistem rendering error. Coba reload halaman.");
-            btn.innerText = "EXPORT PNG ▲"; 
-            btn.disabled = false;
-        });
-    });
-});
+document.getElementById('btnExport').addEventListener('click', function() { const target = document.getElementById('capture-area'); const btn = this; btn.innerText = "WAIT, LOADING IMAGES..."; btn.disabled = true; const originalImgs = Array.from(target.querySelectorAll('.img-preview')); const wadahSizes = originalImgs.map(img => { const rect = img.parentElement.getBoundingClientRect(); return { w: rect.width || 100, h: rect.height || 135 }; }); const imagePromises = originalImgs.map(img => { if (img.style.display !== 'none' && img.src) { if (img.complete) return Promise.resolve(); return new Promise(resolve => { img.onload = resolve; img.onerror = resolve; }); } return Promise.resolve(); }); const originalInputs = Array.from(target.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input')); Promise.all(imagePromises).then(() => { btn.innerText = "GENERATING PREVIEW..."; html2canvas(target, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: "#ffffff", ignoreElements: (element) => { if (element.id === 'i6uw2x') { return true; } return false; }, onclone: (cloned) => { cloned.querySelectorAll('.img-preview').forEach((img, index) => { if (img.style.display !== 'none' && img.src) { const size = wadahSizes[index]; const rasioGambar = img.naturalWidth / img.naturalHeight; const rasioWadah = size.w / size.h; img.style.objectFit = 'none'; img.style.minWidth = '0px'; img.style.minHeight = '0px'; if (rasioGambar > rasioWadah) { img.style.width = size.w + 'px'; img.style.height = 'auto'; } else { img.style.height = size.h + 'px'; img.style.width = 'auto'; } img.style.margin = 'auto'; img.style.display = 'block'; } }); cloned.querySelectorAll('.id-row input, .size-table input, .color-table input, .notes-box textarea, .detail-text-box textarea, .detail-box-input-row input').forEach((i, index) => { let text = i.value.toUpperCase(); if(i.type === 'date' && typeof formatTanggalIndo === 'function') text = formatTanggalIndo(i.value); const v = cloned.createElement('div'); v.innerText = text || ""; if (i.tagName === 'TEXTAREA') { if(i.closest('.detail-text-box')) { v.style.cssText = "padding:4px; font-weight:bold; font-size:16px; font-family:sans-serif; text-align:center; width:100%; height:100%; display:flex; align-items:center; justify-content:center;"; } else { v.style.cssText = "padding:30px; font-weight:bold; font-size:24px; white-space:pre-wrap; text-align:left; font-family:sans-serif; width:100%; box-sizing:border-box;"; } } else if (i.closest('.id-row')) { v.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;"; } else if (i.closest('.color-table')) { const originalEl = originalInputs[index]; const computedStyle = window.getComputedStyle(originalEl); const bgComputed = computedStyle.backgroundColor || "transparent"; v.style.cssText = `text-align:center; font-weight:bold; font-size:12px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000; background:${bgComputed};`; } else if (i.closest('.size-table') && i.style.fontWeight === 'bold') { v.style.cssText = "text-align:center; font-weight:900; font-size:14px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;"; } else if (i.closest('.detail-box-input-row')) { v.style.cssText = "text-align:center; font-weight:900; font-size:15px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;"; } else { v.style.cssText = "text-align:center; font-weight:bold; font-size:14px; display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#000;"; } i.style.display = "none"; i.parentElement.appendChild(v); }); const s = cloned.getElementById('model_global'); if(s) { const sv = cloned.createElement('div'); sv.innerText = s.value || "-"; sv.style.cssText = "padding-left:10px; font-weight:900; font-size:14px; line-height:31px; color:#000; flex:1;"; s.style.display = "none"; s.parentElement.appendChild(sv); } cloned.querySelectorAll('.img-label').forEach(label => { if(label.style.display !== 'none') label.style.display = 'none'; }); } }).then(canvas => { 
+    
+    // --- RITUAL KONVERSI RASIO F4 (21x33) ---
+    const f4Canvas = document.createElement('canvas');
+    f4Canvas.width = canvas.width;
+    f4Canvas.height = Math.round(canvas.width * (33 / 21)); // Tinggi dipaksa mengikuti rasio presisi 100:157.14
+    const ctx = f4Canvas.getContext('2d');
+    ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, f4Canvas.width, f4Canvas.height);
+    ctx.drawImage(canvas, 0, 0, f4Canvas.width, f4Canvas.height); // Tempel dan sesuaikan
+    
+    f4Canvas.toBlob(blob => { const url = URL.createObjectURL(blob); window.open(url, '_blank'); btn.innerText = "EXPORT PNG ▲"; btn.disabled = false; }, 'image/png'); 
+    
+}).catch(err => { console.error("Gagal export:", err); alert("Sistem rendering error. Coba reload halaman."); btn.innerText = "EXPORT PNG ▲"; btn.disabled = false; }); });
 
 // ==========================================================================
 // 7. LISTENERS RUNNER INTEGRASI UTAMA
 // ==========================================================================
-document.getElementById('nolo').addEventListener('input', updateQR);
-document.getElementById('nama').addEventListener('input', updateQR);
-document.getElementById('orderan').addEventListener('input', updateQR);
-document.getElementById('model_global').addEventListener('change', updateQR);
-
-updateDynamicMenu(); 
-updateQR();
-updateStatusStempel();
+document.getElementById('nolo').addEventListener('input', updateQR); document.getElementById('nama').addEventListener('input', updateQR); document.getElementById('orderan').addEventListener('input', updateQR); document.getElementById('model_global').addEventListener('change', updateQR); updateDynamicMenu(); updateQR(); updateStatusStempel();
