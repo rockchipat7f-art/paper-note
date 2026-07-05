@@ -466,7 +466,50 @@ document.getElementById('btnExport').addEventListener('click', function() {
 });
 
 // ==========================================================================
-// 7. LISTENERS RUNNER INTEGRASI UTAMA
+// 7. RUMUS OTOMATIS HITUNG TOTAL DEWASA & TOTAL ANAK
+// ==========================================================================
+function hitungTotalSizing() {
+    let totalDewasaPndk = 0, totalDewasaPnjng = 0, totalAnakPndk = 0, totalAnakPnjng = 0;
+    
+    // Ambil semua baris data ukuran (S sampai 6XL) di dalam tabel body
+    const rows = document.querySelectorAll('.size-table tbody tr');
+    
+    rows.forEach((row, idx) => {
+        // Lewati baris terakhir (baris TOTAL) agar tidak ikut dihitung
+        if (idx === rows.length - 1) return;
+        
+        const inputs = row.querySelectorAll('input');
+        if (inputs.length >= 5) {
+            totalDewasaPndk += parseInt(inputs[1].value) || 0;
+            totalDewasaPnjng += parseInt(inputs[2].value) || 0;
+            totalAnakPndk += parseInt(inputs[3].value) || 0;
+            totalAnakPnjng += parseInt(inputs[4].value) || 0;
+        }
+    });
+    
+    // Ambil baris TOTAL (baris paling bawah)
+    const rowTotal = rows[rows.length - 1];
+    if (rowTotal) {
+        const totalInputs = rowTotal.querySelectorAll('input');
+        if (totalInputs.length >= 3) {
+            // Gabungkan Jumlah (Pendek + Panjang) untuk Dewasa, dan (Pendek + Panjang) untuk Anak
+            totalInputs[1].value = (totalDewasaPndk + totalDewasaPnjng) > 0 ? (totalDewasaPndk + totalDewasaPnjng) : "";
+            totalInputs[1].placeholder = `DEWASA: ${totalDewasaPndk} PD / ${totalDewasaPnjng} PJ`;
+            
+            totalInputs[2].value = (totalAnakPndk + totalAnakPnjng) > 0 ? (totalAnakPndk + totalAnakPnjng) : "";
+            totalInputs[2].placeholder = `ANAK: ${totalAnakPndk} PD / ${totalAnakPnjng} PJ`;
+        }
+    }
+}
+
+// Pasang pendeteksi ketikan (Event Listener) di tabel ukuran agar rumus langsung jalan otomatis
+const tabelSizing = document.querySelector('.size-table tbody');
+if (tabelSizing) {
+    tabelSizing.addEventListener('input', hitungTotalSizing);
+}
+
+// ==========================================================================
+// 8. LISTENERS RUNNER INTEGRASI UTAMA
 // ==========================================================================
 document.getElementById('nolo').addEventListener('input', updateQR); 
 document.getElementById('nama').addEventListener('input', updateQR); 
