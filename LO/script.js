@@ -224,9 +224,9 @@ function updateQR() {
         }
     }
 
-// 5. Gabungkan semua data menjadi satu teks panjang (Format Tab & Kolom Bawah) - TERAKHIR ANAK PANJANG 6XL
-    const textQR = `${nolo}\t${nama}\t${orderan}\t${model}\n` + 
-                   `${pengiriman}\n` + 
+// 5. Gabungkan semua data menjadi SATU BARIS LURUS (Murni hanya pakai Tab \t)
+    const textQR = `${nolo}\t${nama}\t${orderan}\t${model}\t` + 
+                   `${pengiriman}\t` + 
                    `${packing}\t${jumlahDewasa}\t` + 
                    `${d_pndk.S}\t${d_pndk.M}\t${d_pndk.L}\t${d_pndk.XL}\t${d_pndk.XXL}\t${d_pndk.XXXL}\t${d_pndk['4XL']}\t${d_pndk['5XL']}\t${d_pndk['6XL']}\t` +
                    `${d_pnjng.S}\t${d_pnjng.M}\t${d_pnjng.L}\t${d_pnjng.XL}\t${d_pnjng.XXL}\t${d_pnjng.XXXL}\t${d_pnjng['4XL']}\t${d_pnjng['5XL']}\t${d_pnjng['6XL']}\t` +
