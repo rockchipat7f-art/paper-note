@@ -238,7 +238,7 @@ function updateQR() {
                    `${admin}`;
 
     // 6. Generate QR Code dengan data padat
-    new QRCode(qrcodeDiv, { text: textQR, width: 120, height: 120, correctLevel: QRCode.CorrectLevel.H }); 
+    new QRCode(qrcodeDiv, { text: textQR, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.H }); 
 }
 
 function formatTanggalIndo(dateStr) { 
