@@ -569,6 +569,21 @@ document.getElementById('nolo').addEventListener('input', updateQR);
 document.getElementById('nama').addEventListener('input', updateQR); 
 document.getElementById('orderan').addEventListener('input', updateQR); 
 
+// MEMANTAU KETIKAN DI TABEL UKURAN AGAR QR CODE UPDATE OTOMATIS
+const sizeTableBody = document.querySelector('.size-table tbody');
+if (sizeTableBody) {
+    sizeTableBody.addEventListener('input', function() {
+        hitungTotalSizing(); // Hitung totalnya dulu
+        updateQR();          // Baru update QR-nya
+    });
+}
+
+// MEMANTAU KETIKAN DI TABEL WARNA (PENGIRIMAN, PACKING, DLL) AGAR QR CODE UPDATE OTOMATIS
+const colorTableBody = document.querySelector('.color-table');
+if (colorTableBody) {
+    colorTableBody.addEventListener('input', updateQR);
+}
+
 const modelSelect = document.getElementById('model_global');
 if (modelSelect) {
     modelSelect.addEventListener('change', function() { 
