@@ -171,17 +171,74 @@ function hitungUlangPilihanKiri() {
     }); 
 }
 
-// ==========================================================================
-// 3. FITUR UTILS (QR CODE & FORMAT TANGGAL)
-// ==========================================================================
-function updateQR() { 
+function updateQR() {
     const qrcodeDiv = document.getElementById("qrcode"); 
     qrcodeDiv.innerHTML = ""; 
-    const nolo = (document.getElementById("nolo").value || "000").toUpperCase(); 
-    const nama = (document.getElementById("nama").value || "NONAME").toUpperCase(); 
+    
+    // 1. Ambil data identitas atas
+    const nolo = (document.getElementById("nolo").value || "-").toUpperCase(); 
+    const nama = (document.getElementById("nama").value || "-").toUpperCase(); 
     const orderan = (document.getElementById("orderan").value || "-").toUpperCase(); 
     const model = (document.getElementById("model_global").value || "-").toUpperCase(); 
-    new QRCode(qrcodeDiv, { text: `${nolo}\t${nama}\t${orderan}\t${model}`, width: 120, height: 120, correctLevel: QRCode.CorrectLevel.H }); 
+    
+    // 2. Ambil data dari tabel warna produksi (baris bawah)
+    // Berdasarkan urutan td: ADMIN(0), DESAIN(1), KONFIRMASI(2), CUTTING(3), SABLON(4), BORDIR(5), JAHIT(6), LBNG KCNG(7), QC ADMIN(8), PACKING(9), PENGIRIMAN(10)
+    const colorInputs = document.querySelectorAll('.color-table tr.row-white-atas td input');
+    const pengiriman = colorInputs[10] ? (colorInputs[10].value || "-").toUpperCase() : "-";
+    const packing = colorInputs[9] ? (colorInputs[9].value || "-").toUpperCase() : "-";
+    const qcAdmin = colorInputs[8] ? (colorInputs[8].value || "-").toUpperCase() : "-";
+    const admin = colorInputs[0] ? (colorInputs[0].value || "-").toUpperCase() : "-";
+
+// 3. Ambil data ukuran baju dari size-table (S sampai 6XL)
+    const sizeRows = document.querySelectorAll('.size-table tbody tr');
+    
+    // Inisialisasi variabel untuk semua ukuran Dewasa & Anak (Pendek & Panjang)
+    let d_pndk = {S:"0", M:"0", L:"0", XL:"0", XXL:"0", XXXL:"0", "4XL":"0", "5XL":"0", "6XL":"0"};
+    let d_pnjng = {S:"0", M:"0", L:"0", XL:"0", XXL:"0", XXXL:"0", "4XL":"0", "5XL":"0", "6XL":"0"};
+    let a_pndk = {S:"0", M:"0", L:"0", XL:"0", XXL:"0", XXXL:"0", "4XL":"0", "5XL":"0", "6XL":"0"};
+    let a_pnjng = {S:"0", M:"0", L:"0", XL:"0", XXL:"0", XXXL:"0", "4XL":"0", "5XL":"0", "6XL":"0"};
+    
+    // Looping untuk membaca isi input berdasarkan baris ukuran
+    sizeRows.forEach((row, idx) => {
+        const inputs = row.querySelectorAll('input');
+        if (inputs.length >= 5) {
+            const sizeLabel = inputs[0].value.trim().toUpperCase();
+            
+            // Masukkan nilai ke dalam object jika sizeLabel cocok dengan key
+            if (d_pndk.hasOwnProperty(sizeLabel)) {
+                d_pndk[sizeLabel]   = inputs[1].value || "0"; // Dewasa Pendek
+                d_pnjng[sizeLabel]  = inputs[2].value || "0"; // Dewasa Panjang
+                a_pndk[sizeLabel]   = inputs[3].value || "0"; // Anak Pendek
+                a_pnjng[sizeLabel]  = inputs[4].value || "0"; // Anak Panjang
+            }
+        }
+    });
+
+    // 4. Hitung JUMLAH TOTAL DEWASA & ANAK dari baris TOTAL (Baris paling bawah)
+    let jumlahDewasa = "0", jumlahAnak = "0";
+    const rowTotal = sizeRows[sizeRows.length - 1]; 
+    if (rowTotal) {
+        const totalInputs = rowTotal.querySelectorAll('input');
+        if (totalInputs.length >= 3) {
+            jumlahDewasa = totalInputs[1].value || "0"; 
+            jumlahAnak = totalInputs[2].value || "0"; 
+        }
+    }
+
+    // 5. Gabungkan semua data menjadi satu teks panjang (Format Tab & Kolom Bawah)
+    const textQR = `${nolo}\t${nama}\t${orderan}\t${model}\n` + 
+                   `${pengiriman}\n` + 
+                   `${packing}\t${jumlahDewasa}\t` + 
+                   `${d_pndk.S}\t${d_pndk.M}\t${d_pndk.L}\t${d_pndk.XL}\t${d_pndk.XXL}\t${d_pndk.XXXL}\t${d_pndk['4XL']}\t${d_pndk['5XL']}\t${d_pndk['6XL']}\t` +
+                   `${d_pnjng.S}\t${d_pnjng.M}\t${d_pnjng.L}\t${d_pnjng.XL}\t${d_pnjng.XXL}\t${d_pnjng.XXXL}\t${d_pnjng['4XL']}\t${d_pnjng['5XL']}\t${d_pnjng['6XL']}\t` +
+                   `${jumlahAnak}\t` +
+                   `${a_pndk.S}\t${a_pndk.M}\t${a_pndk.L}\t${a_pndk.XL}\t${a_pndk.XXL}\t${a_pndk.XXXL}\t${a_pndk['4XL']}\t${a_pndk['5XL']}\t${a_pndk['6XL']}\t` +
+                   `${a_pnjng.S}\t${a_pnjng.M}\t${a_pnjng.L}\t${a_pnjng.XL}\t${a_pnjng.XXL}\t${a_pnjng.XXXL}\t${a_pnjng['4XL']}\t${a_pnjng['5XL']}\t${a_pnjng['6XL']}\n` + 
+                   `${qcAdmin}\n` + 
+                   `${admin}`;
+
+    // 6. Generate QR Code dengan data padat
+    new QRCode(qrcodeDiv, { text: textQR, width: 120, height: 120, correctLevel: QRCode.CorrectLevel.H }); 
 }
 
 function formatTanggalIndo(dateStr) { 
