@@ -187,8 +187,7 @@ function updateQR() {
     const pengiriman = colorInputs[10] ? (colorInputs[10].value || "-").toUpperCase() : "-";
     const packing = colorInputs[9] ? (colorInputs[9].value || "-").toUpperCase() : "-";
     const qcAdmin = colorInputs[8] ? (colorInputs[8].value || "-").toUpperCase() : "-";
-    const admin = colorInputs[0] ? (colorInputs[0].value || "-").toUpperCase() : "-";
-
+    
 // 3. Ambil data ukuran baju dari size-table (S sampai 6XL)
     const sizeRows = document.querySelectorAll('.size-table tbody tr');
     
@@ -225,7 +224,7 @@ function updateQR() {
         }
     }
 
-    // 5. Gabungkan semua data menjadi satu teks panjang (Format Tab & Kolom Bawah)
+// 5. Gabungkan semua data menjadi satu teks panjang (Format Tab & Kolom Bawah) - TERAKHIR ANAK PANJANG 6XL
     const textQR = `${nolo}\t${nama}\t${orderan}\t${model}\n` + 
                    `${pengiriman}\n` + 
                    `${packing}\t${jumlahDewasa}\t` + 
@@ -233,9 +232,7 @@ function updateQR() {
                    `${d_pnjng.S}\t${d_pnjng.M}\t${d_pnjng.L}\t${d_pnjng.XL}\t${d_pnjng.XXL}\t${d_pnjng.XXXL}\t${d_pnjng['4XL']}\t${d_pnjng['5XL']}\t${d_pnjng['6XL']}\t` +
                    `${jumlahAnak}\t` +
                    `${a_pndk.S}\t${a_pndk.M}\t${a_pndk.L}\t${a_pndk.XL}\t${a_pndk.XXL}\t${a_pndk.XXXL}\t${a_pndk['4XL']}\t${a_pndk['5XL']}\t${a_pndk['6XL']}\t` +
-                   `${a_pnjng.S}\t${a_pnjng.M}\t${a_pnjng.L}\t${a_pnjng.XL}\t${a_pnjng.XXL}\t${a_pnjng.XXXL}\t${a_pnjng['4XL']}\t${a_pnjng['5XL']}\t${a_pnjng['6XL']}\n` + 
-                   `${qcAdmin}\n` + 
-                   `${admin}`;
+                   `${a_pnjng.S}\t${a_pnjng.M}\t${a_pnjng.L}\t${a_pnjng.XL}\t${a_pnjng.XXL}\t${a_pnjng.XXXL}\t${a_pnjng['4XL']}\t${a_pnjng['5XL']}\t${a_pnjng['6XL']}`;
 
     // 6. Generate QR Code dengan data padat
     new QRCode(qrcodeDiv, { text: textQR, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.H }); 
